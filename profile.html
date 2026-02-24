@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Diamond VIP Profile</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,typography,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+        rel="stylesheet" />
+    <style type="text/tailwindcss">
+        :root {
+            --gold-primary: #D4AF37;
+            --gold-light: #F9E29C;
+            --gold-dark: #A67C00;
+            --deep-black: #050505;
+            --card-dark: #121212;
+        }
+        @layer base {
+            body {
+                @apply bg-[var(--deep-black)] text-white font-['Inter'];
+            }
+        }
+        .gold-gradient-text {
+            background: linear-gradient(to bottom, var(--gold-light) 0%, var(--gold-primary) 50%, var(--gold-dark) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .gold-gradient-bg {
+            background: linear-gradient(135deg, var(--gold-light) 0%, var(--gold-primary) 50%, var(--gold-dark) 100%);
+        }
+        .gold-border {
+            border: 1px solid rgba(212, 175, 55, 0.3);
+        }
+        .glass-dark {
+            background: rgba(18, 18, 18, 0.8);
+            backdrop-filter: blur(12px);
+        }
+        .diamond-card {
+            background: radial-gradient(circle at top right, rgba(212, 175, 55, 0.15), transparent), 
+                        linear-gradient(135deg, #1a1a1a 0%, #050505 100%);
+        }
+    </style>
+    <style>
+        body {
+            min-height: max(884px, 100dvh);
+        }
+    </style>
+</head>
+
+<body class="min-h-screen pb-24 text-slate-100">
+    <div class="sticky top-0 z-50 glass-dark px-4 py-4 flex items-center justify-between border-b border-white/5">
+        <div class="flex items-center gap-3">
+            <a href="index.html"
+                class="w-10 h-10 flex items-center justify-center rounded-full bg-white/5 active:scale-95 transition-transform">
+                <span class="material-symbols-outlined text-white text-xl">arrow_back_ios_new</span>
+            </a>
+            <h1 class="font-bold text-lg tracking-tight">VIP Member Profile</h1>
+        </div>
+        <div
+            class="flex items-center gap-1.5 bg-[var(--gold-primary)]/10 px-3 py-1.5 rounded-full border border-[var(--gold-primary)]/20">
+            <span class="material-symbols-outlined text-[var(--gold-primary)] text-sm fill-1">verified</span>
+            <span class="text-[10px] font-bold text-[var(--gold-primary)] tracking-widest uppercase">Diamond Tier</span>
+        </div>
+    </div>
+    <main class="max-w-md mx-auto p-5 space-y-8">
+        <div class="flex items-center justify-between px-1">
+            <div class="flex items-center gap-4">
+                <div class="relative">
+                    <div class="absolute -inset-0.5 gold-gradient-bg rounded-2xl blur-sm opacity-30"></div>
+                    <img alt="User Avatar"
+                        class="relative w-16 h-16 rounded-2xl border border-[var(--gold-primary)]/50 bg-neutral-900 object-cover"
+                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuASB6uT9S4ctBktfvuyo3heaYITqTGizPnoBK762pOclVqlkcdemIsT9FiU-rmiuCKdjAS8kHWmtHEfLjTLd_9pQjPZ5QwRNn7G5rKLJAoIyTjUytwnYzmCCmORL7UOBIopTbf1o1lzJhZLm2MuskDj32hucRyU6II414j4VbCjKc6IQggLfBiEbXGt-pXWUCNu0LYctzYndGsdchYwAuG0E93iCYq25OshDVD-l7TANtb_LXvvXPtNU6qpYh9GmawcKuLc8JeSRpo" />
+                    <div
+                        class="absolute -bottom-1 -right-1 bg-green-500 w-4 h-4 rounded-full border-2 border-[var(--deep-black)]">
+                    </div>
+                </div>
+                <div>
+                    <div class="flex items-center gap-1.5">
+                        <span class="font-bold text-white text-lg">Crazy Developer BD</span>
+                        <span class="material-symbols-outlined text-blue-400 text-base fill-1">verified</span>
+                    </div>
+                    <span class="text-xs text-neutral-400 font-medium tracking-wide">ID: 5702521445</span>
+                </div>
+            </div>
+            <div class="text-right">
+                <div class="flex items-center justify-end gap-1.5 text-[var(--gold-light)] font-bold text-lg">
+                    <span class="material-symbols-outlined text-xl">payments</span>
+                    <span>3,223.20</span>
+                </div>
+                <div class="text-[9px] text-neutral-500 uppercase tracking-[0.15em] font-bold">Total Balance</div>
+            </div>
+        </div>
+        <div class="diamond-card rounded-[2.5rem] p-7 gold-border relative overflow-hidden group shadow-2xl">
+            <div
+                class="absolute -right-8 -top-8 opacity-[0.03] group-hover:scale-110 transition-transform duration-1000">
+                <span class="material-symbols-outlined text-[12rem]">diamond</span>
+            </div>
+            <div class="relative z-10">
+                <div class="flex justify-between items-start mb-8">
+                    <div>
+                        <span
+                            class="text-[var(--gold-primary)] font-bold text-[10px] uppercase tracking-[0.3em] block mb-2">Member
+                            Status</span>
+                        <h2 class="text-5xl font-black gold-gradient-text italic tracking-tighter">DIAMOND</h2>
+                    </div>
+                    <div class="bg-gradient-to-br from-white/10 to-transparent p-3 rounded-2xl border border-white/10">
+                        <span
+                            class="material-symbols-outlined text-[var(--gold-primary)] fill-1 text-2xl">workspace_premium</span>
+                    </div>
+                </div>
+                <div class="space-y-4">
+                    <div class="flex justify-between text-[11px] font-bold uppercase tracking-wider">
+                        <span class="text-neutral-400">Progress to <span class="text-white">Black Tier</span></span>
+                        <span class="text-[var(--gold-primary)]">85% Achieved</span>
+                    </div>
+                    <div class="w-full bg-black h-3 rounded-full overflow-hidden border border-white/5 p-[1px]">
+                        <div class="h-full gold-gradient-bg w-[85%] rounded-full relative">
+                            <div class="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent"></div>
+                        </div>
+                    </div>
+                    <p class="text-[10px] text-neutral-400 flex items-center gap-1.5">
+                        <span class="material-symbols-outlined text-xs">info</span>
+                        Earn 1,500 more points to unlock Black Tier rewards
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div>
+            <div class="flex items-center justify-between mb-5 px-1">
+                <h3 class="text-xl font-bold flex items-center gap-2">
+                    <span class="material-symbols-outlined text-[var(--gold-primary)] fill-1">stars</span>
+                    Diamond Perks
+                </h3>
+                <span
+                    class="text-[var(--gold-primary)] text-[10px] font-bold uppercase tracking-widest cursor-pointer hover:brightness-125">View
+                    Detailed Benefits</span>
+            </div>
+            <div class="grid grid-cols-1 gap-4">
+                <div
+                    class="flex items-center gap-5 p-5 bg-[var(--card-dark)] rounded-3xl border border-white/5 active:scale-[0.98] transition-all">
+                    <div
+                        class="w-14 h-14 flex items-center justify-center rounded-2xl bg-gradient-to-br from-[var(--gold-dark)]/20 to-transparent border border-[var(--gold-primary)]/20">
+                        <span
+                            class="material-symbols-outlined text-[var(--gold-primary)] text-3xl fill-1">support_agent</span>
+                    </div>
+                    <div class="flex-1">
+                        <h4 class="font-bold text-white text-sm tracking-tight">24/7 Priority Support</h4>
+                        <p class="text-[11px] text-neutral-500 mt-0.5">Instant connection to Diamond managers</p>
+                    </div>
+                    <span class="material-symbols-outlined text-neutral-700 text-lg">chevron_right</span>
+                </div>
+                <div
+                    class="flex items-center gap-5 p-5 bg-[var(--card-dark)] rounded-3xl border border-white/5 active:scale-[0.98] transition-all">
+                    <div
+                        class="w-14 h-14 flex items-center justify-center rounded-2xl bg-gradient-to-br from-[var(--gold-dark)]/20 to-transparent border border-[var(--gold-primary)]/20">
+                        <span
+                            class="material-symbols-outlined text-[var(--gold-primary)] text-3xl fill-1">universal_currency_alt</span>
+                    </div>
+                    <div class="flex-1">
+                        <h4 class="font-bold text-white text-sm tracking-tight">0% Withdrawal Fees</h4>
+                        <p class="text-[11px] text-neutral-500 mt-0.5">Maximize your earnings without deductions</p>
+                    </div>
+                    <span class="material-symbols-outlined text-neutral-700 text-lg">chevron_right</span>
+                </div>
+                <div
+                    class="flex items-center gap-5 p-5 bg-[var(--card-dark)] rounded-3xl border border-white/5 active:scale-[0.98] transition-all">
+                    <div
+                        class="w-14 h-14 flex items-center justify-center rounded-2xl bg-gradient-to-br from-[var(--gold-dark)]/20 to-transparent border border-[var(--gold-primary)]/20">
+                        <span class="material-symbols-outlined text-[var(--gold-primary)] text-3xl fill-1">bolt</span>
+                    </div>
+                    <div class="flex-1">
+                        <h4 class="font-bold text-white text-sm tracking-tight">Early Task Access</h4>
+                        <p class="text-[11px] text-neutral-500 mt-0.5">Claim high-value tasks 2 hours early</p>
+                    </div>
+                    <span class="material-symbols-outlined text-neutral-700 text-lg">chevron_right</span>
+                </div>
+            </div>
+        </div>
+        <div class="gold-gradient-bg p-[1px] rounded-[2rem] overflow-hidden">
+            <div
+                class="bg-[var(--deep-black)] p-6 flex items-center justify-between relative overflow-hidden rounded-[2rem]">
+                <div
+                    class="absolute -right-10 -bottom-10 w-32 h-32 bg-[var(--gold-primary)] opacity-10 rounded-full blur-3xl">
+                </div>
+                <div class="relative z-10 space-y-2">
+                    <span
+                        class="text-[9px] font-black uppercase tracking-[0.2em] text-[var(--gold-primary)] bg-[var(--gold-primary)]/10 px-2 py-1 rounded-md">New
+                        Event</span>
+                    <h3 class="text-xl font-bold text-white tracking-tight leading-tight">Elite Diamond<br />Tournament
+                    </h3>
+                    <p class="text-[11px] text-neutral-400">Join the $5,000 prize pool race.</p>
+                </div>
+                <button
+                    class="relative z-10 gold-gradient-bg text-[var(--deep-black)] px-5 py-2.5 rounded-2xl text-xs font-black shadow-lg shadow-[var(--gold-primary)]/20 active:scale-95 transition-transform uppercase tracking-wider">
+                    Register
+                </button>
+            </div>
+        </div>
+    </main>
+    <nav
+        class="fixed bottom-0 left-0 right-0 glass-dark border-t border-white/5 px-8 py-4 pb-10 flex justify-between items-center z-50">
+        <a href="index.html"
+            class="flex flex-col items-center gap-1.5 opacity-40 hover:opacity-100 transition-opacity cursor-pointer">
+            <span class="material-symbols-outlined text-2xl">home</span>
+            <span class="text-[9px] font-bold uppercase tracking-wider">Home</span>
+        </a>
+        <a href="tasks.html"
+            class="flex flex-col items-center gap-1.5 opacity-40 hover:opacity-100 transition-opacity cursor-pointer">
+            <span class="material-symbols-outlined text-2xl">monitoring</span>
+            <span class="text-[9px] font-bold uppercase tracking-wider">Earn</span>
+        </a>
+        <a href="wallet.html"
+            class="flex flex-col items-center gap-1.5 opacity-40 hover:opacity-100 transition-opacity cursor-pointer">
+            <span class="material-symbols-outlined text-2xl">account_balance_wallet</span>
+            <span class="text-[9px] font-bold uppercase tracking-wider">Vault</span>
+        </a>
+        <a href="referral.html"
+            class="flex flex-col items-center gap-1.5 opacity-40 hover:opacity-100 transition-opacity cursor-pointer">
+            <span class="material-symbols-outlined text-2xl">redeem</span>
+            <span class="text-[9px] font-bold uppercase tracking-wider">Refer</span>
+        </a>
+        <a href="profile.html" class="flex flex-col items-center gap-1.5 text-[var(--gold-primary)] cursor-pointer">
+            <span class="material-symbols-outlined text-2xl fill-1">person</span>
+            <span class="text-[9px] font-bold uppercase tracking-wider">Profile</span>
+        </a>
+    </nav>
+
+</body>
+
+</html>

@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>VIP Referral Hub</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,typography,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        gold: {
+                            DEFAULT: "#D4AF37",
+                            light: "#F3E5AB",
+                            dark: "#B8860B",
+                        },
+                        "vip-black": "#0A0A0A",
+                        "vip-card": "#161616",
+                    },
+                    fontFamily: {
+                        display: ["Inter", "sans-serif"],
+                    },
+                    borderRadius: {
+                        DEFAULT: "1.25rem",
+                    },
+                },
+            },
+        };
+    </script>
+    <style type="text/tailwindcss">
+        :root {
+            --gold-gradient: linear-gradient(135deg, #D4AF37 0%, #FFD700 50%, #B8860B 100%);
+            --card-glow: inset 0 0 20px rgba(212, 175, 55, 0.05);
+            --border-gold: 1px solid rgba(212, 175, 55, 0.2);
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+            background-color: #0A0A0A;
+        }
+        .gold-text {
+            background: var(--gold-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .vip-card-style {
+            background: #161616;
+            box-shadow: var(--card-glow);
+            border: var(--border-gold);
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .shimmer-gold {
+            background: linear-gradient(90deg, transparent, rgba(255, 215, 0, 0.1), transparent);
+            background-size: 200% 100%;
+        }
+    </style>
+    <style>
+        body {
+            min-height: max(884px, 100dvh);
+        }
+    </style>
+</head>
+
+<body class="text-slate-100 min-h-screen pb-28">
+    <header
+        class="sticky top-0 z-50 bg-vip-black/80 backdrop-blur-xl border-b border-white/5 px-4 py-4 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+            <a href="index.html" class="p-2 hover:bg-white/5 rounded-full transition-colors text-gold">
+                <span class="material-symbols-outlined">chevron_left</span>
+            </a>
+            <h1 class="text-lg font-bold tracking-tight flex items-center gap-1 uppercase">
+                VIP Referral Hub
+                <span class="material-symbols-outlined text-gold text-lg">verified</span>
+            </h1>
+        </div>
+        <div class="flex items-center gap-2 bg-vip-card px-3 py-1.5 rounded-full border border-gold/20">
+            <span class="material-symbols-outlined text-gold text-xl">account_balance_wallet</span>
+            <span class="text-xs font-bold text-gold">3,223.20</span>
+        </div>
+    </header>
+    <main class="max-w-md mx-auto p-5 space-y-6">
+        <div class="vip-card-style rounded-[2.5rem] p-8 text-center relative overflow-hidden">
+            <div class="absolute -right-10 -top-10 w-40 h-40 bg-gold/10 rounded-full blur-3xl"></div>
+            <div class="absolute -left-10 -bottom-10 w-40 h-40 bg-gold/5 rounded-full blur-3xl"></div>
+            <div class="relative z-10">
+                <div
+                    class="inline-flex items-center gap-2 bg-gold/10 border border-gold/30 px-4 py-1.5 rounded-full mb-4">
+                    <span class="material-symbols-outlined text-gold text-sm">stars</span>
+                    <span class="text-[10px] font-black uppercase tracking-[0.2em] text-gold">Elite Program</span>
+                </div>
+                <h2 class="text-4xl font-black mb-3 italic tracking-tighter">
+                    REFER &amp; EARN
+                </h2>
+                <div class="flex flex-col items-center gap-1">
+                    <p class="text-slate-400 text-sm">Invite friends and unlock</p>
+                    <span class="text-3xl font-black gold-text tracking-tight">15% COMMISSION</span>
+                    <p class="text-slate-500 text-xs mt-2 italic">Exclusive for VIP Tier Members</p>
+                </div>
+            </div>
+        </div>
+        <div class="vip-card-style rounded-3xl p-6">
+            <div class="flex items-center gap-2 mb-4">
+                <span class="material-symbols-outlined text-gold">link</span>
+                <h3 class="text-slate-300 text-sm font-bold uppercase tracking-wider">Your Unique VIP Link</h3>
+            </div>
+            <div
+                class="flex items-center gap-2 bg-black/40 p-2 pl-5 rounded-2xl border border-gold/10 group focus-within:border-gold/40 transition-all">
+                <span class="text-xs text-slate-500 truncate flex-1 font-mono">https://vip.hub/ref/tzsmm_v1_05x</span>
+                <button
+                    class="bg-gold hover:bg-gold-dark text-black px-6 py-3 rounded-xl font-black text-xs uppercase transition-all active:scale-95 shadow-[0_0_15px_rgba(212,175,55,0.3)]">
+                    Copy
+                </button>
+            </div>
+            <div class="grid grid-cols-3 gap-3 mt-6">
+                <button
+                    class="flex flex-col items-center justify-center gap-2 py-4 bg-white/5 hover:bg-white/10 rounded-2xl border border-white/5 transition-all">
+                    <img alt="WhatsApp" class="w-6 h-6"
+                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuChyUz3bDWAlUyQwQ_4VpBwpIu3rq08qCXMslR5QKxsab-HIxfluLcjJE2dD_53zN8x9ZoijG7KiMUIrEJjA-axKz4t-5zMk8ETN3SKap_pBtoBzWCcKi7j4uPxIpSuqc1uqNvoSJyaHXf-i-A1_jOv-xXkYpe75Fr1qQGWp_t7ce2lPey1c8fQ1zS5F73i9Ze2BincSqeUNKORlBNKc2qzAvJXsrzVREXWT7wmeix-_46BEI9SN0Bhex6SaN-Pu2J5__2co5UiZdU" />
+                </button>
+                <button
+                    class="flex flex-col items-center justify-center gap-2 py-4 bg-white/5 hover:bg-white/10 rounded-2xl border border-white/5 transition-all">
+                    <img alt="Telegram" class="w-6 h-6"
+                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuDdb5HBbbvHRpGWYREB8-BOLWAn6FyB7-av6WP3c8Sh6ZEeoQAjQgmODoE2AWkTulNOosS5KkuzHBGUWedQPq2ii6XUU7-3IFqN1KovL0Y4WmQp5HXnr60vnVg4tVBHkVtElgP6qZNM_yAhSyavLono6eL7ArqirpDbHciX8vaOnDpDRQlbSrT70M9QXyF-YgV-WQRClUMIGqrj8C4jF5-9XTVD-IoRzjm6fSJq-HUZwHfz7g70Rn-HojhatEVnqBHEicFnzoUBqSE" />
+                </button>
+                <button
+                    class="flex flex-col items-center justify-center gap-2 py-4 bg-white/5 hover:bg-white/10 rounded-2xl border border-white/5 transition-all">
+                    <img alt="Facebook" class="w-6 h-6"
+                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuBRtRYkWMmBqrSys_OXfuK6dBCie3EqatYZD_2-0ygY3fjtIbGC8TykAAL6Ql5cnxKkJUN2R6kUmxyeMAYxEsjocvoG-7YhHQHtAW-yoGCHCzQ_nNQcFrHShUFiU-bTRSmAzv_U8Xy1R48fOEksTak7wWM0AnKt7MFxktViau6vmtNtRVQV_X1OVqz19K6C_ncX0TUG5eVpalrDlkx7-hl8kAzqUkTR8UzWcDjtZ1aADzbaeeqds5Yt8mpCYyC44YPv2Fiisa5Oxhs" />
+                </button>
+            </div>
+        </div>
+        <div class="space-y-4">
+            <div class="flex items-center gap-3 px-2">
+                <div class="w-1 h-6 bg-gold rounded-full"></div>
+                <h3 class="font-black text-lg uppercase tracking-tight">How it Works</h3>
+            </div>
+            <div class="space-y-3">
+                <div class="vip-card-style flex items-center gap-5 p-4 rounded-2xl">
+                    <div
+                        class="w-12 h-12 rounded-xl bg-gold/10 border border-gold/20 flex items-center justify-center shrink-0">
+                        <span class="material-symbols-outlined text-gold">send</span>
+                    </div>
+                    <div>
+                        <p class="text-[10px] text-gold font-bold uppercase tracking-tighter">Step 01</p>
+                        <p class="text-sm font-medium text-slate-300">Share your link with your inner circle.</p>
+                    </div>
+                </div>
+                <div class="vip-card-style flex items-center gap-5 p-4 rounded-2xl">
+                    <div
+                        class="w-12 h-12 rounded-xl bg-gold/10 border border-gold/20 flex items-center justify-center shrink-0">
+                        <span class="material-symbols-outlined text-gold">person_add</span>
+                    </div>
+                    <div>
+                        <p class="text-[10px] text-gold font-bold uppercase tracking-tighter">Step 02</p>
+                        <p class="text-sm font-medium text-slate-300">Friends activate their VIP status.</p>
+                    </div>
+                </div>
+                <div class="vip-card-style flex items-center gap-5 p-4 rounded-2xl border-gold/40">
+                    <div
+                        class="w-12 h-12 rounded-xl bg-gold/20 border border-gold flex items-center justify-center shrink-0">
+                        <span class="material-symbols-outlined text-gold">payments</span>
+                    </div>
+                    <div>
+                        <p class="text-[10px] text-gold font-bold uppercase tracking-tighter">Step 03</p>
+                        <p class="text-sm font-medium text-slate-100">Earn <span class="gold-text font-bold">15%
+                                commission</span> instantly.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="grid grid-cols-2 gap-4">
+            <div class="vip-card-style p-5 rounded-[2rem] flex flex-col items-center text-center">
+                <div class="w-10 h-10 rounded-full bg-gold/10 flex items-center justify-center mb-3">
+                    <span class="material-symbols-outlined text-gold text-xl">calendar_today</span>
+                </div>
+                <span class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Today's Bonus</span>
+                <div class="text-xl font-black text-gold">207 BTTC</div>
+            </div>
+            <div class="vip-card-style p-5 rounded-[2rem] flex flex-col items-center text-center">
+                <div class="w-10 h-10 rounded-full bg-gold/10 flex items-center justify-center mb-3">
+                    <span class="material-symbols-outlined text-gold text-xl">military_tech</span>
+                </div>
+                <span class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Total Rewards</span>
+                <div class="text-xl font-black text-gold">416.90 BDT</div>
+            </div>
+        </div>
+    </main>
+    <nav
+        class="fixed bottom-0 left-0 right-0 bg-vip-black/90 backdrop-blur-2xl border-t border-white/5 px-6 py-4 pb-10 z-50">
+        <div class="flex justify-between items-center max-w-md mx-auto">
+            <a href="index.html" class="flex flex-col items-center gap-1 group text-slate-600">
+                <span class="material-symbols-outlined">grid_view</span>
+                <span class="text-[10px] font-bold uppercase tracking-tighter">Home</span>
+            </a>
+            <a href="tasks.html" class="flex flex-col items-center gap-1 group text-slate-600">
+                <span class="material-symbols-outlined">paid</span>
+                <span class="text-[10px] font-bold uppercase tracking-tighter">Earn</span>
+            </a>
+            <a href="wallet.html" class="flex flex-col items-center gap-1 group text-slate-600">
+                <span class="material-symbols-outlined">account_balance_wallet</span>
+                <span class="text-[10px] font-bold uppercase tracking-tighter">Vault</span>
+            </a>
+            <a href="referral.html" class="flex flex-col items-center gap-1 group text-gold">
+                <div class="p-1.5 rounded-xl bg-gold/10 mb-0.5">
+                    <span class="material-symbols-outlined">card_giftcard</span>
+                </div>
+                <span class="text-[10px] font-black uppercase tracking-tighter">Refer</span>
+            </a>
+            <a href="analytics.html" class="flex flex-col items-center gap-1 group text-slate-600">
+                <span class="material-symbols-outlined">analytics</span>
+                <span class="text-[10px] font-bold uppercase tracking-tighter">Analytics</span>
+            </a>
+        </div>
+    </nav>
+
+</body>
+
+</html>

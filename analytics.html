@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Gold Earning Analytics</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,typography,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+        rel="stylesheet" />
+    <style type="text/tailwindcss">
+        :root {
+            --vip-gold: #FFD700;
+            --vip-gold-glow: rgba(255, 215, 0, 0.4);
+            --deep-black: #050505;
+            --card-black: #0A0A0A;
+            --border-gold: rgba(255, 215, 0, 0.2);
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--deep-black);
+            color: #ffffff;
+        }
+        .gold-gradient-text {
+            background: linear-gradient(135deg, #FFD700 0%, #B8860B 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .gold-border-glow {
+            border: 1px solid var(--border-gold);
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+        }
+        .bar-gold {
+            background: linear-gradient(to top, #B8860B, #FFD700);
+            box-shadow: 0 0 10px var(--vip-gold-glow);
+        }
+        .bar-black {
+            background: #1A1A1A;
+            border: 1px solid rgba(255, 215, 0, 0.1);
+        }
+    </style>
+    <style>
+        body {
+            min-height: max(884px, 100dvh);
+        }
+    </style>
+</head>
+
+<body class="min-h-screen pb-24">
+    <div class="h-12 w-full flex items-center justify-between px-6 sticky top-0 bg-black/80 backdrop-blur-md z-50">
+        <span class="font-semibold text-sm">9:41</span>
+        <div class="flex items-center space-x-2">
+            <span class="material-symbols-outlined text-[18px]">signal_cellular_alt</span>
+            <span class="material-symbols-outlined text-[18px]">wifi</span>
+            <span class="material-symbols-outlined text-[18px]">battery_full</span>
+        </div>
+    </div>
+    <div class="px-6 py-4 flex items-center justify-between">
+        <a href="index.html"
+            class="w-10 h-10 rounded-full bg-neutral-900 flex items-center justify-center border border-neutral-800">
+            <span class="material-symbols-outlined text-gold">chevron_left</span>
+        </a>
+        <div class="flex flex-col items-center">
+            <h1 class="text-sm font-bold tracking-widest uppercase gold-gradient-text">
+                VIP Analytics
+            </h1>
+        </div>
+        <button
+            class="w-10 h-10 rounded-full bg-neutral-900 flex items-center justify-center border border-neutral-800">
+            <span class="material-symbols-outlined text-gold">more_vert</span>
+        </button>
+    </div>
+    <div
+        class="mx-6 p-4 bg-[var(--card-black)] rounded-2xl border border-neutral-800 flex items-center justify-between mb-8 shadow-2xl">
+        <div class="flex items-center gap-3">
+            <div class="relative">
+                <img alt="User avatar" class="w-11 h-11 rounded-full border border-[var(--vip-gold)] p-0.5"
+                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuAxTc4sraBOLhlf6nIiapr2F8fq4NaiFLBeWKkZ4b0_YkeLSPH4xPmv1RrdhnBqOg7ttn3RnGgOzQbDqJDgAGp383ZbXSENPnaYW1obLp7m0UIZazs0w7xv8pNbmPNj8OtdkeBe3psiyl9dhQYtc3aefSEE5bnWIU_Fjct1HKipF8EL500DvPn6xb7nEnTmf9TmHaos-h66tQ2Mf_jki9i3tA2hbIxYwJzHC6ls5_-4OsA5JtUHCSH2HcuYmikIwW2G1YPTJz8ZfiU" />
+                <div
+                    class="absolute -bottom-1 -right-1 bg-[var(--vip-gold)] w-4 h-4 rounded-full border-2 border-black flex items-center justify-center">
+                    <span class="material-symbols-outlined text-[10px] text-black font-bold">check</span>
+                </div>
+            </div>
+            <div>
+                <p class="font-bold text-sm">Crazy Developer BD</p>
+                <p class="text-[10px] text-neutral-500 uppercase tracking-tight">VIP Elite Member</p>
+            </div>
+        </div>
+        <div class="text-right">
+            <div class="flex items-center justify-end gap-1 text-[var(--vip-gold)] font-bold text-sm">
+                3,223.20 BDT
+            </div>
+            <div class="text-neutral-500 text-[10px]">Current Balance</div>
+        </div>
+    </div>
+    <main class="px-6 space-y-6">
+        <div class="mb-2">
+            <h2 class="text-2xl font-black italic gold-gradient-text">GOLD EARNINGS</h2>
+            <p class="text-neutral-500 text-xs tracking-widest uppercase">Performance Metrics</p>
+        </div>
+        <div class="grid grid-cols-2 gap-4">
+            <div class="p-5 bg-[var(--card-black)] border border-neutral-800 rounded-2xl relative overflow-hidden">
+                <div class="absolute top-0 right-0 p-2 opacity-10">
+                    <span class="material-symbols-outlined text-4xl">payments</span>
+                </div>
+                <p class="text-[10px] font-bold text-neutral-500 uppercase tracking-widest mb-1">Lifetime BDT</p>
+                <p class="text-xl font-bold text-white">420.20 <span class="text-[10px] text-neutral-400">BDT</span></p>
+                <div class="mt-3 flex items-center gap-1">
+                    <span class="material-symbols-outlined text-[12px] text-green-500">trending_up</span>
+                    <span class="text-[9px] text-green-500 font-bold">+12.5%</span>
+                </div>
+            </div>
+            <div class="p-5 bg-[var(--card-black)] border border-neutral-800 rounded-2xl relative overflow-hidden">
+                <div class="absolute top-0 right-0 p-2 opacity-10">
+                    <span class="material-symbols-outlined text-4xl">stars</span>
+                </div>
+                <p class="text-[10px] font-bold text-neutral-500 uppercase tracking-widest mb-1">Lifetime BTTC</p>
+                <p class="text-xl font-bold gold-gradient-text">209 <span
+                        class="text-[10px] text-neutral-400">BTTC</span></p>
+                <div class="mt-3 flex items-center gap-1">
+                    <span class="material-symbols-outlined text-[12px] text-[var(--vip-gold)]">bolt</span>
+                    <span class="text-[9px] text-[var(--vip-gold)] font-bold">VIP ACTIVE</span>
+                </div>
+            </div>
+        </div>
+        <div class="bg-[var(--card-black)] p-6 rounded-3xl border border-neutral-800 shadow-2xl relative">
+            <div class="flex items-center justify-between mb-10">
+                <div>
+                    <h3 class="font-bold text-sm tracking-widest uppercase text-neutral-300">Weekly VIP Yield</h3>
+                    <p class="text-[10px] text-neutral-500 mt-0.5">Jan 15 - Jan 22</p>
+                </div>
+                <div class="flex gap-4">
+                    <div class="flex items-center gap-1.5">
+                        <div class="w-2 h-2 rounded-full bar-gold"></div>
+                        <span class="text-[9px] font-bold text-neutral-400 tracking-tighter uppercase">Gold</span>
+                    </div>
+                    <div class="flex items-center gap-1.5">
+                        <div class="w-2 h-2 rounded-full bg-neutral-700"></div>
+                        <span class="text-[9px] font-bold text-neutral-400 tracking-tighter uppercase">Base</span>
+                    </div>
+                </div>
+            </div>
+            <div class="relative h-48 flex items-end justify-between px-2">
+                <div class="absolute inset-0 flex flex-col justify-between py-1 opacity-5 pointer-events-none">
+                    <div class="w-full border-t border-neutral-400"></div>
+                    <div class="w-full border-t border-neutral-400"></div>
+                    <div class="w-full border-t border-neutral-400"></div>
+                    <div class="w-full border-t border-neutral-400"></div>
+                </div>
+                <div
+                    class="absolute -left-1 top-0 bottom-0 flex flex-col justify-between text-[8px] text-neutral-600 font-bold py-1">
+                    <span>MAX</span>
+                    <span>MID</span>
+                    <span>MIN</span>
+                </div>
+                <div class="flex flex-col items-center gap-2 w-full">
+                    <div class="flex items-end gap-1 h-full">
+                        <div class="w-2.5 bar-black rounded-t-sm h-[15%]"></div>
+                        <div class="w-2.5 bar-gold rounded-t-sm h-[25%]"></div>
+                    </div>
+                    <span class="text-[9px] font-bold text-neutral-600">M</span>
+                </div>
+                <div class="flex flex-col items-center gap-2 w-full">
+                    <div class="flex items-end gap-1 h-full">
+                        <div class="w-2.5 bar-black rounded-t-sm h-[20%]"></div>
+                        <div class="w-2.5 bar-gold rounded-t-sm h-[35%]"></div>
+                    </div>
+                    <span class="text-[9px] font-bold text-neutral-600">T</span>
+                </div>
+                <div class="flex flex-col items-center gap-2 w-full">
+                    <div class="flex items-end gap-1 h-full">
+                        <div class="w-2.5 bar-black rounded-t-sm h-[18%]"></div>
+                        <div class="w-2.5 bar-gold rounded-t-sm h-[40%]"></div>
+                    </div>
+                    <span class="text-[9px] font-bold text-neutral-600">W</span>
+                </div>
+                <div class="flex flex-col items-center gap-2 w-full">
+                    <div class="flex items-end gap-1 h-full">
+                        <div class="w-2.5 bar-black rounded-t-sm h-[22%]"></div>
+                        <div class="w-2.5 bar-gold rounded-t-sm h-[38%]"></div>
+                    </div>
+                    <span class="text-[9px] font-bold text-neutral-600">T</span>
+                </div>
+                <div class="flex flex-col items-center gap-2 w-full">
+                    <div class="flex items-end gap-1 h-full">
+                        <div class="w-2.5 bar-black rounded-t-sm h-[30%]"></div>
+                        <div class="w-2.5 bar-gold rounded-t-sm h-[55%]"></div>
+                    </div>
+                    <span class="text-[9px] font-bold text-neutral-600">F</span>
+                </div>
+                <div class="flex flex-col items-center gap-2 w-full">
+                    <div class="flex items-end gap-1 h-full">
+                        <div class="w-2.5 bar-black rounded-t-sm h-[35%]"></div>
+                        <div class="w-2.5 bar-gold rounded-t-sm h-[70%]"></div>
+                    </div>
+                    <span class="text-[9px] font-bold text-neutral-600">S</span>
+                </div>
+                <div class="flex flex-col items-center gap-2 w-full relative">
+                    <div
+                        class="absolute -top-12 left-1/2 -translate-x-1/2 bg-[var(--vip-gold)] text-black px-2 py-1 rounded text-[9px] font-black whitespace-nowrap z-20 shadow-lg">
+                        PEAK: 416.90
+                        <div
+                            class="absolute -bottom-1 left-1/2 -translate-x-1/2 w-2 h-2 bg-[var(--vip-gold)] rotate-45">
+                        </div>
+                    </div>
+                    <div class="flex items-end gap-1 h-full">
+                        <div class="w-2.5 bar-black rounded-t-sm h-[45%]"></div>
+                        <div class="w-3 bar-gold rounded-t-md h-[92%] ring-2 ring-[var(--vip-gold-glow)]"></div>
+                    </div>
+                    <span class="text-[9px] font-black text-[var(--vip-gold)] uppercase">S</span>
+                </div>
+            </div>
+        </div>
+        <div
+            class="bg-gradient-to-br from-neutral-900 to-black p-5 rounded-2xl border border-neutral-800 flex gap-4 items-start relative overflow-hidden">
+            <div class="absolute top-0 right-0 w-32 h-32 bg-[var(--vip-gold)] opacity-[0.03] blur-3xl -mr-10 -mt-10">
+            </div>
+            <div class="w-10 h-10 rounded-xl bg-[var(--vip-gold)] flex items-center justify-center shrink-0">
+                <span class="material-symbols-outlined text-black font-bold">workspace_premium</span>
+            </div>
+            <div>
+                <p class="text-sm font-bold gold-gradient-text uppercase tracking-wider">Weekly Bonus Active</p>
+                <p class="text-[11px] text-neutral-400 leading-relaxed mt-1">Tier 2 multiplier engaged. All VIP
+                    activities currently generate <span class="text-[var(--vip-gold)] font-bold">+15% extra gold</span>
+                    for the next 72 hours.</p>
+            </div>
+        </div>
+    </main>
+    <nav
+        class="fixed bottom-0 left-0 right-0 bg-black/90 backdrop-blur-2xl border-t border-neutral-900 px-8 py-3 pb-8 flex items-center justify-between z-50">
+        <a href="index.html" class="flex flex-col items-center gap-1 text-neutral-600">
+            <span class="material-symbols-outlined text-2xl">home</span>
+            <span class="text-[9px] font-bold uppercase tracking-tighter">Home</span>
+        </a>
+        <a href="tasks.html" class="flex flex-col items-center gap-1 text-neutral-600">
+            <span class="material-symbols-outlined text-2xl">monetization_on</span>
+            <span class="text-[9px] font-bold uppercase tracking-tighter">Earn</span>
+        </a>
+        <a href="wallet.html" class="flex flex-col items-center gap-1 text-neutral-600">
+            <span class="material-symbols-outlined text-2xl">account_balance_wallet</span>
+            <span class="text-[9px] font-bold uppercase tracking-tighter">Vault</span>
+        </a>
+        <a href="analytics.html" class="flex flex-col items-center gap-1 text-[var(--vip-gold)]">
+            <span class="material-symbols-outlined text-2xl" style="font-variation-settings: 'FILL' 1">analytics</span>
+            <span class="text-[9px] font-bold uppercase tracking-tighter">Analytics</span>
+        </a>
+        <a href="referral.html" class="flex flex-col items-center gap-1 text-neutral-600">
+            <span class="material-symbols-outlined text-2xl">redeem</span>
+            <span class="text-[9px] font-bold uppercase tracking-tighter">Refer</span>
+        </a>
+    </nav>
+    <div class="fixed bottom-1 left-1/2 -translate-x-1/2 w-32 h-1 bg-neutral-800 rounded-full z-50"></div>
+
+</body>
+
+</html>
