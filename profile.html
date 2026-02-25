@@ -71,7 +71,7 @@
             <div class="flex items-center gap-4">
                 <div class="relative">
                     <div class="absolute -inset-0.5 gold-gradient-bg rounded-2xl blur-sm opacity-30"></div>
-                    <img alt="User Avatar"
+                    <img id="user-avatar" alt="User Avatar"
                         class="relative w-16 h-16 rounded-2xl border border-[var(--gold-primary)]/50 bg-neutral-900 object-cover"
                         src="https://lh3.googleusercontent.com/aida-public/AB6AXuASB6uT9S4ctBktfvuyo3heaYITqTGizPnoBK762pOclVqlkcdemIsT9FiU-rmiuCKdjAS8kHWmtHEfLjTLd_9pQjPZ5QwRNn7G5rKLJAoIyTjUytwnYzmCCmORL7UOBIopTbf1o1lzJhZLm2MuskDj32hucRyU6II414j4VbCjKc6IQggLfBiEbXGt-pXWUCNu0LYctzYndGsdchYwAuG0E93iCYq25OshDVD-l7TANtb_LXvvXPtNU6qpYh9GmawcKuLc8JeSRpo" />
                     <div
@@ -80,16 +80,17 @@
                 </div>
                 <div>
                     <div class="flex items-center gap-1.5">
-                        <span class="font-bold text-white text-lg">Crazy Developer BD</span>
+                        <span id="user-name" class="font-bold text-white text-lg">Crazy Developer BD</span>
                         <span class="material-symbols-outlined text-blue-400 text-base fill-1">verified</span>
                     </div>
-                    <span class="text-xs text-neutral-400 font-medium tracking-wide">ID: 5702521445</span>
+                    <span id="user-id-display" class="text-xs text-neutral-400 font-medium tracking-wide">ID:
+                        5702521445</span>
                 </div>
             </div>
             <div class="text-right">
                 <div class="flex items-center justify-end gap-1.5 text-[var(--gold-light)] font-bold text-lg">
                     <span class="material-symbols-outlined text-xl">payments</span>
-                    <span>3,223.20</span>
+                    <span id="balance-display">3,223.20</span>
                 </div>
                 <div class="text-[9px] text-neutral-500 uppercase tracking-[0.15em] font-bold">Total Balance</div>
             </div>
@@ -229,6 +230,27 @@
         </a>
     </nav>
 
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-database-compat.js"></script>
+    <script src="firebase-config.js"></script>
+    <script>
+        const tg = window.Telegram.WebApp;
+        const tgUser = tg.initDataUnsafe.user || { id: 'mock_user_123', first_name: 'Crazy Developer', last_name: 'BD' };
+
+        const userId = tgUser.id.toString();
+        const userRef = db.ref('users/' + userId);
+
+        userRef.on('value', (snapshot) => {
+            const data = snapshot.val();
+            if (data) {
+                if (data.name) document.getElementById('user-name').innerText = data.name;
+                if (data.photo_url) document.getElementById('user-avatar').src = data.photo_url;
+                if (data.id) document.getElementById('user-id-display').innerText = 'ID: ' + data.id;
+                if (data.balance !== undefined) document.getElementById('balance-display').innerText = data.balance.toLocaleString(undefined, { minimumFractionDigits: 2 });
+            }
+        });
+    </script>
 </body>
 
 </html>

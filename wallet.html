@@ -72,22 +72,23 @@
             class="mt-4 flex items-center justify-between bg-[#111] p-3 rounded-2xl border border-[var(--gold-dark)]/30 shadow-2xl">
             <div class="flex items-center gap-3">
                 <a href="profile.html" class="relative block">
-                    <img alt="User Avatar"
+                    <img id="user-avatar" alt="User Avatar"
                         class="w-10 h-10 rounded-full bg-slate-800 border border-[var(--gold-primary)]/40"
                         src="https://lh3.googleusercontent.com/aida-public/AB6AXuBlNTq3R5GIojDDXC0bUXtM2lhjeyK6YXQ7y8HRQWJNOolI6YUoGWofuVldEgZ_jpZsCR3fvZ0X9aYdlJjQRnoEXJPZGfiMBbQbHy0qwsUOh4TzZAA9eDVf2Yt_hx6S5d2D53yK1oZPvH5kDRIYMRrsp1aRjvGiUFfGm2ajerzK0obaPPRvdOlvvNj2kYI5PSCgYIHDJRWJ2fQ4i41rwsnNo-QAtGr30hRluSoCAN4c9w-B78YX11R3pprjJD0Mtj2xQaF8ZDvkUgI" />
                     <div class="absolute -bottom-1 -right-1 bg-green-500 border-2 border-black w-3 h-3 rounded-full">
                     </div>
                 </a>
                 <div>
-                    <h2 class="text-xs font-bold flex items-center gap-1">Crazy Developer BD <span
-                            class="material-symbols-outlined text-green-500 text-[10px] fill-1">check_circle</span></h2>
-                    <p class="text-[9px] text-white/40 tracking-wider">MEMBER ID: 5702521445</p>
+                    <h2 class="text-xs font-bold flex items-center gap-1"><span id="user-name">Crazy Developer BD</span>
+                        <span class="material-symbols-outlined text-green-500 text-[10px] fill-1">check_circle</span>
+                    </h2>
+                    <p id="user-id-display" class="text-[9px] text-white/40 tracking-wider">MEMBER ID: 5702521445</p>
                 </div>
             </div>
             <div class="text-right">
                 <div class="flex items-center justify-end gap-1">
                     <span class="material-symbols-outlined text-[var(--gold-primary)] text-sm">payments</span>
-                    <span class="text-sm font-bold text-white tracking-tight">3,223.20 BDT</span>
+                    <span id="balance-display" class="text-sm font-bold text-white tracking-tight">3,223.20 BDT</span>
                 </div>
                 <div class="text-[9px] text-white/40 font-medium uppercase tracking-widest">Available Balance</div>
             </div>
@@ -248,6 +249,27 @@
         <span class="material-symbols-outlined text-sm font-bold">diamond</span>
     </button>
 
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-database-compat.js"></script>
+    <script src="firebase-config.js"></script>
+    <script>
+        const tg = window.Telegram.WebApp;
+        const tgUser = tg.initDataUnsafe.user || { id: 'mock_user_123', first_name: 'Crazy Developer', last_name: 'BD' };
+
+        const userId = tgUser.id.toString();
+        const userRef = db.ref('users/' + userId);
+
+        userRef.on('value', (snapshot) => {
+            const data = snapshot.val();
+            if (data) {
+                if (data.name) document.getElementById('user-name').innerText = data.name;
+                if (data.photo_url) document.getElementById('user-avatar').src = data.photo_url;
+                if (data.id) document.getElementById('user-id-display').innerText = 'MEMBER ID: ' + data.id;
+                if (data.balance !== undefined) document.getElementById('balance-display').innerText = data.balance.toLocaleString(undefined, { minimumFractionDigits: 2 }) + ' BDT';
+            }
+        });
+    </script>
 </body>
 
 </html>

@@ -85,7 +85,7 @@
         </div>
         <div class="flex items-center gap-2 bg-vip-card px-3 py-1.5 rounded-full border border-gold/20">
             <span class="material-symbols-outlined text-gold text-xl">account_balance_wallet</span>
-            <span class="text-xs font-bold text-gold">3,223.20</span>
+            <span id="balance-display" class="text-xs font-bold text-gold">3,223.20</span>
         </div>
     </header>
     <main class="max-w-md mx-auto p-5 space-y-6">
@@ -115,7 +115,8 @@
             </div>
             <div
                 class="flex items-center gap-2 bg-black/40 p-2 pl-5 rounded-2xl border border-gold/10 group focus-within:border-gold/40 transition-all">
-                <span class="text-xs text-slate-500 truncate flex-1 font-mono">https://vip.hub/ref/tzsmm_v1_05x</span>
+                <span id="referral-link"
+                    class="text-xs text-slate-500 truncate flex-1 font-mono">https://vip.hub/ref/tzsmm_v1_05x</span>
                 <button
                     class="bg-gold hover:bg-gold-dark text-black px-6 py-3 rounded-xl font-black text-xs uppercase transition-all active:scale-95 shadow-[0_0_15px_rgba(212,175,55,0.3)]">
                     Copy
@@ -184,14 +185,14 @@
                     <span class="material-symbols-outlined text-gold text-xl">calendar_today</span>
                 </div>
                 <span class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Today's Bonus</span>
-                <div class="text-xl font-black text-gold">207 BTTC</div>
+                <div id="today-bonus" class="text-xl font-black text-gold">207 BTTC</div>
             </div>
             <div class="vip-card-style p-5 rounded-[2rem] flex flex-col items-center text-center">
                 <div class="w-10 h-10 rounded-full bg-gold/10 flex items-center justify-center mb-3">
                     <span class="material-symbols-outlined text-gold text-xl">military_tech</span>
                 </div>
                 <span class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Total Rewards</span>
-                <div class="text-xl font-black text-gold">416.90 BDT</div>
+                <div id="total-rewards" class="text-xl font-black text-gold">416.90 BDT</div>
             </div>
         </div>
     </main>
@@ -223,6 +224,36 @@
         </div>
     </nav>
 
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-database-compat.js"></script>
+    <script src="firebase-config.js"></script>
+    <script>
+        const tg = window.Telegram.WebApp;
+        const tgUser = tg.initDataUnsafe.user || { id: 'mock_user_123', first_name: 'Crazy Developer', last_name: 'BD' };
+
+        const userId = tgUser.id.toString();
+        const userRef = db.ref('users/' + userId);
+
+        userRef.on('value', (snapshot) => {
+            const data = snapshot.val();
+            if (data) {
+                if (data.balance !== undefined) document.getElementById('balance-display').innerText = data.balance.toLocaleString(undefined, { minimumFractionDigits: 2 });
+                if (data.referralLink) document.getElementById('referral-link').innerText = data.referralLink;
+                if (data.todayBonus !== undefined) document.getElementById('today-bonus').innerText = data.todayBonus + ' BTTC';
+                if (data.totalRewards !== undefined) document.getElementById('total-rewards').innerText = data.totalRewards.toLocaleString(undefined, { minimumFractionDigits: 2 }) + ' BDT';
+            }
+        });
+
+        // Copy referral link logic
+        document.querySelector('button.bg-gold').onclick = () => {
+            const link = document.getElementById('referral-link').innerText;
+            navigator.clipboard.writeText(link).then(() => {
+                tg.HapticFeedback.notificationOccurred('success');
+                alert('Referral link copied to clipboard!');
+            });
+        };
+    </script>
 </body>
 
 </html>

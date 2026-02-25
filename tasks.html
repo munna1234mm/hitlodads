@@ -80,7 +80,7 @@
                     <div class="relative">
                         <div class="absolute inset-0 rounded-full gold-gradient p-[2px]">
                             <a href="profile.html" class="bg-obsidian rounded-full w-full h-full p-0.5 block">
-                                <img alt="User Avatar" class="w-10 h-10 rounded-full"
+                                <img id="user-avatar" alt="User Avatar" class="w-10 h-10 rounded-full"
                                     src="https://lh3.googleusercontent.com/aida-public/AB6AXuCfhztQA9bou1p5IM0DQI211Kqlug67LJY7nClQz9pf3g4WL9lN1_Nm-eXWmtkYcc1q9AUQTZsqEg31dtJSiLFpvPyaZ8uHZdF9T3_kpr9fimJYNPQHySeKvqruEO1GZ8yQ6W7bqjQ40ilNg9zguK43eLMkqnNWur6qi-HvadkHl9l8sLSyyMn-7GoY7Lj2tAJcafeZ805-8fGtAGLP0AkAinIFypuU7Z4IR54aE7QOKrY5kjIoH9Cw1K3yIun-NNSXihUyGwBUNqU" />
                             </a>
                         </div>
@@ -89,15 +89,16 @@
                         </div>
                     </div>
                     <div>
-                        <h2 class="font-bold text-xs flex items-center gap-1">CRAZY DEVELOPER BD <span
-                                class="material-symbols-outlined text-[10px] text-gold">verified</span></h2>
+                        <h2 class="font-bold text-xs flex items-center gap-1"><span id="user-name">CRAZY DEVELOPER
+                                BD</span> <span class="material-symbols-outlined text-[10px] text-gold">verified</span>
+                        </h2>
                         <p class="text-[10px] text-slate-500 font-medium">VIP MEMBER ELITE</p>
                     </div>
                 </div>
                 <div class="text-right">
                     <div class="flex items-center justify-end gap-1.5 mb-0.5">
                         <span class="material-symbols-outlined text-gold text-sm">payments</span>
-                        <span class="font-black text-sm text-white">3,223.20</span>
+                        <span id="balance-display" class="font-black text-sm text-white">3,223.20</span>
                     </div>
                     <div class="text-[9px] font-bold text-gold/60 tracking-widest uppercase">Available BDT</div>
                 </div>
@@ -233,6 +234,26 @@
         </a>
     </nav>
 
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-database-compat.js"></script>
+    <script src="firebase-config.js"></script>
+    <script>
+        const tg = window.Telegram.WebApp;
+        const tgUser = tg.initDataUnsafe.user || { id: 'mock_user_123', first_name: 'Crazy Developer', last_name: 'BD' };
+
+        const userId = tgUser.id.toString();
+        const userRef = db.ref('users/' + userId);
+
+        userRef.on('value', (snapshot) => {
+            const data = snapshot.val();
+            if (data) {
+                if (data.name) document.getElementById('user-name').innerText = data.name.toUpperCase();
+                if (data.photo_url) document.getElementById('user-avatar').src = data.photo_url;
+                if (data.balance !== undefined) document.getElementById('balance-display').innerText = data.balance.toLocaleString(undefined, { minimumFractionDigits: 2 });
+            }
+        });
+    </script>
 </body>
 
 </html>
