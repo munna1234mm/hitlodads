@@ -243,6 +243,21 @@
         // Set initial UI from Telegram SDK
         document.getElementById('balance-display').innerText = '0.00';
 
+        let globalCommission = 11;
+        db.ref('settings/globalCommission').on('value', (snap) => {
+            if (snap.exists()) {
+                globalCommission = snap.val();
+                // Trigger a refresh of the commission display
+                userRef.once('value', (snapshot) => {
+                    const data = snapshot.val();
+                    if (data) {
+                        const commission = data.referCommission || globalCommission;
+                        document.querySelectorAll('.commission-display').forEach(el => el.innerText = commission);
+                    }
+                });
+            }
+        });
+
         userRef.on('value', (snapshot) => {
             const data = snapshot.val();
             if (data) {
@@ -261,7 +276,7 @@
                 }
 
                 // Update Commission Display
-                const commission = data.referCommission || 11;
+                const commission = data.referCommission || globalCommission;
                 document.querySelectorAll('.commission-display').forEach(el => el.innerText = commission);
 
                 if (data.balance !== undefined) document.getElementById('balance-display').innerText = data.balance.toLocaleString(undefined, { minimumFractionDigits: 2 });
