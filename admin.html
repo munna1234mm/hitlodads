@@ -13,31 +13,31 @@
     <style>
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #050505;
-            color: #fff;
+            background-color: #f8fafc;
+            color: #334155;
         }
 
-        .gold-bg {
-            background: linear-gradient(135deg, #D4AF37 0%, #F4D03F 50%, #D4AF37 100%);
+        .emerald-bg {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
         }
 
-        .gold-border {
-            border: 1px solid rgba(212, 175, 55, 0.3);
+        .emerald-border {
+            border: 1px solid rgba(16, 185, 129, 0.2);
         }
 
         .premium-card {
-            background: rgba(18, 18, 18, 0.8);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            border-radius: 24px;
+            background: #ffffff;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            border-radius: 20px;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
         }
 
         .no-scrollbar::-webkit-scrollbar {
             display: none;
         }
 
-        .vip-gold-text {
-            background: linear-gradient(180deg, #FFF 0%, #D4AF37 100%);
+        .emerald-gradient-text {
+            background: linear-gradient(135deg, #059669 0%, #10b981 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
@@ -46,86 +46,100 @@
 
 <body class="min-h-screen pb-20">
     <!-- Login Overlay -->
-    <div id="login-overlay" class="fixed inset-0 z-[100] bg-black flex items-center justify-center p-6">
-        <div class="premium-card p-8 w-full max-w-sm text-center">
-            <h2 class="text-2xl font-black mb-6 vip-gold-text">ADMIN ACCESS</h2>
-            <input type="password" id="admin-pin" placeholder="Enter Admin PIN"
-                class="w-full bg-neutral-900 border border-white/10 rounded-xl px-5 py-4 text-center text-xl tracking-[0.5em] mb-4 focus:outline-none focus:border-[var(--gold-primary)]">
-            <button onclick="checkAdmin()"
-                class="gold-bg w-full py-4 rounded-xl text-black font-black uppercase tracking-widest text-sm shadow-xl hover:scale-[1.02] transition-transform">
-                Verify Identity
-            </button>
-            <p id="error-msg" class="text-red-500 text-xs mt-4 hidden">Access Denied: Invalid Credentials</p>
+    <div id="login-overlay"
+        class="fixed inset-0 z-[100] bg-slate-900/50 backdrop-blur-sm flex items-center justify-center p-6">
+        <div class="premium-card p-10 w-full max-w-sm text-center">
+            <div
+                class="w-20 h-20 emerald-bg mx-auto rounded-3xl flex items-center justify-center mb-6 shadow-lg shadow-emerald-500/20">
+                <span class="material-symbols-outlined text-white text-4xl">admin_panel_settings</span>
+            </div>
+            <h2 class="text-2xl font-black mb-2 emerald-gradient-text uppercase tracking-tight">Admin Portal</h2>
+            <p class="text-slate-500 text-xs font-medium mb-8">AUTHENTICATION REQUIRED</p>
+
+            <div class="space-y-4">
+                <input type="password" id="admin-pin" placeholder="••••••"
+                    class="w-full bg-slate-50 border border-slate-200 rounded-xl px-5 py-4 text-center text-3xl tracking-[0.5em] focus:outline-none focus:border-emerald-500 transition-all font-mono">
+
+                <button onclick="checkAdmin()"
+                    class="emerald-bg w-full py-4 rounded-xl text-white font-black uppercase tracking-widest text-sm shadow-xl shadow-emerald-500/20 hover:translate-y-[-2px] active:translate-y-[0] transition-all">
+                    Unlock Dashboard
+                </button>
+            </div>
+            <p id="error-msg" class="text-red-500 text-[10px] font-bold mt-6 hidden uppercase tracking-widest">Invalid
+                Security Pin</p>
         </div>
     </div>
 
     <div id="admin-content" class="hidden container mx-auto px-6 py-8">
-        <header class="flex justify-between items-center mb-10">
+        <header class="flex justify-between items-center mb-10 pb-6 border-b border-slate-200">
             <div>
-                <h1 class="text-3xl font-black vip-gold-text">CONTROL CENTER</h1>
-                <p class="text-neutral-500 text-sm font-medium">Managing HitLodads Elite Network</p>
+                <h1 class="text-3xl font-black emerald-gradient-text">CONTROL CENTER</h1>
+                <p class="text-slate-500 text-sm font-medium">Managing HitLodads Network</p>
             </div>
-            <button onclick="logout()" class="p-3 rounded-full bg-white/5 border border-white/10 hover:bg-white/10">
-                <span class="material-symbols-outlined text-neutral-400">logout</span>
+            <button onclick="logout()"
+                class="p-3 rounded-full bg-white border border-slate-200 text-slate-400 hover:text-emerald-500 hover:border-emerald-500/50 transition-all shadow-sm">
+                <span class="material-symbols-outlined">logout</span>
             </button>
         </header>
 
         <!-- Stats Grid -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
-            <div class="premium-card p-6 border-l-4 border-yellow-500">
-                <p class="text-neutral-500 text-xs font-bold uppercase tracking-widest mb-2">Total Members</p>
-                <h3 id="stat-total-users" class="text-3xl font-black text-white">Loading...</h3>
+            <div class="premium-card p-6 border-l-4 border-emerald-500">
+                <p class="text-slate-500 text-[10px] font-black uppercase tracking-[0.2em] mb-2">Total Members</p>
+                <h3 id="stat-total-users" class="text-3xl font-black text-slate-800 tracking-tight">Loading...</h3>
             </div>
-            <div class="premium-card p-6 border-l-4 border-indigo-500">
-                <p class="text-neutral-500 text-xs font-bold uppercase tracking-widest mb-2">Circulating BDT</p>
-                <h3 id="stat-total-balance" class="text-3xl font-black text-white">0.00</h3>
+            <div class="premium-card p-6 border-l-4 border-emerald-400">
+                <p class="text-slate-500 text-[10px] font-black uppercase tracking-[0.2em] mb-2">Circulating BDT</p>
+                <h3 id="stat-total-balance" class="text-3xl font-black text-slate-800 tracking-tight">0.00</h3>
             </div>
-            <div class="premium-card p-6 border-l-4 border-amber-500">
-                <p class="text-neutral-500 text-xs font-bold uppercase tracking-widest mb-2">Total Tokens</p>
-                <h3 id="stat-total-tokens" class="text-3xl font-black text-white">0</h3>
+            <div class="premium-card p-6 border-l-4 border-emerald-300">
+                <p class="text-slate-500 text-[10px] font-black uppercase tracking-[0.2em] mb-2">Total Tokens</p>
+                <h3 id="stat-total-tokens" class="text-3xl font-black text-slate-800 tracking-tight">0</h3>
             </div>
         </div>
 
-        <!-- System Settings Section -->
-        <div class="premium-card p-6 mb-10 border-t-4 border-yellow-500">
-            <h2 class="text-xl font-black mb-6 uppercase tracking-tight">System Settings</h2>
+        <div class="premium-card p-6 mb-10 border-t-4 border-emerald-500 bg-emerald-50/50">
+            <div class="flex items-center gap-2 mb-6 text-emerald-600">
+                <span class="material-symbols-outlined">settings_suggest</span>
+                <h2 class="text-xl font-black uppercase tracking-tight">System Settings</h2>
+            </div>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-end">
                 <div>
-                    <label class="text-[10px] text-neutral-500 font-bold uppercase tracking-widest pl-2">Default
-                        Referral Commission (%)</label>
+                    <label class="text-[10px] text-slate-500 font-bold uppercase tracking-widest pl-2">App-wide Referral
+                        Commission (%)</label>
                     <input type="number" id="global-commission" placeholder="e.g. 15"
-                        class="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3 mt-1 focus:outline-none focus:border-yellow-500/50">
+                        class="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 mt-1 focus:outline-none focus:border-emerald-500">
                 </div>
                 <button onclick="saveGlobalSettings()"
-                    class="gold-bg py-3.5 px-8 rounded-xl text-black font-black uppercase tracking-widest text-xs shadow-xl hover:scale-[1.02] transition-transform">
-                    Save Global Changes
+                    class="emerald-bg py-3.5 px-8 rounded-xl text-white font-black uppercase tracking-widest text-xs shadow-lg shadow-emerald-500/20 hover:translate-y-[-1px] transition-all">
+                    Apply Global Settings
                 </button>
             </div>
         </div>
 
-        <!-- User Management -->
-        <div class="premium-card p-4 overflow-hidden">
-            <div class="p-4 border-b border-white/5 flex flex-col md:flex-row justify-between gap-4">
-                <h2 class="text-xl font-black">MEMBERSHIP LIST</h2>
-                <div class="relative max-w-md w-full">
+        <div class="premium-card p-0 overflow-hidden border border-slate-200">
+            <div
+                class="p-6 border-b border-slate-100 flex flex-col md:flex-row justify-between items-center gap-4 bg-slate-50/50">
+                <h2 class="text-lg font-black text-slate-800 uppercase tracking-tight">Membership Network</h2>
+                <div class="relative max-w-sm w-full">
                     <span
-                        class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-neutral-500">search</span>
+                        class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">search</span>
                     <input type="text" id="user-search" placeholder="Search by ID or Name..."
-                        class="w-full bg-black/50 border border-white/10 rounded-xl pl-12 pr-4 py-3 text-sm focus:outline-none focus:border-gold-500/50">
+                        class="w-full bg-white border border-slate-200 rounded-xl pl-12 pr-4 py-3 text-sm focus:outline-none focus:border-emerald-500 transition-all">
                 </div>
             </div>
             <div class="overflow-x-auto no-scrollbar">
                 <table class="w-full text-left">
-                    <thead class="text-[10px] text-neutral-500 font-black uppercase tracking-widest bg-white/5">
+                    <thead class="text-[10px] text-slate-400 font-black uppercase tracking-widest bg-slate-50">
                         <tr>
-                            <th class="px-6 py-4">User Details</th>
+                            <th class="px-6 py-4">Identity</th>
                             <th class="px-6 py-4">Balance (BDT)</th>
                             <th class="px-6 py-4">Tokens (BTTC)</th>
                             <th class="px-6 py-4">Status</th>
-                            <th class="px-6 py-4 text-center">Actions</th>
+                            <th class="px-6 py-4 text-center">Manage</th>
                         </tr>
                     </thead>
-                    <tbody id="user-table-body" class="divide-y divide-white/5">
+                    <tbody id="user-table-body" class="divide-y divide-slate-100">
                         <!-- Users will be loaded here -->
                     </tbody>
                 </table>
@@ -134,53 +148,54 @@
     </div>
 
     <!-- Edit User Modal -->
-    <div id="edit-modal" class="fixed inset-0 z-[110] bg-black/90 hidden flex items-center justify-center p-6">
-        <div class="premium-card p-8 w-full max-w-md relative">
-            <button onclick="closeModal()" class="absolute top-4 right-4 text-neutral-500 hover:text-white">
+    <div id="edit-modal"
+        class="fixed inset-0 z-[110] bg-slate-900/40 backdrop-blur-sm hidden flex items-center justify-center p-6">
+        <div class="premium-card p-8 w-full max-w-md relative animate-in fade-in zoom-in duration-200 shadow-2xl">
+            <button onclick="closeModal()"
+                class="absolute top-4 right-4 text-slate-400 hover:text-red-500 transition-colors">
                 <span class="material-symbols-outlined">close</span>
             </button>
-            <h3 class="text-2xl font-black mb-6 vip-gold-text">MANAGE MEMBER</h3>
+            <h3 class="text-xl font-black mb-6 text-slate-800 uppercase tracking-tight">Edit Member Profile</h3>
             <div class="space-y-4">
                 <div>
-                    <label class="text-[10px] text-neutral-500 font-bold uppercase tracking-widest pl-2">Display
+                    <label class="text-[10px] text-slate-500 font-bold uppercase tracking-widest pl-2">Display
                         Name</label>
                     <input type="text" id="edit-name"
-                        class="w-full bg-neutral-900 border border-white/10 rounded-xl px-4 py-3 mt-1">
+                        class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 mt-1 focus:outline-none focus:border-emerald-500 transition-all">
                 </div>
                 <div class="grid grid-cols-2 gap-4">
                     <div>
-                        <label class="text-[10px] text-neutral-500 font-bold uppercase tracking-widest pl-2">Balance
+                        <label class="text-[10px] text-slate-500 font-bold uppercase tracking-widest pl-2">Balance
                             (BDT)</label>
                         <input type="number" id="edit-balance"
-                            class="w-full bg-neutral-900 border border-white/10 rounded-xl px-4 py-3 mt-1">
+                            class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 mt-1 focus:outline-none focus:border-emerald-500 transition-all">
                     </div>
                     <div>
-                        <label class="text-[10px] text-neutral-500 font-bold uppercase tracking-widest pl-2">Tokens
+                        <label class="text-[10px] text-slate-500 font-bold uppercase tracking-widest pl-2">Tokens
                             (BTTC)</label>
                         <input type="number" id="edit-tokens"
-                            class="w-full bg-neutral-900 border border-white/10 rounded-xl px-4 py-3 mt-1">
+                            class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 mt-1 focus:outline-none focus:border-emerald-500 transition-all">
                     </div>
                 </div>
                 <div>
-                    <label
-                        class="text-[10px] text-neutral-500 font-bold uppercase tracking-widest pl-2">Referrals</label>
+                    <label class="text-[10px] text-slate-500 font-bold uppercase tracking-widest pl-2">Referrals</label>
                     <input type="number" id="edit-referrals"
-                        class="w-full bg-neutral-900 border border-white/10 rounded-xl px-4 py-3 mt-1">
+                        class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 mt-1 focus:outline-none focus:border-emerald-500 transition-all">
                 </div>
                 <div>
                     <label
-                        class="text-[10px] text-neutral-500 font-bold uppercase tracking-widest pl-2 font-black">Account
-                        Status</label>
+                        class="text-[10px] text-slate-500 font-bold uppercase tracking-widest pl-2 font-black">Account
+                        Access</label>
                     <select id="edit-status"
-                        class="w-full bg-neutral-900 border border-white/10 rounded-xl px-4 py-3 mt-1 text-white">
-                        <option value="active">ACTIVE</option>
-                        <option value="banned">BANNED</option>
+                        class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 mt-1 text-slate-700 font-bold uppercase text-xs focus:outline-none focus:border-emerald-500 transition-all cursor-pointer">
+                        <option value="active" class="text-emerald-500">✅ ACTIVE</option>
+                        <option value="banned" class="text-red-500">🚫 BANNED</option>
                     </select>
                 </div>
                 <input type="hidden" id="edit-userId">
                 <button onclick="saveUserChanges()"
-                    class="gold-bg w-full py-4 rounded-xl text-black font-black uppercase tracking-widest text-sm shadow-xl mt-6 hover:scale-[1.02] transition-transform">
-                    Push Force Update
+                    class="emerald-bg w-full py-4 rounded-xl text-white font-black uppercase tracking-widest text-sm shadow-xl shadow-emerald-500/20 mt-6 hover:translate-y-[-2px] active:translate-y-0 transition-all">
+                    Update Member Data
                 </button>
             </div>
         </div>
@@ -251,10 +266,30 @@
             const commission = parseInt(document.getElementById('global-commission').value);
             if (isNaN(commission)) return alert("Please enter a valid number");
 
+            const saveBtn = event.target;
+            const originalText = saveBtn.innerText;
+            saveBtn.innerText = "Synchronizing...";
+            saveBtn.disabled = true;
+
             db.ref('settings').update({
-                globalCommission: commission
+                globalCommission: commission,
+                updatedAt: firebase.database.ServerValue.TIMESTAMP
             }).then(() => {
-                alert("Global settings updated and synchronized.");
+                setTimeout(() => {
+                    saveBtn.innerText = "Successfully Updated!";
+                    saveBtn.classList.remove('emerald-bg');
+                    saveBtn.classList.add('bg-emerald-600');
+                    setTimeout(() => {
+                        saveBtn.innerText = originalText;
+                        saveBtn.classList.add('emerald-bg');
+                        saveBtn.classList.remove('bg-emerald-600');
+                        saveBtn.disabled = false;
+                    }, 2000);
+                }, 500);
+            }).catch(err => {
+                alert("Sync Error: " + err.message);
+                saveBtn.disabled = false;
+                saveBtn.innerText = originalText;
             });
         }
 
@@ -285,28 +320,28 @@
 
                 if (!filter || searchStr.includes(filter.toLowerCase())) {
                     const tr = document.createElement('tr');
-                    tr.className = "hover:bg-white/5 transition-colors group";
+                    tr.className = "hover:bg-slate-50 transition-colors group";
                     tr.innerHTML = `
                         <td class="px-6 py-4">
                             <div class="flex items-center gap-3">
-                                <img src="${user.photo_url || ''}" class="w-10 h-10 rounded-xl bg-neutral-900 border border-white/5" onerror="this.src='https://ui-avatars.com/api/?name=${user.name}&background=random'">
+                                <img src="${user.photo_url || ''}" class="w-10 h-10 rounded-xl bg-slate-100 border border-slate-200" onerror="this.src='https://ui-avatars.com/api/?name=${user.name}&background=10b981&color=fff'">
                                 <div>
-                                    <p class="text-sm font-bold text-white">${user.name}</p>
-                                    <p class="text-[10px] text-neutral-500">ID: ${uid}</p>
+                                    <p class="text-sm font-bold text-slate-800">${user.name}</p>
+                                    <p class="text-[10px] text-slate-400 font-mono tracking-tighter">${uid}</p>
                                 </div>
                             </div>
                         </td>
-                        <td class="px-6 py-4 font-bold text-sm text-indigo-400">৳ ${(user.balance || 0).toLocaleString()}</td>
-                        <td class="px-6 py-4 font-bold text-sm text-amber-400">${(user.tokens || 0).toLocaleString()} BTTC</td>
+                        <td class="px-6 py-4 font-black text-sm text-emerald-600">৳ ${(user.balance || 0).toLocaleString(undefined, { minimumFractionDigits: 2 })}</td>
+                        <td class="px-6 py-4 font-black text-sm text-indigo-500">${(user.tokens || 0).toLocaleString()} BTTC</td>
                         <td class="px-6 py-4">
                             ${user.isBanned
-                            ? `<span class="px-2 py-1 bg-red-500/10 text-red-500 text-[9px] font-black rounded-lg border border-red-500/20">BANNED</span>`
-                            : `<span class="px-2 py-1 bg-green-500/10 text-green-500 text-[9px] font-black rounded-lg border border-green-500/20">ACTIVE</span>`
+                            ? `<span class="px-2 py-1 bg-red-50 text-red-500 text-[9px] font-black rounded-lg border border-red-100 uppercase tracking-widest">Banned</span>`
+                            : `<span class="px-2 py-1 bg-emerald-50 text-emerald-600 text-[9px] font-black rounded-lg border border-emerald-100 uppercase tracking-widest">Active</span>`
                         }
                         </td>
                         <td class="px-6 py-4 text-center">
-                            <button onclick="openEditModal('${uid}')" class="p-2 rounded-lg bg-white/5 border border-white/10 hover:border-gold-500/50 hover:text-gold-500 transition-all">
-                                <span class="material-symbols-outlined text-sm">edit</span>
+                            <button onclick="openEditModal('${uid}')" class="p-2 rounded-lg bg-white border border-slate-200 text-slate-400 hover:text-emerald-500 hover:border-emerald-500/50 transition-all shadow-sm">
+                                <span class="material-symbols-outlined text-sm">edit_note</span>
                             </button>
                         </td>
                     `;
