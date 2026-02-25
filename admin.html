@@ -123,6 +123,68 @@
             </div>
         </div>
 
+        <!-- Task Management Section -->
+        <div class="premium-card p-6 mb-10 border-t-4 border-indigo-500 bg-indigo-50/10">
+            <div class="flex items-center gap-2 mb-6 text-indigo-600">
+                <span class="material-symbols-outlined">add_task</span>
+                <h2 class="text-xl font-black uppercase tracking-tight">Task Creator</h2>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 items-end mb-8">
+                <div class="md:col-span-2">
+                    <label class="text-[10px] text-slate-500 font-bold uppercase tracking-widest pl-2">Task
+                        Title</label>
+                    <input type="text" id="task-title" placeholder="e.g. Join our Telegram"
+                        class="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 mt-1 focus:outline-none focus:border-indigo-500">
+                </div>
+                <div>
+                    <label class="text-[10px] text-slate-500 font-bold uppercase tracking-widest pl-2">Task Type</label>
+                    <div class="relative">
+                        <select id="task-type"
+                            class="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 mt-1 focus:outline-none focus:border-indigo-500 appearance-none">
+                            <option value="telegram">Telegram</option>
+                            <option value="youtube">YouTube</option>
+                            <option value="web">Website Link</option>
+                            <option value="other">Other</option>
+                        </select>
+                        <span
+                            class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none">expand_more</span>
+                    </div>
+                </div>
+                <div>
+                    <label class="text-[10px] text-slate-500 font-bold uppercase tracking-widest pl-2">Reward
+                        (Tokens)</label>
+                    <input type="number" id="task-reward" placeholder="e.g. 50"
+                        class="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 mt-1 focus:outline-none focus:border-indigo-500">
+                </div>
+                <div class="md:col-span-3">
+                    <label class="text-[10px] text-slate-500 font-bold uppercase tracking-widest pl-2">Task Link</label>
+                    <input type="text" id="task-link" placeholder="https://t.me/yourchannel or https://youtube.com/..."
+                        class="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 mt-1 focus:outline-none focus:border-indigo-500">
+                </div>
+                <button onclick="addTask()"
+                    class="bg-indigo-600 py-3.5 px-8 rounded-xl text-white font-black uppercase tracking-widest text-xs shadow-lg shadow-indigo-500/20 hover:scale-[1.02] transition-all">
+                    Create Task
+                </button>
+            </div>
+
+            <div class="bg-white rounded-2xl border border-slate-100 overflow-hidden">
+                <table class="w-full text-left">
+                    <thead class="bg-slate-50 text-[10px] font-black text-slate-400 uppercase tracking-widest">
+                        <tr>
+                            <th class="px-6 py-4">Task Details</th>
+                            <th class="px-6 py-4">Type</th>
+                            <th class="px-6 py-4">Reward</th>
+                            <th class="px-6 py-4 text-center">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="task-list-body" class="divide-y divide-slate-50">
+                        <!-- Tasks will be loaded here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
         <div class="premium-card p-0 overflow-hidden border border-slate-200">
             <div
                 class="p-6 border-b border-slate-100 flex flex-col md:flex-row justify-between items-center gap-4 bg-slate-50/50">
