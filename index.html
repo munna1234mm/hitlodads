@@ -273,15 +273,19 @@
 
         // Get User Data from Telegram
         const tgUser = tg.initDataUnsafe.user || {
-            id: 'mock_user_123',
+            id: '5702521445',
             first_name: 'Crazy Developer',
             last_name: 'BD',
             username: 'crazydevbd',
-            photo_url: ''
+            photo_url: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBGL2m-Avuc-7ToaD3wp2Q3nZECNJWiIpwQsMJ2z-UZXX8XYgc1vIj7Z0JIfHO2nS2OBNRoBxl-TZphnjWyg7tallPDR-JuectX-Z_h0VNmq8qSdMX-lopLHGtH-GcXtgIs2WtSfvk-EUle-5n1Xz4v0KIGw00LqmKPZ8kHTO_hkVIn7Z49s7Hv1OappINZs2H0-DgbFWs5yyfbkSQTGZENdTOYW3z4TBvdhYtQwnTOn-Ul30Ul4--fd3CBC6Rfshtj4VFO8_Hc6VQ'
         };
 
         const userId = tgUser.id.toString();
         const userRef = db.ref('users/' + userId);
+
+        // Set initial UI from Telegram SDK
+        document.getElementById('user-name').innerText = (tgUser.first_name + ' ' + (tgUser.last_name || '')).trim();
+        if (tgUser.photo_url) document.getElementById('user-avatar').src = tgUser.photo_url;
 
         // Sync data from Firebase to UI
         userRef.on('value', (snapshot) => {
