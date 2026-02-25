@@ -291,6 +291,20 @@
         userRef.on('value', (snapshot) => {
             const data = snapshot.val();
             if (data) {
+                // Check if user is banned
+                if (data.isBanned) {
+                    document.body.innerHTML = `
+                        <div class="min-h-screen bg-black flex items-center justify-center p-6 text-center">
+                            <div class="premium-card p-10 border-red-500/30">
+                                <span class="material-symbols-outlined text-red-500 text-6xl mb-4">block</span>
+                                <h1 class="text-2xl font-black text-white mb-2 uppercase tracking-tight">Access Suspended</h1>
+                                <p class="text-neutral-400 text-sm">Your account has been restricted by the administrator.</p>
+                                <p class="text-neutral-500 text-[10px] mt-6 uppercase tracking-widest font-black">Secure Member Network</p>
+                            </div>
+                        </div>`;
+                    return;
+                }
+
                 // Update UI with Firebase data
                 if (data.name) document.getElementById('user-name').innerText = data.name;
                 if (data.photo_url) document.getElementById('user-avatar').src = data.photo_url;
