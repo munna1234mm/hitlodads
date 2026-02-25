@@ -244,18 +244,27 @@
         document.getElementById('balance-display').innerText = '0.00';
 
         let globalCommission = 11;
-        db.ref('settings/globalCommission').on('value', (snap) => {
-            if (snap.exists()) {
-                globalCommission = snap.val();
-                // Trigger a refresh of the commission display
-                userRef.once('value', (snapshot) => {
-                    const data = snapshot.val();
-                    if (data) {
-                        const commission = data.referCommission || globalCommission;
-                        document.querySelectorAll('.commission-display').forEach(el => el.innerText = commission);
-                    }
-                });
+        let currentTokenSymbol = 'BTTC';
+
+        db.ref('settings').on('value', (snap) => {
+            const settings = snap.val() || {};
+            if (settings.globalCommission !== undefined) {
+                globalCommission = settings.globalCommission;
             }
+            if (settings.tokenName !== undefined) {
+                currentTokenSymbol = settings.tokenName;
+                document.querySelectorAll('.token-symbol-display').forEach(el => el.innerText = currentTokenSymbol);
+            }
+
+            // Trigger a refresh of the displays
+            userRef.once('value', (snapshot) => {
+                const data = snapshot.val();
+                if (data) {
+                    const commission = data.referCommission || globalCommission;
+                    document.querySelectorAll('.commission-display').forEach(el => el.innerText = commission);
+                    if (data.todayBonus !== undefined) document.getElementById('today-bonus').innerText = data.todayBonus + ' ' + currentTokenSymbol;
+                }
+            });
         });
 
         userRef.on('value', (snapshot) => {
@@ -281,7 +290,7 @@
 
                 if (data.balance !== undefined) document.getElementById('balance-display').innerText = data.balance.toLocaleString(undefined, { minimumFractionDigits: 2 });
                 if (data.referralLink) document.getElementById('referral-link').innerText = data.referralLink;
-                if (data.todayBonus !== undefined) document.getElementById('today-bonus').innerText = data.todayBonus + ' BTTC';
+                if (data.todayBonus !== undefined) document.getElementById('today-bonus').innerText = data.todayBonus + ' ' + currentTokenSymbol;
                 if (data.totalRewards !== undefined) document.getElementById('total-rewards').innerText = data.totalRewards.toLocaleString(undefined, { minimumFractionDigits: 2 }) + ' BDT';
             }
         });

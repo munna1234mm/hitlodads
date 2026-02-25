@@ -287,6 +287,21 @@
         document.getElementById('user-name').innerText = (tgUser.first_name + ' ' + (tgUser.last_name || '')).trim();
         if (tgUser.photo_url) document.getElementById('user-avatar').src = tgUser.photo_url;
 
+        let currentTokenSymbol = 'BTTC';
+        db.ref('settings/tokenName').on('value', (snap) => {
+            if (snap.exists()) {
+                currentTokenSymbol = snap.val();
+                document.querySelectorAll('.token-symbol-display').forEach(el => el.innerText = currentTokenSymbol);
+                // Refresh token display if user data already exists
+                userRef.once('value', (s) => {
+                    const d = s.val();
+                    if (d && d.tokens !== undefined) {
+                        document.getElementById('tokens-display').innerText = d.tokens + ' ' + currentTokenSymbol;
+                    }
+                });
+            }
+        });
+
         // Sync data from Firebase to UI
         userRef.on('value', (snapshot) => {
             const data = snapshot.val();
@@ -309,7 +324,7 @@
                 if (data.name) document.getElementById('user-name').innerText = data.name;
                 if (data.photo_url) document.getElementById('user-avatar').src = data.photo_url;
                 if (data.balance !== undefined) document.getElementById('balance-display').innerText = data.balance.toLocaleString(undefined, { minimumFractionDigits: 2 });
-                if (data.tokens !== undefined) document.getElementById('tokens-display').innerText = data.tokens + ' BTTC';
+                if (data.tokens !== undefined) document.getElementById('tokens-display').innerText = data.tokens + ' ' + currentTokenSymbol;
                 if (data.referrals !== undefined) document.getElementById('referrals-count').innerText = data.referrals;
                 if (data.tasksCompleted !== undefined) document.getElementById('tasks-progress').innerText = `${data.tasksCompleted}/10`;
             } else {

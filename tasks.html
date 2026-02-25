@@ -254,6 +254,13 @@
         document.getElementById('user-name').innerText = (tgUser.first_name + ' ' + (tgUser.last_name || '')).trim().toUpperCase();
         if (tgUser.photo_url) document.getElementById('user-avatar').src = tgUser.photo_url;
 
+        let currentTokenSymbol = 'BTTC';
+        db.ref('settings/tokenName').on('value', (snap) => {
+            if (snap.exists()) {
+                currentTokenSymbol = snap.val();
+            }
+        });
+
         userRef.on('value', (snapshot) => {
             const data = snapshot.val();
             if (data) {

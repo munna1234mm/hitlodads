@@ -270,6 +270,14 @@
         document.getElementById('user-id-display').innerText = 'MEMBER ID: ' + userId;
         if (tgUser.photo_url) document.getElementById('user-avatar').src = tgUser.photo_url;
 
+        let currentTokenSymbol = 'BTTC';
+        db.ref('settings/tokenName').on('value', (snap) => {
+            if (snap.exists()) {
+                currentTokenSymbol = snap.val();
+                document.querySelectorAll('.token-symbol-display').forEach(el => el.innerText = currentTokenSymbol);
+            }
+        });
+
         userRef.on('value', (snapshot) => {
             const data = snapshot.val();
             if (data) {
