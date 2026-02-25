@@ -72,9 +72,9 @@
 
         <!-- Stats Grid -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
-            <div class="premium-card p-6 border-l-4 border-gold-500">
+            <div class="premium-card p-6 border-l-4 border-yellow-500">
                 <p class="text-neutral-500 text-xs font-bold uppercase tracking-widest mb-2">Total Members</p>
-                <h3 id="stat-total-users" class="text-3xl font-black text-white">0</h3>
+                <h3 id="stat-total-users" class="text-3xl font-black text-white">Loading...</h3>
             </div>
             <div class="premium-card p-6 border-l-4 border-indigo-500">
                 <p class="text-neutral-500 text-xs font-bold uppercase tracking-widest mb-2">Circulating BDT</p>
@@ -196,22 +196,37 @@
         };
 
         function loadDashboard() {
+            console.log("Initializing Dashboard...");
+            const statusIndicator = document.getElementById('stat-total-users');
+            statusIndicator.innerText = "Connecting...";
+
             db.ref('users').on('value', (snapshot) => {
+                console.log("Data received from Firebase");
                 allUsers = snapshot.val() || {};
                 updateStats();
                 renderUserTable();
+            }, (error) => {
+                console.error("Firebase Read Error:", error);
+                statusIndicator.innerText = "Error!";
+                alert("Database Error: " + error.message);
             });
         }
 
         function updateStats() {
             const users = Object.values(allUsers);
-            document.getElementById('stat-total-users').innerText = users.length;
+            const totalUsers = users.length;
 
-            const totalBalance = users.reduce((sum, u) => sum + (u.balance || 0), 0);
+            document.getElementById('stat-total-users').innerText = totalUsers;
+
+            const totalBalance = users.reduce((sum, u) => sum + (parseFloat(u.balance) || 0), 0);
             document.getElementById('stat-total-balance').innerText = totalBalance.toLocaleString(undefined, { minimumFractionDigits: 2 });
 
-            const totalTokens = users.reduce((sum, u) => sum + (u.tokens || 0), 0);
+            const totalTokens = users.reduce((sum, u) => sum + (parseInt(u.tokens) || 0), 0);
             document.getElementById('stat-total-tokens').innerText = totalTokens.toLocaleString();
+
+            if (totalUsers === 0) {
+                console.warn("No users found in the database node 'users'");
+            }
         }
 
         function renderUserTable(filter = '') {
