@@ -236,10 +236,20 @@
     <script src="firebase-config.js"></script>
     <script>
         const tg = window.Telegram.WebApp;
-        const tgUser = tg.initDataUnsafe.user || { id: 'mock_user_123', first_name: 'Crazy Developer', last_name: 'BD' };
+        const tgUser = tg.initDataUnsafe.user || {
+            id: '5702521445',
+            first_name: 'Crazy Developer',
+            last_name: 'BD',
+            photo_url: 'https://lh3.googleusercontent.com/aida-public/AB6AXuASB6uT9S4ctBktfvuyo3heaYITqTGizPnoBK762pOclVqlkcdemIsT9FiU-rmiuCKdjAS8kHWmtHEfLjTLd_9pQjPZ5QwRNn7G5rKLJAoIyTjUytwnYzmCCmORL7UOBIopTbf1o1lzJhZLm2MuskDj32hucRyU6II414j4VbCjKc6IQggLfBiEbXGt-pXWUCNu0LYctzYndGsdchYwAuG0E93iCYq25OshDVD-l7TANtb_LXvvXPtNU6qpYh9GmawcKuLc8JeSRpo'
+        };
 
         const userId = tgUser.id.toString();
         const userRef = db.ref('users/' + userId);
+
+        // Set initial UI from Telegram SDK
+        document.getElementById('user-name').innerText = (tgUser.first_name + ' ' + (tgUser.last_name || '')).trim();
+        document.getElementById('user-id-display').innerText = 'ID: ' + userId;
+        if (tgUser.photo_url) document.getElementById('user-avatar').src = tgUser.photo_url;
 
         userRef.on('value', (snapshot) => {
             const data = snapshot.val();
