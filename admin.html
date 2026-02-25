@@ -161,20 +161,11 @@
                             class="w-full bg-neutral-900 border border-white/10 rounded-xl px-4 py-3 mt-1">
                     </div>
                 </div>
-                <div class="grid grid-cols-2 gap-4">
-                    <div>
-                        <label
-                            class="text-[10px] text-neutral-500 font-bold uppercase tracking-widest pl-2">Referrals</label>
-                        <input type="number" id="edit-referrals"
-                            class="w-full bg-neutral-900 border border-white/10 rounded-xl px-4 py-3 mt-1">
-                    </div>
-                    <div>
-                        <label
-                            class="text-[10px] text-neutral-500 font-bold uppercase tracking-widest pl-2 font-black">Commission
-                            (%)</label>
-                        <input type="number" id="edit-commission"
-                            class="w-full bg-neutral-900 border border-white/10 rounded-xl px-4 py-3 mt-1">
-                    </div>
+                <div>
+                    <label
+                        class="text-[10px] text-neutral-500 font-bold uppercase tracking-widest pl-2">Referrals</label>
+                    <input type="number" id="edit-referrals"
+                        class="w-full bg-neutral-900 border border-white/10 rounded-xl px-4 py-3 mt-1">
                 </div>
                 <div>
                     <label
@@ -335,7 +326,6 @@
             document.getElementById('edit-balance').value = user.balance || 0;
             document.getElementById('edit-tokens').value = user.tokens || 0;
             document.getElementById('edit-referrals').value = user.referrals || 0;
-            document.getElementById('edit-commission').value = user.referCommission || 11;
             document.getElementById('edit-status').value = user.isBanned ? 'banned' : 'active';
 
             document.getElementById('edit-modal').classList.remove('hidden');
@@ -352,7 +342,6 @@
                 balance: parseFloat(document.getElementById('edit-balance').value),
                 tokens: parseInt(document.getElementById('edit-tokens').value),
                 referrals: parseInt(document.getElementById('edit-referrals').value),
-                referCommission: parseInt(document.getElementById('edit-commission').value) || 11,
                 isBanned: document.getElementById('edit-status').value === 'banned'
             };
 
