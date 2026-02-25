@@ -144,11 +144,30 @@
                             class="w-full bg-neutral-900 border border-white/10 rounded-xl px-4 py-3 mt-1">
                     </div>
                 </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label
+                            class="text-[10px] text-neutral-500 font-bold uppercase tracking-widest pl-2">Referrals</label>
+                        <input type="number" id="edit-referrals"
+                            class="w-full bg-neutral-900 border border-white/10 rounded-xl px-4 py-3 mt-1">
+                    </div>
+                    <div>
+                        <label
+                            class="text-[10px] text-neutral-500 font-bold uppercase tracking-widest pl-2 font-black">Commission
+                            (%)</label>
+                        <input type="number" id="edit-commission"
+                            class="w-full bg-neutral-900 border border-white/10 rounded-xl px-4 py-3 mt-1">
+                    </div>
+                </div>
                 <div>
                     <label
-                        class="text-[10px] text-neutral-500 font-bold uppercase tracking-widest pl-2">Referrals</label>
-                    <input type="number" id="edit-referrals"
-                        class="w-full bg-neutral-900 border border-white/10 rounded-xl px-4 py-3 mt-1">
+                        class="text-[10px] text-neutral-500 font-bold uppercase tracking-widest pl-2 font-black">Account
+                        Status</label>
+                    <select id="edit-status"
+                        class="w-full bg-neutral-900 border border-white/10 rounded-xl px-4 py-3 mt-1 text-white">
+                        <option value="active">ACTIVE</option>
+                        <option value="banned">BANNED</option>
+                    </select>
                 </div>
                 <input type="hidden" id="edit-userId">
                 <button onclick="saveUserChanges()"
@@ -253,7 +272,10 @@
                         <td class="px-6 py-4 font-bold text-sm text-indigo-400">৳ ${(user.balance || 0).toLocaleString()}</td>
                         <td class="px-6 py-4 font-bold text-sm text-amber-400">${(user.tokens || 0).toLocaleString()} BTTC</td>
                         <td class="px-6 py-4">
-                            <span class="px-2 py-1 bg-green-500/10 text-green-500 text-[9px] font-black rounded-lg border border-green-500/20">ACTIVE</span>
+                            ${user.isBanned
+                            ? `<span class="px-2 py-1 bg-red-500/10 text-red-500 text-[9px] font-black rounded-lg border border-red-500/20">BANNED</span>`
+                            : `<span class="px-2 py-1 bg-green-500/10 text-green-500 text-[9px] font-black rounded-lg border border-green-500/20">ACTIVE</span>`
+                        }
                         </td>
                         <td class="px-6 py-4 text-center">
                             <button onclick="openEditModal('${uid}')" class="p-2 rounded-lg bg-white/5 border border-white/10 hover:border-gold-500/50 hover:text-gold-500 transition-all">
@@ -277,6 +299,8 @@
             document.getElementById('edit-balance').value = user.balance || 0;
             document.getElementById('edit-tokens').value = user.tokens || 0;
             document.getElementById('edit-referrals').value = user.referrals || 0;
+            document.getElementById('edit-commission').value = user.referCommission || 11;
+            document.getElementById('edit-status').value = user.isBanned ? 'banned' : 'active';
 
             document.getElementById('edit-modal').classList.remove('hidden');
         }
@@ -291,7 +315,9 @@
                 name: document.getElementById('edit-name').value,
                 balance: parseFloat(document.getElementById('edit-balance').value),
                 tokens: parseInt(document.getElementById('edit-tokens').value),
-                referrals: parseInt(document.getElementById('edit-referrals').value)
+                referrals: parseInt(document.getElementById('edit-referrals').value),
+                referCommission: parseInt(document.getElementById('edit-commission').value) || 11,
+                isBanned: document.getElementById('edit-status').value === 'banned'
             };
 
             db.ref('users/' + uid).update(newData).then(() => {
