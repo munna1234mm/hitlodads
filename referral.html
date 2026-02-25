@@ -103,7 +103,8 @@
                 </h2>
                 <div class="flex flex-col items-center gap-1">
                     <p class="text-slate-400 text-sm">Invite friends and unlock</p>
-                    <span class="text-3xl font-black gold-text tracking-tight">15% COMMISSION</span>
+                    <span class="text-3xl font-black gold-text tracking-tight"><span
+                            class="commission-display">15</span>% COMMISSION</span>
                     <p class="text-slate-500 text-xs mt-2 italic">Exclusive for VIP Tier Members</p>
                 </div>
             </div>
@@ -173,8 +174,8 @@
                     </div>
                     <div>
                         <p class="text-[10px] text-gold font-bold uppercase tracking-tighter">Step 03</p>
-                        <p class="text-sm font-medium text-slate-100">Earn <span class="gold-text font-bold">15%
-                                commission</span> instantly.</p>
+                        <p class="text-sm font-medium text-slate-100">Earn <span class="gold-text font-bold"><span
+                                    class="commission-display">15</span>% commission</span> instantly.</p>
                     </div>
                 </div>
             </div>
@@ -245,6 +246,24 @@
         userRef.on('value', (snapshot) => {
             const data = snapshot.val();
             if (data) {
+                // Check if user is banned
+                if (data.isBanned) {
+                    document.body.innerHTML = `
+                        <div class="min-h-screen bg-black flex items-center justify-center p-6 text-center">
+                            <div class="premium-card p-10 border-red-500/30 bg-[#161616] rounded-[2.5rem] border border-[#D4AF37]/20">
+                                <span class="material-symbols-outlined text-red-500 text-6xl mb-4">block</span>
+                                <h1 class="text-2xl font-black text-white mb-2 uppercase tracking-tight">Access Suspended</h1>
+                                <p class="text-neutral-400 text-sm">Your account has been restricted by the administrator.</p>
+                                <p class="text-neutral-500 text-[10px] mt-6 uppercase tracking-widest font-black">Secure Member Network</p>
+                            </div>
+                        </div>`;
+                    return;
+                }
+
+                // Update Commission Display
+                const commission = data.referCommission || 11;
+                document.querySelectorAll('.commission-display').forEach(el => el.innerText = commission);
+
                 if (data.balance !== undefined) document.getElementById('balance-display').innerText = data.balance.toLocaleString(undefined, { minimumFractionDigits: 2 });
                 if (data.referralLink) document.getElementById('referral-link').innerText = data.referralLink;
                 if (data.todayBonus !== undefined) document.getElementById('today-bonus').innerText = data.todayBonus + ' BTTC';
