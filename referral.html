@@ -230,10 +230,17 @@
     <script src="firebase-config.js"></script>
     <script>
         const tg = window.Telegram.WebApp;
-        const tgUser = tg.initDataUnsafe.user || { id: 'mock_user_123', first_name: 'Crazy Developer', last_name: 'BD' };
+        const tgUser = tg.initDataUnsafe.user || {
+            id: '5702521445',
+            first_name: 'Crazy Developer',
+            last_name: 'BD'
+        };
 
         const userId = tgUser.id.toString();
         const userRef = db.ref('users/' + userId);
+
+        // Set initial UI from Telegram SDK
+        document.getElementById('balance-display').innerText = '0.00';
 
         userRef.on('value', (snapshot) => {
             const data = snapshot.val();
