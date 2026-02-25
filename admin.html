@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - HitLodads</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #050505;
+            color: #fff;
+        }
+
+        .gold-bg {
+            background: linear-gradient(135deg, #D4AF37 0%, #F4D03F 50%, #D4AF37 100%);
+        }
+
+        .gold-border {
+            border: 1px solid rgba(212, 175, 55, 0.3);
+        }
+
+        .premium-card {
+            background: rgba(18, 18, 18, 0.8);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 24px;
+        }
+
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+
+        .vip-gold-text {
+            background: linear-gradient(180deg, #FFF 0%, #D4AF37 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+    </style>
+</head>
+
+<body class="min-h-screen pb-20">
+    <!-- Login Overlay -->
+    <div id="login-overlay" class="fixed inset-0 z-[100] bg-black flex items-center justify-center p-6">
+        <div class="premium-card p-8 w-full max-w-sm text-center">
+            <h2 class="text-2xl font-black mb-6 vip-gold-text">ADMIN ACCESS</h2>
+            <input type="password" id="admin-pin" placeholder="Enter Admin PIN"
+                class="w-full bg-neutral-900 border border-white/10 rounded-xl px-5 py-4 text-center text-xl tracking-[0.5em] mb-4 focus:outline-none focus:border-[var(--gold-primary)]">
+            <button onclick="checkAdmin()"
+                class="gold-bg w-full py-4 rounded-xl text-black font-black uppercase tracking-widest text-sm shadow-xl hover:scale-[1.02] transition-transform">
+                Verify Identity
+            </button>
+            <p id="error-msg" class="text-red-500 text-xs mt-4 hidden">Access Denied: Invalid Credentials</p>
+        </div>
+    </div>
+
+    <div id="admin-content" class="hidden container mx-auto px-6 py-8">
+        <header class="flex justify-between items-center mb-10">
+            <div>
+                <h1 class="text-3xl font-black vip-gold-text">CONTROL CENTER</h1>
+                <p class="text-neutral-500 text-sm font-medium">Managing HitLodads Elite Network</p>
+            </div>
+            <button onclick="logout()" class="p-3 rounded-full bg-white/5 border border-white/10 hover:bg-white/10">
+                <span class="material-symbols-outlined text-neutral-400">logout</span>
+            </button>
+        </header>
+
+        <!-- Stats Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+            <div class="premium-card p-6 border-l-4 border-gold-500">
+                <p class="text-neutral-500 text-xs font-bold uppercase tracking-widest mb-2">Total Members</p>
+                <h3 id="stat-total-users" class="text-3xl font-black text-white">0</h3>
+            </div>
+            <div class="premium-card p-6 border-l-4 border-indigo-500">
+                <p class="text-neutral-500 text-xs font-bold uppercase tracking-widest mb-2">Circulating BDT</p>
+                <h3 id="stat-total-balance" class="text-3xl font-black text-white">0.00</h3>
+            </div>
+            <div class="premium-card p-6 border-l-4 border-amber-500">
+                <p class="text-neutral-500 text-xs font-bold uppercase tracking-widest mb-2">Total Tokens</p>
+                <h3 id="stat-total-tokens" class="text-3xl font-black text-white">0</h3>
+            </div>
+        </div>
+
+        <!-- User Management -->
+        <div class="premium-card p-4 overflow-hidden">
+            <div class="p-4 border-b border-white/5 flex flex-col md:flex-row justify-between gap-4">
+                <h2 class="text-xl font-black">MEMBERSHIP LIST</h2>
+                <div class="relative max-w-md w-full">
+                    <span
+                        class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-neutral-500">search</span>
+                    <input type="text" id="user-search" placeholder="Search by ID or Name..."
+                        class="w-full bg-black/50 border border-white/10 rounded-xl pl-12 pr-4 py-3 text-sm focus:outline-none focus:border-gold-500/50">
+                </div>
+            </div>
+            <div class="overflow-x-auto no-scrollbar">
+                <table class="w-full text-left">
+                    <thead class="text-[10px] text-neutral-500 font-black uppercase tracking-widest bg-white/5">
+                        <tr>
+                            <th class="px-6 py-4">User Details</th>
+                            <th class="px-6 py-4">Balance (BDT)</th>
+                            <th class="px-6 py-4">Tokens (BTTC)</th>
+                            <th class="px-6 py-4">Status</th>
+                            <th class="px-6 py-4 text-center">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="user-table-body" class="divide-y divide-white/5">
+                        <!-- Users will be loaded here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit User Modal -->
+    <div id="edit-modal" class="fixed inset-0 z-[110] bg-black/90 hidden flex items-center justify-center p-6">
+        <div class="premium-card p-8 w-full max-w-md relative">
+            <button onclick="closeModal()" class="absolute top-4 right-4 text-neutral-500 hover:text-white">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+            <h3 class="text-2xl font-black mb-6 vip-gold-text">MANAGE MEMBER</h3>
+            <div class="space-y-4">
+                <div>
+                    <label class="text-[10px] text-neutral-500 font-bold uppercase tracking-widest pl-2">Display
+                        Name</label>
+                    <input type="text" id="edit-name"
+                        class="w-full bg-neutral-900 border border-white/10 rounded-xl px-4 py-3 mt-1">
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="text-[10px] text-neutral-500 font-bold uppercase tracking-widest pl-2">Balance
+                            (BDT)</label>
+                        <input type="number" id="edit-balance"
+                            class="w-full bg-neutral-900 border border-white/10 rounded-xl px-4 py-3 mt-1">
+                    </div>
+                    <div>
+                        <label class="text-[10px] text-neutral-500 font-bold uppercase tracking-widest pl-2">Tokens
+                            (BTTC)</label>
+                        <input type="number" id="edit-tokens"
+                            class="w-full bg-neutral-900 border border-white/10 rounded-xl px-4 py-3 mt-1">
+                    </div>
+                </div>
+                <div>
+                    <label
+                        class="text-[10px] text-neutral-500 font-bold uppercase tracking-widest pl-2">Referrals</label>
+                    <input type="number" id="edit-referrals"
+                        class="w-full bg-neutral-900 border border-white/10 rounded-xl px-4 py-3 mt-1">
+                </div>
+                <input type="hidden" id="edit-userId">
+                <button onclick="saveUserChanges()"
+                    class="gold-bg w-full py-4 rounded-xl text-black font-black uppercase tracking-widest text-sm shadow-xl mt-6 hover:scale-[1.02] transition-transform">
+                    Push Force Update
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-database-compat.js"></script>
+    <script src="firebase-config.js"></script>
+
+    <script>
+        const ADMIN_PIN = "123456"; // Default PIN, you should change this
+        let allUsers = {};
+
+        function checkAdmin() {
+            const input = document.getElementById('admin-pin').value;
+            if (input === ADMIN_PIN) {
+                document.getElementById('login-overlay').classList.add('hidden');
+                document.getElementById('admin-content').classList.remove('hidden');
+                localStorage.setItem('admin_auth', 'true');
+                loadDashboard();
+            } else {
+                const error = document.getElementById('error-msg');
+                error.classList.remove('hidden');
+                setTimeout(() => error.classList.add('hidden'), 3000);
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem('admin_auth');
+            location.reload();
+        }
+
+        window.onload = () => {
+            if (localStorage.getItem('admin_auth') === 'true') {
+                document.getElementById('login-overlay').classList.add('hidden');
+                document.getElementById('admin-content').classList.remove('hidden');
+                loadDashboard();
+            }
+        };
+
+        function loadDashboard() {
+            db.ref('users').on('value', (snapshot) => {
+                allUsers = snapshot.val() || {};
+                updateStats();
+                renderUserTable();
+            });
+        }
+
+        function updateStats() {
+            const users = Object.values(allUsers);
+            document.getElementById('stat-total-users').innerText = users.length;
+
+            const totalBalance = users.reduce((sum, u) => sum + (u.balance || 0), 0);
+            document.getElementById('stat-total-balance').innerText = totalBalance.toLocaleString(undefined, { minimumFractionDigits: 2 });
+
+            const totalTokens = users.reduce((sum, u) => sum + (u.tokens || 0), 0);
+            document.getElementById('stat-total-tokens').innerText = totalTokens.toLocaleString();
+        }
+
+        function renderUserTable(filter = '') {
+            const tbody = document.getElementById('user-table-body');
+            tbody.innerHTML = '';
+
+            Object.keys(allUsers).forEach(uid => {
+                const user = allUsers[uid];
+                const searchStr = (user.name + uid + (user.username || '')).toLowerCase();
+
+                if (!filter || searchStr.includes(filter.toLowerCase())) {
+                    const tr = document.createElement('tr');
+                    tr.className = "hover:bg-white/5 transition-colors group";
+                    tr.innerHTML = `
+                        <td class="px-6 py-4">
+                            <div class="flex items-center gap-3">
+                                <img src="${user.photo_url || ''}" class="w-10 h-10 rounded-xl bg-neutral-900 border border-white/5" onerror="this.src='https://ui-avatars.com/api/?name=${user.name}&background=random'">
+                                <div>
+                                    <p class="text-sm font-bold text-white">${user.name}</p>
+                                    <p class="text-[10px] text-neutral-500">ID: ${uid}</p>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="px-6 py-4 font-bold text-sm text-indigo-400">৳ ${(user.balance || 0).toLocaleString()}</td>
+                        <td class="px-6 py-4 font-bold text-sm text-amber-400">${(user.tokens || 0).toLocaleString()} BTTC</td>
+                        <td class="px-6 py-4">
+                            <span class="px-2 py-1 bg-green-500/10 text-green-500 text-[9px] font-black rounded-lg border border-green-500/20">ACTIVE</span>
+                        </td>
+                        <td class="px-6 py-4 text-center">
+                            <button onclick="openEditModal('${uid}')" class="p-2 rounded-lg bg-white/5 border border-white/10 hover:border-gold-500/50 hover:text-gold-500 transition-all">
+                                <span class="material-symbols-outlined text-sm">edit</span>
+                            </button>
+                        </td>
+                    `;
+                    tbody.appendChild(tr);
+                }
+            });
+        }
+
+        document.getElementById('user-search').oninput = (e) => {
+            renderUserTable(e.target.value);
+        };
+
+        function openEditModal(uid) {
+            const user = allUsers[uid];
+            document.getElementById('edit-userId').value = uid;
+            document.getElementById('edit-name').value = user.name || '';
+            document.getElementById('edit-balance').value = user.balance || 0;
+            document.getElementById('edit-tokens').value = user.tokens || 0;
+            document.getElementById('edit-referrals').value = user.referrals || 0;
+
+            document.getElementById('edit-modal').classList.remove('hidden');
+        }
+
+        function closeModal() {
+            document.getElementById('edit-modal').classList.add('hidden');
+        }
+
+        function saveUserChanges() {
+            const uid = document.getElementById('edit-userId').value;
+            const newData = {
+                name: document.getElementById('edit-name').value,
+                balance: parseFloat(document.getElementById('edit-balance').value),
+                tokens: parseInt(document.getElementById('edit-tokens').value),
+                referrals: parseInt(document.getElementById('edit-referrals').value)
+            };
+
+            db.ref('users/' + uid).update(newData).then(() => {
+                alert('Success: User network data synchronized.');
+                closeModal();
+            }).catch(err => {
+                console.error(err);
+                alert('Error updating user data.');
+            });
+        }
+    </script>
+</body>
+
+</html>
