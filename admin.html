@@ -357,6 +357,14 @@
                                     class="w-full bg-white border-slate-200 rounded-xl px-4 py-3 focus:ring-indigo-500">
                             </div>
                             <div>
+                                <label class="text-[10px] text-slate-500 font-bold uppercase tracking-widest pl-2">Ad
+                                    Function Name (Optional)</label>
+                                <input type="text" id="ad-function-name" placeholder="show_123456"
+                                    class="w-full bg-white border-slate-200 rounded-xl px-4 py-3 focus:ring-indigo-500">
+                                <p class="text-[9px] text-slate-400 mt-1 pl-2 italic">Leave blank to auto-detect from
+                                    Tag ID</p>
+                            </div>
+                            <div>
                                 <label class="text-[10px] text-slate-500 font-bold uppercase tracking-widest pl-2">VIP
                                     Support Access Link</label>
                                 <input type="text" id="global-support-link"
@@ -450,6 +458,7 @@
                 document.getElementById('global-min-withdraw').value = settings.minWithdraw || 200;
                 document.getElementById('moneytag-script').value = settings.moneytagScript || '';
                 document.getElementById('moneytag-tag-id').value = settings.moneytagTagId || '';
+                document.getElementById('ad-function-name').value = settings.adFunctionName || '';
                 document.getElementById('global-support-link').value = settings.supportLink || '';
             });
 
@@ -642,6 +651,7 @@
                 minWithdraw: parseInt(document.getElementById('global-min-withdraw').value) || 200,
                 moneytagScript: document.getElementById('moneytag-script').value.trim(),
                 moneytagTagId: document.getElementById('moneytag-tag-id').value.trim(),
+                adFunctionName: document.getElementById('ad-function-name').value.trim(),
                 supportLink: document.getElementById('global-support-link').value.trim(),
                 updatedAt: firebase.database.ServerValue.TIMESTAMP
             };

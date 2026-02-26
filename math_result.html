@@ -154,10 +154,9 @@
 
         let score = parseInt(localStorage.getItem('lastMathScore')) || 0;
         let tokenName = 'VIP GOLD';
-        let mathReward = 0;
-        let rewardHandled = false;
         let moneytagScript = '';
         let moneytagTagId = '';
+        let adFunctionName = '';
 
         // Load settings
         db.ref('settings').on('value', (snap) => {
@@ -168,6 +167,9 @@
             }
             if (settings.mathReward !== undefined) {
                 mathReward = settings.mathReward;
+            }
+            if (settings.adFunctionName) {
+                adFunctionName = settings.adFunctionName;
             }
             if (settings.moneytagScript) {
                 moneytagScript = settings.moneytagScript;
@@ -188,8 +190,10 @@
         });
 
         function loadMoneytagScript(url, zone, sdk) {
-            // Stricter check: must contain .js and look like a URL
-            if (!url || !url.includes('.js') || (!url.startsWith('h') && !url.startsWith('//'))) return;
+            if (!url) return;
+            // Force HTTPS for protocol-relative URLs
+            if (url.startsWith('//')) url = 'https:' + url;
+            if (!url.includes('.js') || !url.startsWith('h')) return;
 
             if (document.querySelector(`script[src="${url}"]`)) return;
             const script = document.createElement('script');
@@ -201,12 +205,14 @@
         }
 
         async function showAd() {
-            // Priority 1: Use the SDK name from settings if it's a function
-            // Priority 2: Use the tag ID if it's a function
-            const settingsName = moneytagScript.match(/data-sdk=['"]([^'"]+)['"]/)?.[1];
-            const funcName = settingsName || (moneytagTagId ? `show_${moneytagTagId}` : null);
+            // Find the correct function to call
+            const sdkNameInTag = moneytagScript.match(/data-sdk=['"]([^'"]+)['"]/)?.[1];
+            const funcName = adFunctionName || sdkNameInTag || (moneytagTagId ? `show_${moneytagTagId}` : null);
 
-            if (!funcName) return true;
+            if (!funcName) {
+                console.warn("No ad function name configured.");
+                return true;
+            }
 
             // Wait up to 3 seconds for function to become available
             for (let i = 0; i < 30; i++) {
