@@ -273,7 +273,9 @@
             let url = input;
             const match = input.match(/src=['"]([^'"]+)['"]/);
             if (match) url = match[1];
-            if (!url || (!url.startsWith('h') && !url.startsWith('//'))) return;
+
+            // Stricter check: must contain .js and look like a URL
+            if (!url || !url.includes('.js') || (!url.startsWith('h') && !url.startsWith('//'))) return;
 
             if (document.querySelector(`script[src="${url}"]`)) return;
             const script = document.createElement('script');
