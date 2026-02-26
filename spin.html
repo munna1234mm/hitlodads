@@ -243,6 +243,8 @@
         let rotation = 0;
         let dailySpinLimit = 0;
         let todaySpinsUsed = 0;
+        let moneytagScript = '';
+        let moneytagTagId = '';
 
         // Load Global Settings
         db.ref('settings').on('value', (snap) => {
@@ -258,7 +260,38 @@
                 dailySpinLimit = settings.dailySpinLimit;
                 updateSpinsDisplay();
             }
+            if (settings.moneytagScript) {
+                moneytagScript = settings.moneytagScript;
+                loadMoneytagScript(moneytagScript);
+            }
+            if (settings.moneytagTagId) {
+                moneytagTagId = settings.moneytagTagId;
+            }
         });
+
+        function loadMoneytagScript(url) {
+            if (document.querySelector(`script[src="${url}"]`)) return;
+            const script = document.createElement('script');
+            script.src = url;
+            script.async = true;
+            document.head.appendChild(script);
+        }
+
+        async function showAd() {
+            if (!moneytagTagId) return true;
+            const funcName = `show_${moneytagTagId}`;
+            if (typeof window[funcName] === 'function') {
+                try {
+                    await window[funcName]();
+                    return true;
+                } catch (e) {
+                    console.error("Ad error:", e);
+                    return true; // Proceed anyway
+                }
+            }
+            console.warn("Moneytag function not found:", funcName);
+            return true;
+        }
 
         function updateSpinsDisplay() {
             document.getElementById('spins-left-display').innerText = `${Math.max(0, dailySpinLimit - todaySpinsUsed)}/${dailySpinLimit}`;
@@ -296,8 +329,12 @@
             wheel.style.transform = `rotate(${rotation}deg)`;
 
             // Wait 2 seconds for animation to complete
-            setTimeout(() => {
+            setTimeout(async () => {
                 isSpinning = false;
+
+                // Show Ad if configured
+                await showAd();
+
                 showReward();
                 updateFirebase();
             }, 2000);

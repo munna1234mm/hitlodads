@@ -156,6 +156,8 @@
         let tokenName = 'VIP GOLD';
         let mathReward = 0;
         let rewardHandled = false;
+        let moneytagScript = '';
+        let moneytagTagId = '';
 
         // Load settings
         db.ref('settings').on('value', (snap) => {
@@ -166,9 +168,53 @@
             }
             if (settings.mathReward !== undefined) {
                 mathReward = settings.mathReward;
+            }
+            if (settings.moneytagScript) {
+                moneytagScript = settings.moneytagScript;
+                loadMoneytagScript(moneytagScript);
+            }
+            if (settings.moneytagTagId) {
+                moneytagTagId = settings.moneytagTagId;
+            }
+
+            // After settings load, show ad then init
+            handleAdAndInit();
+        });
+
+        function loadMoneytagScript(url) {
+            if (document.querySelector(`script[src="${url}"]`)) return;
+            const script = document.createElement('script');
+            script.src = url;
+            script.async = true;
+            document.head.appendChild(script);
+        }
+
+        async function showAd() {
+            if (!moneytagTagId) return true;
+            const funcName = `show_${moneytagTagId}`;
+            if (typeof window[funcName] === 'function') {
+                try {
+                    await window[funcName]();
+                    return true;
+                } catch (e) {
+                    console.error("Ad error:", e);
+                    return true;
+                }
+            }
+            console.warn("Moneytag function not found:", funcName);
+            return true;
+        }
+
+        async function handleAdAndInit() {
+            if (rewardHandled) return;
+
+            // Show ad before result
+            await showAd();
+
+            if (mathReward !== undefined) {
                 initResult(mathReward);
             }
-        });
+        }
 
         function initResult(fixedReward) {
             document.getElementById('final-reward-display').innerText = `+${fixedReward}`;

@@ -127,25 +127,6 @@
                 class="material-symbols-outlined text-neutral-700 text-lg group-hover:text-[var(--gold-primary)] transition-colors">arrow_forward_ios</span>
         </a>
 
-        <!-- Official Channel Button -->
-        <a id="channel-link" href="#" target="_blank"
-            class="premium-card p-6 flex items-center justify-between relative overflow-hidden active:scale-[0.98] transition-all group mt-4">
-            <div class="absolute top-0 right-0 w-32 h-32 bg-blue-500 opacity-[0.03] blur-3xl -mr-10 -mt-10"></div>
-            <div class="flex items-center gap-4 relative z-10">
-                <div
-                    class="w-12 h-12 rounded-2xl bg-gradient-to-br from-blue-500/20 to-transparent border border-blue-500/20 flex items-center justify-center">
-                    <span class="material-symbols-outlined text-blue-400 text-3xl icon-3d"
-                        style="background: none; -webkit-text-fill-color: inherit;">campaign</span>
-                </div>
-                <div>
-                    <h3 class="font-bold text-white text-base tracking-tight">Official Channel</h3>
-                    <p class="text-[11px] text-neutral-500 mt-0.5">Stay updated with latest news</p>
-                </div>
-            </div>
-            <span
-                class="material-symbols-outlined text-neutral-700 text-lg group-hover:text-blue-400 transition-colors">arrow_forward_ios</span>
-        </a>
-
         <!-- Math Duel Button -->
         <a href="math.html"
             class="premium-card p-6 flex items-center justify-between relative overflow-hidden active:scale-[0.98] transition-all group mt-4">
@@ -242,9 +223,6 @@
                 if (settings.tokenName) {
                     currentTokenSymbol = settings.tokenName;
                     document.querySelectorAll('.token-symbol-display').forEach(el => el.innerText = currentTokenSymbol);
-                }
-                if (settings.channelLink) {
-                    document.getElementById('channel-link').href = formatTelegramLink(settings.channelLink);
                 }
             });
 

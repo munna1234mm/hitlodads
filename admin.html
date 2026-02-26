@@ -153,6 +153,24 @@
                     <input type="number" id="global-math-limit" placeholder="e.g. 10"
                         class="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 mt-1 focus:outline-none focus:border-emerald-500">
                 </div>
+                <div class="pt-4 border-t border-slate-100">
+                    <h3 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-3">Moneytag Ad Settings
+                    </h3>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="text-[10px] text-slate-500 font-bold uppercase tracking-widest pl-2">Moneytag
+                                Script URL</label>
+                            <input type="text" id="moneytag-script" placeholder="https://..."
+                                class="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 mt-1 focus:outline-none focus:border-emerald-500">
+                        </div>
+                        <div>
+                            <label class="text-[10px] text-slate-500 font-bold uppercase tracking-widest pl-2">Moneytag
+                                Tag ID (e.g. 10658732)</label>
+                            <input type="text" id="moneytag-tag-id" placeholder="10658732"
+                                class="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 mt-1 focus:outline-none focus:border-emerald-500">
+                        </div>
+                    </div>
+                </div>
                 <button onclick="saveGlobalSettings()"
                     class="emerald-bg py-3.5 px-8 rounded-xl text-white font-black uppercase tracking-widest text-xs shadow-lg shadow-emerald-500/20 hover:translate-y-[-1px] transition-all">
                     Apply Global Settings
@@ -385,6 +403,12 @@
                 if (settings.dailyMathLimit !== undefined) {
                     document.getElementById('global-math-limit').value = settings.dailyMathLimit;
                 }
+                if (settings.moneytagScript !== undefined) {
+                    document.getElementById('moneytag-script').value = settings.moneytagScript || '';
+                }
+                if (settings.moneytagTagId !== undefined) {
+                    document.getElementById('moneytag-tag-id').value = settings.moneytagTagId || '';
+                }
             });
         }
 
@@ -397,6 +421,9 @@
             const mathReward = parseInt(document.getElementById('global-math-reward').value);
             const spinLimit = parseInt(document.getElementById('global-spin-limit').value);
             const mathLimit = parseInt(document.getElementById('global-math-limit').value);
+            const moneytagScript = document.getElementById('moneytag-script').value.trim();
+            const moneytagTagId = document.getElementById('moneytag-tag-id').value.trim();
+
             if (isNaN(commission)) return alert("Please enter a valid number for commission");
             if (isNaN(spinReward)) return alert("Please enter a valid number for spin reward");
             if (isNaN(mathReward)) return alert("Please enter a valid number for math reward");
@@ -418,6 +445,8 @@
                 mathReward: mathReward,
                 dailySpinLimit: spinLimit,
                 dailyMathLimit: mathLimit,
+                moneytagScript: moneytagScript,
+                moneytagTagId: moneytagTagId,
                 updatedAt: firebase.database.ServerValue.TIMESTAMP
             }).then(() => {
                 setTimeout(() => {
