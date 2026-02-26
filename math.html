@@ -83,22 +83,6 @@
                 <p id="score-display" class="text-primary tracking-tight text-2xl font-bold leading-tight">0</p>
             </div>
         </div>
-        <!-- Glowing Timer -->
-        <div class="flex gap-4 py-8 px-8 justify-center">
-            <div class="relative group">
-                <div
-                    class="absolute inset-0 bg-primary/20 blur-xl rounded-full opacity-50 group-hover:opacity-100 transition-opacity">
-                </div>
-                <div
-                    class="relative flex h-32 w-32 items-center justify-center rounded-full border-4 border-primary bg-background-dark shadow-[0_0_20px_rgba(242,185,13,0.3)]">
-                    <div class="flex flex-col items-center">
-                        <span id="timer-display" class="text-primary text-4xl font-bold tracking-tighter">00:45</span>
-                        <span
-                            class="text-primary/60 text-[10px] uppercase font-bold tracking-[0.2em] mt-1">Seconds</span>
-                    </div>
-                </div>
-            </div>
-        </div>
         <!-- Math Problem Display -->
         <div class="px-6 py-10 flex flex-col items-center">
             <div
@@ -156,16 +140,20 @@
     <script>
         const tg = window.Telegram.WebApp;
         let score = 0;
-        let timeLeft = 45;
         let currentAnswer = 0;
         let tokenName = 'VIP GOLD';
-        let timerInterval;
+        let mathReward = 0;
 
-        // Load token name
-        db.ref('settings/tokenName').on('value', (snap) => {
-            if (snap.exists()) {
-                tokenName = snap.val();
+        // Load settings
+        db.ref('settings').on('value', (snap) => {
+            const settings = snap.val() || {};
+            if (settings.tokenName) {
+                tokenName = settings.tokenName;
                 document.querySelectorAll('.token-name').forEach(el => el.innerText = tokenName);
+            }
+            if (settings.mathReward !== undefined) {
+                mathReward = settings.mathReward;
+                document.getElementById('potential-reward').innerText = mathReward;
             }
         });
 
@@ -207,42 +195,23 @@
 
         function checkAnswer(selected) {
             if (selected === currentAnswer) {
-                score++;
                 tg.HapticFeedback.notificationOccurred('success');
-                document.getElementById('score-display').innerText = score;
-                document.getElementById('potential-reward').innerText = score * 10;
-                generateProblem();
+                // Immediately end game after 1 correct answer
+                endGame();
             } else {
                 tg.HapticFeedback.notificationOccurred('error');
-                // Could penalize time or just generate next. Let's just generate next for now.
-                generateProblem();
+                generateProblem(); // Next problem on error
             }
         }
 
-        function startTimer() {
-            timerInterval = setInterval(() => {
-                timeLeft--;
-                const mins = Math.floor(timeLeft / 60);
-                const secs = timeLeft % 60;
-                document.getElementById('timer-display').innerText =
-                    `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
-
-                if (timeLeft <= 0) {
-                    clearInterval(timerInterval);
-                    endGame();
-                }
-            }, 1000);
-        }
-
         function endGame() {
-            // Save temporary score to session or pass via URL
-            localStorage.setItem('lastMathScore', score);
+            // Setting score to 1 effectively signals a win
+            localStorage.setItem('lastMathScore', 1);
             window.location.href = 'math_result.html';
         }
 
         // Initialize
         generateProblem();
-        startTimer();
     </script>
 </body>
 
