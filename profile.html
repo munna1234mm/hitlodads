@@ -259,7 +259,17 @@
 
         db.ref('settings/supportLink').on('value', (snap) => {
             if (snap.exists() && snap.val()) {
-                document.getElementById('support-link').href = snap.val();
+                let link = snap.val().trim();
+                if (link.startsWith('@')) {
+                    link = 'https://t.me/' + link.substring(1);
+                } else if (!link.startsWith('http://') && !link.startsWith('https://')) {
+                    if (link.startsWith('t.me/')) {
+                        link = 'https://' + link;
+                    } else {
+                        link = 'https://t.me/' + link;
+                    }
+                }
+                document.getElementById('support-link').href = link;
             } else {
                 document.getElementById('support-link').href = "#";
             }
