@@ -174,11 +174,17 @@
             if (settings.moneytagScript) {
                 moneytagScript = settings.moneytagScript;
                 const matchSrc = moneytagScript.match(/src=['"]([^'"]+)['"]/);
-                const url = matchSrc ? matchSrc[1] : moneytagScript;
+                let url = matchSrc ? matchSrc[1] : (moneytagScript.includes('.js') ? moneytagScript : null);
+
                 const matchZone = moneytagScript.match(/data-zone=['"]([^'"]+)['"]/);
-                const zone = matchZone ? matchZone[1] : null;
+                const zone = matchZone ? matchZone[1] : (moneytagTagId || null);
+
                 const matchSdk = moneytagScript.match(/data-sdk=['"]([^'"]+)['"]/);
-                const sdk = matchSdk ? matchSdk[1] : null;
+                const sdk = matchSdk ? matchSdk[1] : (moneytagScript.startsWith('show_') ? moneytagScript : null);
+
+                // Fallback
+                if (!url && zone) url = 'https://libtl.com/sdk.js';
+
                 loadMoneytagScript(url, zone, sdk);
             }
             if (settings.moneytagTagId) {
