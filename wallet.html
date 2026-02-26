@@ -132,7 +132,8 @@
                         </div>
                         <div class="text-center">
                             <span class="block font-bold text-xs text-white" id="text-bkash">bKash</span>
-                            <span class="text-[9px] text-white/40">Min: 200 BDT</span>
+                            <span class="text-[9px] text-white/40">Min: <span class="min-withdraw-display">200
+                                    BDT</span></span>
                         </div>
                     </div>
                 </div>
@@ -151,8 +152,8 @@
                         <div class="text-center">
                             <span class="block font-bold text-xs text-[var(--gold-primary)]"
                                 id="text-nagad">Nagad</span>
-                            <span class="text-[9px] text-[var(--gold-secondary)] font-medium" id="subtext-nagad">Min:
-                                200 BDT</span>
+                            <span class="text-[9px] text-[var(--gold-secondary)] font-medium">Min:
+                                <span class="min-withdraw-display">200 BDT</span></span>
                         </div>
                     </div>
                 </div>
@@ -186,7 +187,7 @@
                 <div class="flex justify-between items-center mt-2 px-1">
                     <p class="text-[9px] text-white/40 uppercase font-medium">Fee: 0.00 BDT</p>
                     <p class="text-[9px] text-white/40 uppercase font-medium tracking-tight">Min: <span
-                            class="text-[var(--gold-secondary)]">200 BDT</span></p>
+                            class="min-withdraw-display text-[var(--gold-secondary)]">200 BDT</span></p>
                 </div>
             </div>
         </section>
@@ -269,10 +270,19 @@
         if (tgUser.photo_url) document.getElementById('user-avatar').src = tgUser.photo_url;
 
         let currentTokenSymbol = 'BTTC';
-        db.ref('settings/tokenName').on('value', (snap) => {
-            if (snap.exists()) {
-                currentTokenSymbol = snap.val();
+        let minWithdraw = 200;
+        let userBalance = 0;
+        let userName = 'User';
+
+        db.ref('settings').on('value', (snap) => {
+            const settings = snap.val() || {};
+            if (settings.tokenName) {
+                currentTokenSymbol = settings.tokenName;
                 document.querySelectorAll('.token-symbol-display').forEach(el => el.innerText = currentTokenSymbol);
+            }
+            if (settings.minWithdraw !== undefined) {
+                minWithdraw = settings.minWithdraw;
+                document.querySelectorAll('.min-withdraw-display').forEach(el => el.innerText = minWithdraw + ' BDT');
             }
         });
 
@@ -293,14 +303,21 @@
                     return;
                 }
 
-                if (data.name) document.getElementById('user-name').innerText = data.name;
+                if (data.name) {
+                    userName = data.name;
+                    document.getElementById('user-name').innerText = userName;
+                }
                 if (data.username) {
                     document.getElementById('user-username').innerText = '@' + data.username;
                     document.getElementById('user-username').style.display = 'block';
                 }
                 if (data.photo_url) document.getElementById('user-avatar').src = data.photo_url;
                 if (data.id) document.getElementById('user-id-display').innerText = 'MEMBER ID: ' + data.id;
-                if (data.balance !== undefined) document.getElementById('balance-display').innerText = data.balance.toLocaleString(undefined, { minimumFractionDigits: 2 }) + ' BDT';
+
+                if (data.balance !== undefined) {
+                    userBalance = data.balance;
+                    document.getElementById('balance-display').innerText = userBalance.toLocaleString(undefined, { minimumFractionDigits: 2 }) + ' BDT';
+                }
                 if (data.tokens !== undefined) {
                     document.getElementById('tokens-display').innerHTML = `${(data.tokens || 0).toLocaleString()} <span class="token-symbol-display">${currentTokenSymbol}</span>`;
                 }
@@ -358,27 +375,56 @@
                 msgEl.classList.remove('hidden');
                 return;
             }
-            if (isNaN(amt) || amt < 200) {
-                msgEl.innerText = "Minimum payout is 200 BDT.";
+            if (isNaN(amt) || amt < minWithdraw) {
+                msgEl.innerText = `Minimum payout is ${minWithdraw} BDT.`;
+                msgEl.classList.add('bg-red-500/10', 'text-red-500');
+                msgEl.classList.remove('hidden');
+                return;
+            }
+            if (amt > userBalance) {
+                msgEl.innerText = "Insufficient balance in your vault.";
                 msgEl.classList.add('bg-red-500/10', 'text-red-500');
                 msgEl.classList.remove('hidden');
                 return;
             }
 
-            // Just a visual simulation for the user for now
             const btn = document.getElementById('withdraw-btn');
             const originalHTML = btn.innerHTML;
-            btn.innerHTML = 'Processing... <span class="material-symbols-outlined text-black animate-spin text-xl">autorenew</span>';
+            btn.innerHTML = 'Submitting to Vault... <span class="material-symbols-outlined text-black animate-spin text-xl">autorenew</span>';
             btn.disabled = true;
 
-            setTimeout(() => {
+            const withdrawalData = {
+                userId: userId,
+                userName: userName,
+                amount: amt,
+                method: selectedMethod.toUpperCase(),
+                number: accNum,
+                status: 'pending',
+                timestamp: firebase.database.ServerValue.TIMESTAMP
+            };
+
+            // Process withdrawal
+            const newRequestRef = db.ref('withdrawals').push();
+            newRequestRef.set(withdrawalData).then(() => {
+                // Deduct balance
+                return userRef.update({
+                    balance: firebase.database.ServerValue.increment(-amt)
+                });
+            }).then(() => {
                 btn.innerHTML = originalHTML;
                 btn.disabled = false;
-                msgEl.innerText = `Withdrawal request for ${amt} BDT via ${selectedMethod.toUpperCase()} submitted!`;
+                msgEl.innerText = `Withdrawal request for ${amt} BDT submitted successfully!`;
                 msgEl.classList.add('bg-green-500/10', 'text-green-500');
                 msgEl.classList.remove('hidden');
                 document.getElementById('amount').value = '';
-            }, 1500);
+                tg.HapticFeedback.notificationOccurred('success');
+            }).catch(e => {
+                btn.innerHTML = originalHTML;
+                btn.disabled = false;
+                msgEl.innerText = "Error: " + e.message;
+                msgEl.classList.add('bg-red-500/10', 'text-red-500');
+                msgEl.classList.remove('hidden');
+            });
         }
     </script>
 </body>

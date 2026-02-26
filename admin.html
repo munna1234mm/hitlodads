@@ -4,324 +4,343 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Panel - HitLodads</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+    <title>VIP Emerald Admin Panel</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,typography,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
         rel="stylesheet">
-    <link rel="stylesheet"
-        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+        rel="stylesheet">
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#10b981",
+                        "secondary": "#064e3b",
+                        "background-light": "#f8fafc",
+                        "background-dark": "#0f172a",
+                    },
+                    fontFamily: {
+                        "display": ["Plus Jakarta Sans", "sans-serif"]
+                    }
+                }
+            }
+        }
+    </script>
     <style>
         body {
-            font-family: 'Inter', sans-serif;
-            background-color: #f8fafc;
-            color: #334155;
+            font-family: 'Plus Jakarta Sans', sans-serif;
         }
 
-        .emerald-bg {
+        .emerald-gradient {
             background: linear-gradient(135deg, #10b981 0%, #059669 100%);
         }
 
-        .emerald-border {
-            border: 1px solid rgba(16, 185, 129, 0.2);
-        }
-
         .premium-card {
-            background: #ffffff;
-            border: 1px solid rgba(0, 0, 0, 0.05);
-            border-radius: 20px;
-            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(16, 185, 129, 0.1);
+            border-radius: 1.5rem;
+            box-shadow: 0 10px 30px -15px rgba(0, 0, 0, 0.05);
         }
 
-        .no-scrollbar::-webkit-scrollbar {
-            display: none;
-        }
-
-        .emerald-gradient-text {
-            background: linear-gradient(135deg, #059669 0%, #10b981 100%);
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
+        .emerald-bg {
+            background-color: #10b981;
         }
     </style>
 </head>
 
-<body class="min-h-screen pb-20">
-    <!-- Login Overlay -->
-    <div id="login-overlay"
-        class="fixed inset-0 z-[100] bg-slate-900/50 backdrop-blur-sm flex items-center justify-center p-6">
-        <div class="premium-card p-10 w-full max-w-sm text-center">
-            <div
-                class="w-20 h-20 emerald-bg mx-auto rounded-3xl flex items-center justify-center mb-6 shadow-lg shadow-emerald-500/20">
-                <span class="material-symbols-outlined text-white text-4xl">admin_panel_settings</span>
+<body class="bg-background-light text-slate-800 font-display min-h-screen">
+    <div class="flex flex-col lg:flex-row min-h-screen">
+        <!-- Sidebar Navigation -->
+        <aside class="w-full lg:w-72 bg-white border-r border-slate-200 p-6 flex flex-col gap-8">
+            <div class="flex items-center gap-3">
+                <div
+                    class="size-10 emerald-gradient rounded-xl flex items-center justify-center shadow-lg shadow-emerald-500/20">
+                    <span class="material-symbols-outlined text-white font-bold">shield</span>
+                </div>
+                <div>
+                    <h1 class="text-xl font-extrabold tracking-tight text-slate-900 leading-none">VIP EMERALD</h1>
+                    <p class="text-[10px] text-primary font-bold uppercase tracking-[0.2em] mt-1">Management Portal</p>
+                </div>
             </div>
-            <h2 class="text-2xl font-black mb-2 emerald-gradient-text uppercase tracking-tight">Admin Portal</h2>
-            <p class="text-slate-500 text-xs font-medium mb-8">AUTHENTICATION REQUIRED</p>
 
-            <div class="space-y-4">
-                <input type="password" id="admin-pin" placeholder="••••••"
-                    class="w-full bg-slate-50 border border-slate-200 rounded-xl px-5 py-4 text-center text-3xl tracking-[0.5em] focus:outline-none focus:border-emerald-500 transition-all font-mono">
+            <nav class="flex flex-col gap-2">
+                <a href="#stats"
+                    class="flex items-center gap-3 px-4 py-3 rounded-xl bg-primary/5 text-primary font-bold">
+                    <span class="material-symbols-outlined text-xl">dashboard</span>
+                    Stats & Analytics
+                </a>
+                <a href="#withdrawals"
+                    class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-500 hover:bg-slate-50 hover:text-slate-900 transition-all">
+                    <span class="material-symbols-outlined text-xl">payments</span>
+                    Withdrawal Quota
+                </a>
+                <a href="#users"
+                    class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-500 hover:bg-slate-50 hover:text-slate-900 transition-all">
+                    <span class="material-symbols-outlined text-xl">group</span>
+                    User Database
+                </a>
+                <a href="#settings"
+                    class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-500 hover:bg-slate-50 hover:text-slate-900 transition-all">
+                    <span class="material-symbols-outlined text-xl">settings</span>
+                    Global Core
+                </a>
+            </nav>
 
-                <button onclick="checkAdmin()"
-                    class="emerald-bg w-full py-4 rounded-xl text-white font-black uppercase tracking-widest text-sm shadow-xl shadow-emerald-500/20 hover:translate-y-[-2px] active:translate-y-[0] transition-all">
-                    Unlock Dashboard
-                </button>
+            <div class="mt-auto p-4 rounded-2xl bg-slate-900 text-white">
+                <div class="flex items-center gap-2 mb-2">
+                    <div id="status-dot" class="size-2 rounded-full bg-emerald-500 animate-pulse"></div>
+                    <span class="text-[10px] font-bold uppercase tracking-widest text-emerald-500"
+                        id="status-text">System Live</span>
+                </div>
+                <p class="text-[11px] text-slate-400 font-medium">Firebase DB Synchronized</p>
             </div>
-            <p id="error-msg" class="text-red-500 text-[10px] font-bold mt-6 hidden uppercase tracking-widest">Invalid
-                Security Pin</p>
-        </div>
-    </div>
+        </aside>
 
-    <div id="admin-content" class="hidden container mx-auto px-6 py-8">
-        <header class="flex justify-between items-center mb-10 pb-6 border-b border-slate-200">
-            <div>
-                <h1 class="text-3xl font-black emerald-gradient-text">CONTROL CENTER</h1>
-                <p class="text-slate-500 text-sm font-medium">Managing HitLodads Network</p>
-            </div>
-            <button onclick="logout()"
-                class="p-3 rounded-full bg-white border border-slate-200 text-slate-400 hover:text-emerald-500 hover:border-emerald-500/50 transition-all shadow-sm">
-                <span class="material-symbols-outlined">logout</span>
-            </button>
-        </header>
-
-        <!-- Stats Grid -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
-            <div class="premium-card p-6 border-l-4 border-emerald-500">
-                <p class="text-slate-500 text-[10px] font-black uppercase tracking-[0.2em] mb-2">Total Members</p>
-                <h3 id="stat-total-users" class="text-3xl font-black text-slate-800 tracking-tight">Loading...</h3>
-            </div>
-            <div class="premium-card p-6 border-l-4 border-emerald-400">
-                <p class="text-slate-500 text-[10px] font-black uppercase tracking-[0.2em] mb-2">Circulating BDT</p>
-                <h3 id="stat-total-balance" class="text-3xl font-black text-slate-800 tracking-tight">0.00</h3>
-            </div>
-            <div class="premium-card p-6 border-l-4 border-emerald-300">
-                <p class="text-slate-500 text-[10px] font-black uppercase tracking-[0.2em] mb-2">Total Tokens</p>
-                <h3 id="stat-total-tokens" class="text-3xl font-black text-slate-800 tracking-tight">0</h3>
-            </div>
-        </div>
-
-        <div class="premium-card p-6 mb-10 border-t-4 border-emerald-500 bg-emerald-50/50">
-            <div class="flex items-center gap-2 mb-6 text-emerald-600">
-                <span class="material-symbols-outlined">settings_suggest</span>
-                <h2 class="text-xl font-black uppercase tracking-tight">System Settings</h2>
-            </div>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-end">
-                <div>
-                    <label class="text-[10px] text-slate-500 font-bold uppercase tracking-widest pl-2">Referral
-                        Commission (%)</label>
-                    <input type="number" id="global-commission" placeholder="e.g. 15"
-                        class="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 mt-1 focus:outline-none focus:border-emerald-500">
-                </div>
-                <div>
-                    <label class="text-[10px] text-slate-500 font-bold uppercase tracking-widest pl-2">Token Symbol
-                        (e.g. BTTC)</label>
-                    <input type="text" id="global-token-name" placeholder="BTTC"
-                        class="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 mt-1 focus:outline-none focus:border-emerald-500">
-                </div>
-                <div>
-                    <label class="text-[10px] text-slate-500 font-bold uppercase tracking-widest pl-2">Support Link
-                        (e.g. t.me/...)</label>
-                    <input type="text" id="global-support-link" placeholder="https://t.me/yourid"
-                        class="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 mt-1 focus:outline-none focus:border-emerald-500">
-                </div>
-                <div>
-                    <label class="text-[10px] text-slate-500 font-bold uppercase tracking-widest pl-2">Channel Link
-                        (e.g. t.me/...)</label>
-                    <input type="text" id="global-channel-link" placeholder="https://t.me/yourchannel"
-                        class="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 mt-1 focus:outline-none focus:border-emerald-500">
-                </div>
-                <div>
-                    <label class="text-[10px] text-slate-500 font-bold uppercase tracking-widest pl-2">Spin Reward
-                        (Tokens)</label>
-                    <input type="number" id="global-spin-reward" placeholder="e.g. 10"
-                        class="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 mt-1 focus:outline-none focus:border-emerald-500">
-                </div>
-                <div>
-                    <label class="text-[10px] text-slate-500 font-bold uppercase tracking-widest pl-2">Math Duel Reward
-                        (Tokens)</label>
-                    <input type="number" id="global-math-reward" placeholder="e.g. 100"
-                        class="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 mt-1 focus:outline-none focus:border-emerald-500">
-                </div>
-                <div>
-                    <label class="text-[10px] text-slate-500 font-bold uppercase tracking-widest pl-2">Daily Spin
-                        Limit</label>
-                    <input type="number" id="global-spin-limit" placeholder="e.g. 10"
-                        class="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 mt-1 focus:outline-none focus:border-emerald-500">
-                </div>
-                <div>
-                    <label class="text-[10px] text-slate-500 font-bold uppercase tracking-widest pl-2">Daily Math
-                        Limit</label>
-                    <input type="number" id="global-math-limit" placeholder="e.g. 10"
-                        class="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 mt-1 focus:outline-none focus:border-emerald-500">
-                </div>
-                <div class="pt-4 border-t border-slate-100">
-                    <h3 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-3">Moneytag Ad Settings
-                    </h3>
-                    <div class="space-y-4">
-                        <div>
-                            <label class="text-[10px] text-slate-500 font-bold uppercase tracking-widest pl-2">Moneytag
-                                Script URL</label>
-                            <input type="text" id="moneytag-script" placeholder="https://..."
-                                class="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 mt-1 focus:outline-none focus:border-emerald-500">
-                        </div>
-                        <div>
-                            <label class="text-[10px] text-slate-500 font-bold uppercase tracking-widest pl-2">Moneytag
-                                Tag ID (e.g. 10658732)</label>
-                            <input type="text" id="moneytag-tag-id" placeholder="10658732"
-                                class="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 mt-1 focus:outline-none focus:border-emerald-500">
-                        </div>
+        <!-- Main Content -->
+        <main class="flex-1 p-6 lg:p-10 overflow-y-auto max-h-screen no-scrollbar">
+            <!-- Stats Overview -->
+            <section id="stats" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+                <div class="premium-card p-6 border-l-4 border-emerald-500">
+                    <p class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Total Members</p>
+                    <div class="flex items-end justify-between">
+                        <h3 id="stat-total-users" class="text-4xl font-black text-slate-900">0</h3>
+                        <span class="material-symbols-outlined text-emerald-500 text-3xl opacity-20">group</span>
                     </div>
                 </div>
-                <button onclick="saveGlobalSettings()"
-                    class="emerald-bg py-3.5 px-8 rounded-xl text-white font-black uppercase tracking-widest text-xs shadow-lg shadow-emerald-500/20 hover:translate-y-[-1px] transition-all">
-                    Apply Global Settings
-                </button>
-            </div>
-        </div>
-
-        <!-- Task Management Section -->
-        <div class="premium-card p-6 mb-10 border-t-4 border-indigo-500 bg-indigo-50/10">
-            <div class="flex items-center gap-2 mb-6 text-indigo-600">
-                <span class="material-symbols-outlined">add_task</span>
-                <h2 class="text-xl font-black uppercase tracking-tight">Task Creator</h2>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 items-end mb-8">
-                <div class="md:col-span-2">
-                    <label class="text-[10px] text-slate-500 font-bold uppercase tracking-widest pl-2">Task
-                        Title</label>
-                    <input type="text" id="task-title" placeholder="e.g. Join our Telegram"
-                        class="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 mt-1 focus:outline-none focus:border-indigo-500">
+                <div class="premium-card p-6 border-l-4 border-emerald-500">
+                    <p class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Total Payouts (BDT)
+                    </p>
+                    <div class="flex items-end justify-between">
+                        <h3 id="stat-total-balance" class="text-4xl font-black text-slate-900">0.00</h3>
+                        <span class="material-symbols-outlined text-emerald-500 text-3xl opacity-20">payments</span>
+                    </div>
                 </div>
-                <div>
-                    <label class="text-[10px] text-slate-500 font-bold uppercase tracking-widest pl-2">Task Type</label>
-                    <div class="relative">
-                        <select id="task-type"
-                            class="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 mt-1 focus:outline-none focus:border-indigo-500 appearance-none">
-                            <option value="telegram">Telegram</option>
-                            <option value="youtube">YouTube</option>
-                            <option value="web">Website Link</option>
-                            <option value="other">Other</option>
-                        </select>
+                <div class="premium-card p-6 border-l-4 border-emerald-500">
+                    <p class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Total VIP Tokens</p>
+                    <div class="flex items-end justify-between">
+                        <h3 id="stat-total-tokens" class="text-4xl font-black text-slate-900">0</h3>
+                        <span class="material-symbols-outlined text-emerald-500 text-3xl opacity-20">token</span>
+                    </div>
+                </div>
+                <div class="premium-card p-6 border-l-4 border-emerald-500">
+                    <p class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Banned Entities</p>
+                    <div class="flex items-end justify-between">
+                        <h3 id="stat-banned-users" class="text-4xl font-black text-slate-900">0</h3>
+                        <span class="material-symbols-outlined text-red-500 text-3xl opacity-20">block</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Withdrawal Requests Section -->
+            <section id="withdrawals" class="mb-10">
+                <div class="flex items-center justify-between mb-6">
+                    <div class="flex items-center gap-3">
                         <span
-                            class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none">expand_more</span>
+                            class="material-symbols-outlined text-emerald-600 font-bold p-2 bg-emerald-100 rounded-xl">account_balance_wallet</span>
+                        <h2 class="text-2xl font-black uppercase tracking-tight">Withdrawal Ledger</h2>
+                    </div>
+                    <span id="payout-status"
+                        class="text-[10px] font-bold px-3 py-1 bg-slate-100 rounded-full uppercase tracking-widest text-slate-500">Processing
+                        Queue</span>
+                </div>
+
+                <div class="premium-card overflow-hidden border border-slate-200">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left">
+                            <thead class="bg-slate-50 border-b border-slate-200">
+                                <tr>
+                                    <th
+                                        class="px-6 py-4 text-[10px] font-bold uppercase tracking-widest text-slate-500">
+                                        Member</th>
+                                    <th
+                                        class="px-6 py-4 text-[10px] font-bold uppercase tracking-widest text-slate-500">
+                                        Method & Number</th>
+                                    <th
+                                        class="px-6 py-4 text-[10px] font-bold uppercase tracking-widest text-slate-500">
+                                        Amount (BDT)</th>
+                                    <th
+                                        class="px-6 py-4 text-[10px] font-bold uppercase tracking-widest text-slate-500">
+                                        Requested At</th>
+                                    <th
+                                        class="px-6 py-4 text-[10px] font-bold uppercase tracking-widest text-slate-500">
+                                        Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="withdrawal-list" class="divide-y divide-slate-100">
+                                <!-- Requests dynamically filled -->
+                                <tr>
+                                    <td colspan="5" class="px-6 py-10 text-center text-slate-400 italic">Synchronizing
+                                        ledger...</td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
-                <div>
-                    <label class="text-[10px] text-slate-500 font-bold uppercase tracking-widest pl-2">Reward
-                        (Tokens)</label>
-                    <input type="number" id="task-reward" placeholder="e.g. 50"
-                        class="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 mt-1 focus:outline-none focus:border-indigo-500">
-                </div>
-                <div class="md:col-span-3">
-                    <label class="text-[10px] text-slate-500 font-bold uppercase tracking-widest pl-2">Task Link</label>
-                    <input type="text" id="task-link" placeholder="https://t.me/yourchannel or https://youtube.com/..."
-                        class="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 mt-1 focus:outline-none focus:border-indigo-500">
-                </div>
-                <button onclick="addTask()"
-                    class="bg-indigo-600 py-3.5 px-8 rounded-xl text-white font-black uppercase tracking-widest text-xs shadow-lg shadow-indigo-500/20 hover:scale-[1.02] transition-all">
-                    Create Task
-                </button>
-            </div>
+            </section>
 
-            <div class="bg-white rounded-2xl border border-slate-100 overflow-hidden">
-                <table class="w-full text-left">
-                    <thead class="bg-slate-50 text-[10px] font-black text-slate-400 uppercase tracking-widest">
-                        <tr>
-                            <th class="px-6 py-4">Task Details</th>
-                            <th class="px-6 py-4">Type</th>
-                            <th class="px-6 py-4">Reward</th>
-                            <th class="px-6 py-4 text-center">Action</th>
-                        </tr>
-                    </thead>
-                    <tbody id="task-list-body" class="divide-y divide-slate-50">
-                        <!-- Tasks will be loaded here -->
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        <div class="premium-card p-0 overflow-hidden border border-slate-200">
-            <div
-                class="p-6 border-b border-slate-100 flex flex-col md:flex-row justify-between items-center gap-4 bg-slate-50/50">
-                <h2 class="text-lg font-black text-slate-800 uppercase tracking-tight">Membership Network</h2>
-                <div class="relative max-w-sm w-full">
-                    <span
-                        class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">search</span>
-                    <input type="text" id="user-search" placeholder="Search by ID or Name..."
-                        class="w-full bg-white border border-slate-200 rounded-xl pl-12 pr-4 py-3 text-sm focus:outline-none focus:border-emerald-500 transition-all">
-                </div>
-            </div>
-            <div class="overflow-x-auto no-scrollbar">
-                <table class="w-full text-left">
-                    <thead class="text-[10px] text-slate-400 font-black uppercase tracking-widest bg-slate-50">
-                        <tr>
-                            <th class="px-6 py-4">Identity</th>
-                            <th class="px-6 py-4">Balance (BDT)</th>
-                            <th class="px-6 py-4">Tokens (BTTC)</th>
-                            <th class="px-6 py-4">Status</th>
-                            <th class="px-6 py-4 text-center">Manage</th>
-                        </tr>
-                    </thead>
-                    <tbody id="user-table-body" class="divide-y divide-slate-100">
-                        <!-- Users will be loaded here -->
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-
-    <!-- Edit User Modal -->
-    <div id="edit-modal"
-        class="fixed inset-0 z-[110] bg-slate-900/40 backdrop-blur-sm hidden flex items-center justify-center p-6">
-        <div class="premium-card p-8 w-full max-w-md relative animate-in fade-in zoom-in duration-200 shadow-2xl">
-            <button onclick="closeModal()"
-                class="absolute top-4 right-4 text-slate-400 hover:text-red-500 transition-colors">
-                <span class="material-symbols-outlined">close</span>
-            </button>
-            <h3 class="text-xl font-black mb-6 text-slate-800 uppercase tracking-tight">Edit Member Profile</h3>
-            <div class="space-y-4">
-                <div>
-                    <label class="text-[10px] text-slate-500 font-bold uppercase tracking-widest pl-2">Display
-                        Name</label>
-                    <input type="text" id="edit-name"
-                        class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 mt-1 focus:outline-none focus:border-emerald-500 transition-all">
-                </div>
-                <div class="grid grid-cols-2 gap-4">
-                    <div>
-                        <label class="text-[10px] text-slate-500 font-bold uppercase tracking-widest pl-2">Balance
-                            (BDT)</label>
-                        <input type="number" id="edit-balance"
-                            class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 mt-1 focus:outline-none focus:border-emerald-500 transition-all">
+            <!-- Settings & Config -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
+                <!-- Global Config -->
+                <section id="settings">
+                    <div class="flex items-center gap-3 mb-6">
+                        <span
+                            class="material-symbols-outlined text-emerald-600 font-bold p-2 bg-emerald-100 rounded-xl">tune</span>
+                        <h2 class="text-2xl font-black uppercase tracking-tight text-slate-900">System Parameters</h2>
                     </div>
-                    <div>
-                        <label class="text-[10px] text-slate-500 font-bold uppercase tracking-widest pl-2">Tokens
-                            (BTTC)</label>
-                        <input type="number" id="edit-tokens"
-                            class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 mt-1 focus:outline-none focus:border-emerald-500 transition-all">
+
+                    <div class="premium-card p-8 border border-slate-200 shadow-xl">
+                        <div class="space-y-6">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div>
+                                    <label
+                                        class="text-[10px] text-slate-500 font-bold uppercase tracking-widest pl-2">System
+                                        Commission (%)</label>
+                                    <input type="number" id="global-commission"
+                                        class="w-full bg-slate-50 border-slate-200 rounded-xl px-4 py-3 focus:ring-emerald-500">
+                                </div>
+                                <div>
+                                    <label
+                                        class="text-[10px] text-slate-500 font-bold uppercase tracking-widest pl-2">Token
+                                        Identity Name</label>
+                                    <input type="text" id="global-token-name"
+                                        class="w-full bg-slate-50 border-slate-200 rounded-xl px-4 py-3 focus:ring-emerald-500">
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div>
+                                    <label
+                                        class="text-[10px] text-slate-500 font-bold uppercase tracking-widest pl-2">Spin
+                                        Yield (Tokens)</label>
+                                    <input type="number" id="global-spin-reward"
+                                        class="w-full bg-slate-50 border-slate-200 rounded-xl px-4 py-3 focus:ring-emerald-500">
+                                </div>
+                                <div>
+                                    <label
+                                        class="text-[10px] text-slate-500 font-bold uppercase tracking-widest pl-2">Math
+                                        Duel Yield (Tokens)</label>
+                                    <input type="number" id="global-math-reward"
+                                        class="w-full bg-slate-50 border-slate-200 rounded-xl px-4 py-3 focus:ring-emerald-500">
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                <div>
+                                    <label
+                                        class="text-[10px] text-slate-500 font-bold uppercase tracking-widest pl-2">Daily
+                                        Spin Quota</label>
+                                    <input type="number" id="global-spin-limit"
+                                        class="w-full bg-slate-50 border-slate-200 rounded-xl px-4 py-3 focus:ring-emerald-500">
+                                </div>
+                                <div>
+                                    <label
+                                        class="text-[10px] text-slate-500 font-bold uppercase tracking-widest pl-2">Daily
+                                        Math Quota</label>
+                                    <input type="number" id="global-math-limit"
+                                        class="w-full bg-slate-50 border-slate-200 rounded-xl px-4 py-3 focus:ring-emerald-500">
+                                </div>
+                                <div>
+                                    <label
+                                        class="text-[10px] text-slate-500 font-bold uppercase tracking-widest pl-2">Min
+                                        Withdrawal (BDT)</label>
+                                    <input type="number" id="global-min-withdraw"
+                                        class="w-full bg-slate-50 border-slate-200 rounded-xl px-4 py-3 focus:ring-emerald-500">
+                                </div>
+                            </div>
+
+                            <div class="pt-6 border-t border-slate-100 flex justify-end">
+                                <button onclick="saveGlobalSettings()"
+                                    class="emerald-gradient text-white font-bold uppercase tracking-[0.2em] text-[11px] px-8 py-4 rounded-xl shadow-lg hover:scale-[1.02] transition-all">
+                                    Commit Global Updates
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Ad Config -->
+                <section>
+                    <div class="flex items-center gap-3 mb-6">
+                        <span
+                            class="material-symbols-outlined text-indigo-600 font-bold p-2 bg-indigo-100 rounded-xl">campaign</span>
+                        <h2 class="text-2xl font-black uppercase tracking-tight text-slate-900">Revenue Stream</h2>
+                    </div>
+
+                    <div class="premium-card p-8 border border-slate-200 shadow-xl bg-indigo-50/20">
+                        <div class="space-y-6">
+                            <div>
+                                <label
+                                    class="text-[10px] text-slate-500 font-bold uppercase tracking-widest pl-2">Moneytag
+                                    Script Endpoint</label>
+                                <input type="text" id="moneytag-script"
+                                    class="w-full bg-white border-slate-200 rounded-xl px-4 py-3 focus:ring-indigo-500">
+                            </div>
+                            <div>
+                                <label
+                                    class="text-[10px] text-slate-500 font-bold uppercase tracking-widest pl-2">Moneytag
+                                    Target Tag ID</label>
+                                <input type="text" id="moneytag-tag-id"
+                                    class="w-full bg-white border-slate-200 rounded-xl px-4 py-3 focus:ring-indigo-500">
+                            </div>
+                            <div>
+                                <label class="text-[10px] text-slate-500 font-bold uppercase tracking-widest pl-2">VIP
+                                    Support Access Link</label>
+                                <input type="text" id="global-support-link"
+                                    class="w-full bg-white border-slate-200 rounded-xl px-4 py-3 focus:ring-indigo-500">
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- User Database Section -->
+            <section id="users" class="mt-16 mb-20">
+                <div class="flex items-center justify-between mb-8">
+                    <div class="flex items-center gap-3 text-slate-900">
+                        <span
+                            class="material-symbols-outlined font-bold p-2 bg-slate-100 rounded-xl">person_search</span>
+                        <h2 class="text-2xl font-black uppercase tracking-tight">Access Control</h2>
+                    </div>
+                    <div class="flex items-center bg-white border border-slate-200 rounded-xl px-4 py-2">
+                        <span class="material-symbols-outlined text-slate-400 text-sm">search</span>
+                        <input type="text" id="user-search" placeholder="Search Member ID / Name..."
+                            class="border-none focus:ring-0 text-xs w-48">
                     </div>
                 </div>
-                <div>
-                    <label class="text-[10px] text-slate-500 font-bold uppercase tracking-widest pl-2">Referrals</label>
-                    <input type="number" id="edit-referrals"
-                        class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 mt-1 focus:outline-none focus:border-emerald-500 transition-all">
+
+                <div class="premium-card overflow-hidden border border-slate-200">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left">
+                            <thead class="bg-slate-50 border-b border-slate-200">
+                                <tr>
+                                    <th
+                                        class="px-6 py-4 text-[10px] font-bold uppercase tracking-widest text-slate-500">
+                                        Identify</th>
+                                    <th
+                                        class="px-6 py-4 text-[10px] font-bold uppercase tracking-widest text-slate-500">
+                                        Fiat (BDT)</th>
+                                    <th
+                                        class="px-6 py-4 text-[10px] font-bold uppercase tracking-widest text-slate-500">
+                                        VIP Tokens</th>
+                                    <th
+                                        class="px-6 py-4 text-[10px] font-bold uppercase tracking-widest text-slate-500">
+                                        Access Key</th>
+                                    <th
+                                        class="px-6 py-4 text-[10px] font-bold uppercase tracking-widest text-slate-500">
+                                        Control</th>
+                                </tr>
+                            </thead>
+                            <tbody id="user-table-body" class="divide-y divide-slate-100">
+                                <!-- Users dynamically filled -->
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
-                <div>
-                    <label
-                        class="text-[10px] text-slate-500 font-bold uppercase tracking-widest pl-2 font-black">Account
-                        Access</label>
-                    <select id="edit-status"
-                        class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 mt-1 text-slate-700 font-bold uppercase text-xs focus:outline-none focus:border-emerald-500 transition-all cursor-pointer">
-                        <option value="active" class="text-emerald-500">✅ ACTIVE</option>
-                        <option value="banned" class="text-red-500">🚫 BANNED</option>
-                    </select>
-                </div>
-                <input type="hidden" id="edit-userId">
-                <button onclick="saveUserChanges()"
-                    class="emerald-bg w-full py-4 rounded-xl text-white font-black uppercase tracking-widest text-sm shadow-xl shadow-emerald-500/20 mt-6 hover:translate-y-[-2px] active:translate-y-0 transition-all">
-                    Update Member Data
-                </button>
-            </div>
-        </div>
+            </section>
+        </main>
     </div>
 
     <!-- Firebase SDKs -->
@@ -330,308 +349,191 @@
     <script src="firebase-config.js"></script>
 
     <script>
-        const ADMIN_PIN = "123456"; // Default PIN, you should change this
         let allUsers = {};
-
-        function checkAdmin() {
-            const input = document.getElementById('admin-pin').value;
-            if (input === ADMIN_PIN) {
-                document.getElementById('login-overlay').classList.add('hidden');
-                document.getElementById('admin-content').classList.remove('hidden');
-                localStorage.setItem('admin_auth', 'true');
-                loadDashboard();
-            } else {
-                const error = document.getElementById('error-msg');
-                error.classList.remove('hidden');
-                setTimeout(() => error.classList.add('hidden'), 3000);
-            }
-        }
-
-        function logout() {
-            localStorage.removeItem('admin_auth');
-            location.reload();
-        }
-
-        window.onload = () => {
-            if (localStorage.getItem('admin_auth') === 'true') {
-                document.getElementById('login-overlay').classList.add('hidden');
-                document.getElementById('admin-content').classList.remove('hidden');
-                loadDashboard();
-            }
-        };
+        const statusText = document.getElementById('status-text');
+        const statusDot = document.getElementById('status-dot');
 
         function loadDashboard() {
-            console.log("Initializing Dashboard...");
-            const statusIndicator = document.getElementById('stat-total-users');
-            statusIndicator.innerText = "Connecting...";
-
+            // Load users
             db.ref('users').on('value', (snapshot) => {
-                console.log("Data received from Firebase");
                 allUsers = snapshot.val() || {};
                 updateStats();
                 renderUserTable();
+                statusText.innerText = "Synchronized";
+                statusDot.classList.remove('bg-red-500');
+                statusDot.classList.add('bg-emerald-500');
             }, (error) => {
-                console.error("Firebase Read Error:", error);
-                statusIndicator.innerText = "Error!";
-                alert("Database Error: " + error.message);
+                statusText.innerText = "Sync Error";
+                statusDot.classList.add('bg-red-500');
             });
 
             // Load global settings
             db.ref('settings').on('value', (snapshot) => {
                 const settings = snapshot.val() || {};
-                if (settings.globalCommission !== undefined) {
-                    document.getElementById('global-commission').value = settings.globalCommission;
-                }
-                if (settings.tokenName !== undefined) {
-                    document.getElementById('global-token-name').value = settings.tokenName;
-                }
-                if (settings.supportLink !== undefined) {
-                    document.getElementById('global-support-link').value = settings.supportLink;
-                }
-                if (settings.channelLink !== undefined) {
-                    document.getElementById('global-channel-link').value = settings.channelLink;
-                }
-                if (settings.spinReward !== undefined) {
-                    document.getElementById('global-spin-reward').value = settings.spinReward;
-                }
-                if (settings.mathReward !== undefined) {
-                    document.getElementById('global-math-reward').value = settings.mathReward;
-                }
-                if (settings.dailySpinLimit !== undefined) {
-                    document.getElementById('global-spin-limit').value = settings.dailySpinLimit;
-                }
-                if (settings.dailyMathLimit !== undefined) {
-                    document.getElementById('global-math-limit').value = settings.dailyMathLimit;
-                }
-                if (settings.moneytagScript !== undefined) {
-                    document.getElementById('moneytag-script').value = settings.moneytagScript || '';
-                }
-                if (settings.moneytagTagId !== undefined) {
-                    document.getElementById('moneytag-tag-id').value = settings.moneytagTagId || '';
-                }
+                document.getElementById('global-commission').value = settings.globalCommission || 0;
+                document.getElementById('global-token-name').value = settings.tokenName || '';
+                document.getElementById('global-spin-reward').value = settings.spinReward || 0;
+                document.getElementById('global-math-reward').value = settings.mathReward || 0;
+                document.getElementById('global-spin-limit').value = settings.dailySpinLimit || 0;
+                document.getElementById('global-math-limit').value = settings.dailyMathLimit || 0;
+                document.getElementById('global-min-withdraw').value = settings.minWithdraw || 200;
+                document.getElementById('moneytag-script').value = settings.moneytagScript || '';
+                document.getElementById('moneytag-tag-id').value = settings.moneytagTagId || '';
+                document.getElementById('global-support-link').value = settings.supportLink || '';
             });
-        }
 
-        function saveGlobalSettings() {
-            const commission = parseInt(document.getElementById('global-commission').value);
-            const tokenName = document.getElementById('global-token-name').value.trim();
-            const supportLink = document.getElementById('global-support-link').value.trim();
-            const channelLink = document.getElementById('global-channel-link').value.trim();
-            const spinReward = parseInt(document.getElementById('global-spin-reward').value);
-            const mathReward = parseInt(document.getElementById('global-math-reward').value);
-            const spinLimit = parseInt(document.getElementById('global-spin-limit').value);
-            const mathLimit = parseInt(document.getElementById('global-math-limit').value);
-            const moneytagScript = document.getElementById('moneytag-script').value.trim();
-            const moneytagTagId = document.getElementById('moneytag-tag-id').value.trim();
-
-            if (isNaN(commission)) return alert("Please enter a valid number for commission");
-            if (isNaN(spinReward)) return alert("Please enter a valid number for spin reward");
-            if (isNaN(mathReward)) return alert("Please enter a valid number for math reward");
-            if (isNaN(spinLimit)) return alert("Please enter a valid number for spin limit");
-            if (isNaN(mathLimit)) return alert("Please enter a valid number for math limit");
-            if (!tokenName) return alert("Please enter a token name");
-
-            const saveBtn = event.target;
-            const originalText = saveBtn.innerText;
-            saveBtn.innerText = "Synchronizing...";
-            saveBtn.disabled = true;
-
-            db.ref('settings').update({
-                globalCommission: commission,
-                tokenName: tokenName,
-                supportLink: supportLink,
-                channelLink: channelLink,
-                spinReward: spinReward,
-                mathReward: mathReward,
-                dailySpinLimit: spinLimit,
-                dailyMathLimit: mathLimit,
-                moneytagScript: moneytagScript,
-                moneytagTagId: moneytagTagId,
-                updatedAt: firebase.database.ServerValue.TIMESTAMP
-            }).then(() => {
-                setTimeout(() => {
-                    saveBtn.innerText = "Successfully Updated!";
-                    saveBtn.classList.remove('emerald-bg');
-                    saveBtn.classList.add('bg-emerald-600');
-                    setTimeout(() => {
-                        saveBtn.innerText = originalText;
-                        saveBtn.classList.add('emerald-bg');
-                        saveBtn.classList.remove('bg-emerald-600');
-                        saveBtn.disabled = false;
-                    }, 2000);
-                }, 500);
-            }).catch(err => {
-                alert("Sync Error: " + err.message);
-                saveBtn.disabled = false;
-                saveBtn.innerText = originalText;
+            // Load withdrawals
+            db.ref('withdrawals').on('value', (snapshot) => {
+                const requests = snapshot.val() || {};
+                renderWithdrawals(requests);
             });
         }
 
         function updateStats() {
-            const users = Object.values(allUsers);
-            const totalUsers = users.length;
+            let totalUsers = Object.keys(allUsers).length;
+            let totalBalance = 0;
+            let totalTokens = 0;
+            let bannedUsers = 0;
+
+            Object.values(allUsers).forEach(u => {
+                totalBalance += (u.balance || 0);
+                totalTokens += (u.tokens || 0);
+                if (u.isBanned) bannedUsers++;
+            });
 
             document.getElementById('stat-total-users').innerText = totalUsers;
-
-            const totalBalance = users.reduce((sum, u) => sum + (parseFloat(u.balance) || 0), 0);
             document.getElementById('stat-total-balance').innerText = totalBalance.toLocaleString(undefined, { minimumFractionDigits: 2 });
-
-            const totalTokens = users.reduce((sum, u) => sum + (parseInt(u.tokens) || 0), 0);
             document.getElementById('stat-total-tokens').innerText = totalTokens.toLocaleString();
-
-            if (totalUsers === 0) {
-                console.warn("No users found in the database node 'users'");
-            }
+            document.getElementById('stat-banned-users').innerText = bannedUsers;
         }
 
-        function renderUserTable(filter = '') {
-            const tbody = document.getElementById('user-table-body');
-            tbody.innerHTML = '';
+        function renderUserTable() {
+            const body = document.getElementById('user-table-body');
+            body.innerHTML = '';
+            const query = document.getElementById('user-search').value.toLowerCase();
 
-            Object.keys(allUsers).forEach(uid => {
-                const user = allUsers[uid];
-                const searchStr = (user.name + uid + (user.username || '')).toLowerCase();
+            Object.entries(allUsers).forEach(([uid, u]) => {
+                if (query && !u.id?.toString().includes(query) && !u.name?.toLowerCase().includes(query)) return;
 
-                if (!filter || searchStr.includes(filter.toLowerCase())) {
-                    const tr = document.createElement('tr');
-                    tr.className = "hover:bg-slate-50 transition-colors group";
-                    tr.innerHTML = `
-                        <td class="px-6 py-4">
-                            <div class="flex items-center gap-3">
-                                <img src="${user.photo_url || ''}" class="w-10 h-10 rounded-xl bg-slate-100 border border-slate-200" onerror="this.src='https://ui-avatars.com/api/?name=${user.name}&background=10b981&color=fff'">
-                                <div>
-                                    <p class="text-sm font-bold text-slate-800">${user.name}</p>
-                                    <p class="text-[10px] text-slate-400 font-mono tracking-tighter">${uid}</p>
-                                </div>
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td class="px-6 py-4">
+                        <div class="flex items-center gap-3">
+                            <img src="${u.photo_url || 'https://via.placeholder.com/40'}" class="size-10 rounded-full border-2 border-slate-100">
+                            <div>
+                                <p class="text-sm font-bold text-slate-900 leading-tight">${u.name || 'Anonymous'}</p>
+                                <p class="text-[10px] text-slate-400 font-medium">ID: ${u.id || uid}</p>
                             </div>
-                        </td>
-                        <td class="px-6 py-4 font-black text-sm text-emerald-600">৳ ${(user.balance || 0).toLocaleString(undefined, { minimumFractionDigits: 2 })}</td>
-                        <td class="px-6 py-4 font-black text-sm text-indigo-500">${(user.tokens || 0).toLocaleString()} BTTC</td>
-                        <td class="px-6 py-4">
-                            ${user.isBanned
-                            ? `<span class="px-2 py-1 bg-red-50 text-red-500 text-[9px] font-black rounded-lg border border-red-100 uppercase tracking-widest">Banned</span>`
-                            : `<span class="px-2 py-1 bg-emerald-50 text-emerald-600 text-[9px] font-black rounded-lg border border-emerald-100 uppercase tracking-widest">Active</span>`
-                        }
-                        </td>
-                        <td class="px-6 py-4 text-center">
-                            <button onclick="openEditModal('${uid}')" class="p-2 rounded-lg bg-white border border-slate-200 text-slate-400 hover:text-emerald-500 hover:border-emerald-500/50 transition-all shadow-sm">
-                                <span class="material-symbols-outlined text-sm">edit_note</span>
+                        </div>
+                    </td>
+                    <td class="px-6 py-4 font-bold text-slate-700">${(u.balance || 0).toFixed(2)}</td>
+                    <td class="px-6 py-4 font-bold text-primary">${(u.tokens || 0).toLocaleString()}</td>
+                    <td class="px-6 py-4">
+                        <span class="text-[9px] font-black p-1 bg-slate-100 rounded border border-slate-200 uppercase">${u.isBanned ? 'LOCKED' : 'ACTIVE'}</span>
+                    </td>
+                    <td class="px-6 py-4">
+                        <div class="flex gap-2">
+                            <button onclick="toggleBan('${uid}', ${u.isBanned})" class="p-2 ${u.isBanned ? 'text-emerald-500 bg-emerald-50' : 'text-red-500 bg-red-50'} rounded-lg transition-all">
+                                <span class="material-symbols-outlined text-xl">${u.isBanned ? 'lock_open' : 'lock_reset'}</span>
                             </button>
-                        </td>
-                    `;
-                    tbody.appendChild(tr);
-                }
+                            <button onclick="editBalance('${uid}')" class="p-2 text-indigo-500 bg-indigo-50 rounded-lg">
+                                <span class="material-symbols-outlined text-xl">payments</span>
+                            </button>
+                        </div>
+                    </td>
+                `;
+                body.appendChild(row);
             });
         }
 
-        document.getElementById('user-search').oninput = (e) => {
-            renderUserTable(e.target.value);
-        };
+        function renderWithdrawals(requests) {
+            const body = document.getElementById('withdrawal-list');
+            body.innerHTML = '';
 
-        function openEditModal(uid) {
-            const user = allUsers[uid];
-            document.getElementById('edit-userId').value = uid;
-            document.getElementById('edit-name').value = user.name || '';
-            document.getElementById('edit-balance').value = user.balance || 0;
-            document.getElementById('edit-tokens').value = user.tokens || 0;
-            document.getElementById('edit-referrals').value = user.referrals || 0;
-            document.getElementById('edit-status').value = user.isBanned ? 'banned' : 'active';
+            const entries = Object.entries(requests).reverse(); // Newest first
 
-            document.getElementById('edit-modal').classList.remove('hidden');
+            if (entries.length === 0) {
+                body.innerHTML = '<tr><td colspan="5" class="px-6 py-10 text-center text-slate-400 italic">No pending requests found.</td></tr>';
+                return;
+            }
+
+            entries.forEach(([id, req]) => {
+                const row = document.createElement('tr');
+                const statusColor = req.status === 'approved' ? 'text-emerald-500 bg-emerald-50' : (req.status === 'rejected' ? 'text-red-500 bg-red-50' : 'text-amber-500 bg-amber-50');
+
+                row.className = req.status !== 'pending' ? 'opacity-50 grayscale' : '';
+                row.innerHTML = `
+                    <td class="px-6 py-4">
+                        <div>
+                            <p class="text-[11px] font-bold text-slate-900">${req.userName}</p>
+                            <p class="text-[9px] text-slate-400">UID: ${req.userId}</p>
+                        </div>
+                    </td>
+                    <td class="px-6 py-4">
+                        <div class="flex items-center gap-2">
+                             <span class="px-2 py-0.5 rounded-md bg-slate-100 text-[10px] font-bold uppercase border border-slate-200">${req.method}</span>
+                             <p class="text-xs font-bold text-slate-700 font-mono tracking-tight">${req.number}</p>
+                        </div>
+                    </td>
+                    <td class="px-6 py-4 font-black">${req.amount.toFixed(2)}</td>
+                    <td class="px-6 py-4 text-[10px] text-slate-500">${new Date(req.timestamp).toLocaleString()}</td>
+                    <td class="px-6 py-4">
+                        ${req.status === 'pending' ? `
+                            <div class="flex gap-2">
+                                <button onclick="updateWithdrawal('${id}', 'approved')" class="px-3 py-1.5 bg-emerald-500 text-white rounded-lg text-[10px] font-bold uppercase shadow-sm shadow-emerald-200">Approve</button>
+                                <button onclick="updateWithdrawal('${id}', 'rejected')" class="px-3 py-1.5 bg-red-500 text-white rounded-lg text-[10px] font-bold uppercase shadow-sm shadow-red-200">Reject</button>
+                            </div>
+                        ` : `<span class="px-3 py-1.5 rounded-md text-[10px] font-black uppercase ${statusColor}">${req.status}</span>`}
+                    </td>
+                `;
+                body.appendChild(row);
+            });
         }
 
-        function closeModal() {
-            document.getElementById('edit-modal').classList.add('hidden');
+        async function updateWithdrawal(id, status) {
+            if (!confirm(`Mark this request as ${status.toUpperCase()}?`)) return;
+            try {
+                await db.ref(`withdrawals/${id}`).update({ status: status });
+            } catch (e) {
+                alert("Error: " + e.message);
+            }
         }
 
-        function saveUserChanges() {
-            const uid = document.getElementById('edit-userId').value;
-            const newData = {
-                name: document.getElementById('edit-name').value,
-                balance: parseFloat(document.getElementById('edit-balance').value),
-                tokens: parseInt(document.getElementById('edit-tokens').value),
-                referrals: parseInt(document.getElementById('edit-referrals').value),
-                isBanned: document.getElementById('edit-status').value === 'banned'
+        function saveGlobalSettings() {
+            const settings = {
+                globalCommission: parseInt(document.getElementById('global-commission').value) || 0,
+                tokenName: document.getElementById('global-token-name').value.trim(),
+                spinReward: parseInt(document.getElementById('global-spin-reward').value) || 0,
+                mathReward: parseInt(document.getElementById('global-math-reward').value) || 0,
+                dailySpinLimit: parseInt(document.getElementById('global-spin-limit').value) || 0,
+                dailyMathLimit: parseInt(document.getElementById('global-math-limit').value) || 0,
+                minWithdraw: parseInt(document.getElementById('global-min-withdraw').value) || 200,
+                moneytagScript: document.getElementById('moneytag-script').value.trim(),
+                moneytagTagId: document.getElementById('moneytag-tag-id').value.trim(),
+                supportLink: document.getElementById('global-support-link').value.trim(),
+                updatedAt: firebase.database.ServerValue.TIMESTAMP
             };
 
-            db.ref('users/' + uid).update(newData).then(() => {
-                alert('Success: User network data synchronized.');
-                closeModal();
-            }).catch(err => {
-                console.error(err);
-                alert('Error updating user data.');
+            db.ref('settings').update(settings).then(() => {
+                alert("Core System Updated Successfully!");
             });
         }
 
-        // Task Management Logic
-        function addTask() {
-            const title = document.getElementById('task-title').value.trim();
-            const type = document.getElementById('task-type').value;
-            const reward = parseInt(document.getElementById('task-reward').value);
-            const link = document.getElementById('task-link').value.trim();
-
-            if (!title || !link || isNaN(reward)) {
-                return alert("Please fill all task fields correctly.");
-            }
-
-            const newTaskRef = db.ref('tasks').push();
-            newTaskRef.set({
-                id: newTaskRef.key,
-                title,
-                type,
-                reward,
-                link,
-                createdAt: firebase.database.ServerValue.TIMESTAMP
-            }).then(() => {
-                alert("Task created successfully!");
-                document.getElementById('task-title').value = '';
-                document.getElementById('task-link').value = '';
-                document.getElementById('task-reward').value = '';
-            });
+        function toggleBan(uid, current) {
+            if (!confirm(`Confirm ${current ? 'UNBAN' : 'BAN'} for user ${uid}?`)) return;
+            db.ref(`users/${uid}`).update({ isBanned: !current });
         }
 
-        function deleteTask(taskId) {
-            if (confirm("Are you sure you want to delete this task?")) {
-                db.ref('tasks/' + taskId).remove();
+        function editBalance(uid) {
+            const amt = prompt("Enter new Balance for this user (BDT):", allUsers[uid].balance || 0);
+            if (amt !== null) {
+                db.ref(`users/${uid}`).update({ balance: parseFloat(amt) });
             }
         }
 
-        function loadTasks() {
-            db.ref('tasks').on('value', (snapshot) => {
-                const tasks = snapshot.val();
-                const tbody = document.getElementById('task-list-body');
-                tbody.innerHTML = '';
+        document.getElementById('user-search').oninput = renderUserTable;
 
-                if (tasks) {
-                    Object.keys(tasks).forEach(id => {
-                        const task = tasks[id];
-                        const tr = document.createElement('tr');
-                        tr.className = "hover:bg-slate-50 transition-colors";
-                        tr.innerHTML = `
-                            <td class="px-6 py-4">
-                                <p class="text-sm font-bold text-slate-800">${task.title}</p>
-                                <p class="text-[10px] text-slate-400 font-mono truncate max-w-[200px]">${task.link}</p>
-                            </td>
-                            <td class="px-6 py-4">
-                                <span class="px-2 py-1 bg-indigo-50 text-indigo-600 text-[9px] font-black rounded-lg border border-indigo-100 uppercase tracking-widest">${task.type}</span>
-                            </td>
-                            <td class="px-6 py-4 font-black text-sm text-emerald-600">+${task.reward} Tokens</td>
-                            <td class="px-6 py-4 text-center">
-                                <button onclick="deleteTask('${id}')" class="p-2 rounded-lg text-red-400 hover:text-red-500 hover:bg-red-50 transition-all">
-                                    <span class="material-symbols-outlined text-sm">delete</span>
-                                </button>
-                            </td>
-                        `;
-                        tbody.appendChild(tr);
-                    });
-                } else {
-                    tbody.innerHTML = '<tr><td colspan="4" class="px-6 py-10 text-center text-slate-400 text-xs italic">No tasks created yet.</td></tr>';
-                }
-            });
-        }
-
-        // Initialize Task Loading
-        loadTasks();
+        loadDashboard();
     </script>
 </body>
 
