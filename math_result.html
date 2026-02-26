@@ -171,7 +171,13 @@
             }
             if (settings.moneytagScript) {
                 moneytagScript = settings.moneytagScript;
-                loadMoneytagScript(moneytagScript);
+                const matchSrc = moneytagScript.match(/src=['"]([^'"]+)['"]/);
+                const url = matchSrc ? matchSrc[1] : moneytagScript;
+                const matchZone = moneytagScript.match(/data-zone=['"]([^'"]+)['"]/);
+                const zone = matchZone ? matchZone[1] : null;
+                const matchSdk = moneytagScript.match(/data-sdk=['"]([^'"]+)['"]/);
+                const sdk = matchSdk ? matchSdk[1] : null;
+                loadMoneytagScript(url, zone, sdk);
             }
             if (settings.moneytagTagId) {
                 moneytagTagId = settings.moneytagTagId;
@@ -181,24 +187,26 @@
             handleAdAndInit();
         });
 
-        function loadMoneytagScript(input) {
-            let url = input;
-            const match = input.match(/src=['"]([^'"]+)['"]/);
-            if (match) url = match[1];
-
+        function loadMoneytagScript(url, zone, sdk) {
             // Stricter check: must contain .js and look like a URL
             if (!url || !url.includes('.js') || (!url.startsWith('h') && !url.startsWith('//'))) return;
 
             if (document.querySelector(`script[src="${url}"]`)) return;
             const script = document.createElement('script');
             script.src = url;
+            if (zone) script.setAttribute('data-zone', zone);
+            if (sdk) script.setAttribute('data-sdk', sdk);
             script.async = true;
             document.head.appendChild(script);
         }
 
         async function showAd() {
-            if (!moneytagTagId) return true;
-            const funcName = `show_${moneytagTagId}`;
+            // Priority 1: Use the SDK name from settings if it's a function
+            // Priority 2: Use the tag ID if it's a function
+            const settingsName = moneytagScript.match(/data-sdk=['"]([^'"]+)['"]/)?.[1];
+            const funcName = settingsName || (moneytagTagId ? `show_${moneytagTagId}` : null);
+
+            if (!funcName) return true;
 
             // Wait up to 3 seconds for function to become available
             for (let i = 0; i < 30; i++) {
