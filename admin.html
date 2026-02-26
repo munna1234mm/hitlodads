@@ -39,6 +39,7 @@
         .emerald-gradient-text {
             background: linear-gradient(135deg, #059669 0%, #10b981 100%);
             -webkit-background-clip: text;
+            background-clip: text;
             -webkit-text-fill-color: transparent;
         }
     </style>
@@ -120,6 +121,12 @@
                     <label class="text-[10px] text-slate-500 font-bold uppercase tracking-widest pl-2">Support Link
                         (e.g. t.me/...)</label>
                     <input type="text" id="global-support-link" placeholder="https://t.me/yourid"
+                        class="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 mt-1 focus:outline-none focus:border-emerald-500">
+                </div>
+                <div>
+                    <label class="text-[10px] text-slate-500 font-bold uppercase tracking-widest pl-2">Channel Link
+                        (e.g. t.me/...)</label>
+                    <input type="text" id="global-channel-link" placeholder="https://t.me/yourchannel"
                         class="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 mt-1 focus:outline-none focus:border-emerald-500">
                 </div>
                 <button onclick="saveGlobalSettings()"
@@ -339,6 +346,9 @@
                 if (settings.supportLink !== undefined) {
                     document.getElementById('global-support-link').value = settings.supportLink;
                 }
+                if (settings.channelLink !== undefined) {
+                    document.getElementById('global-channel-link').value = settings.channelLink;
+                }
             });
         }
 
@@ -346,6 +356,7 @@
             const commission = parseInt(document.getElementById('global-commission').value);
             const tokenName = document.getElementById('global-token-name').value.trim();
             const supportLink = document.getElementById('global-support-link').value.trim();
+            const channelLink = document.getElementById('global-channel-link').value.trim();
             if (isNaN(commission)) return alert("Please enter a valid number for commission");
             if (!tokenName) return alert("Please enter a token name");
 
@@ -358,6 +369,7 @@
                 globalCommission: commission,
                 tokenName: tokenName,
                 supportLink: supportLink,
+                channelLink: channelLink,
                 updatedAt: firebase.database.ServerValue.TIMESTAMP
             }).then(() => {
                 setTimeout(() => {

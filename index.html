@@ -26,6 +26,7 @@
         .vip-gold-text {
             background: var(--gold-gradient);
             -webkit-background-clip: text;
+            background-clip: text;
             -webkit-text-fill-color: transparent;
         }
         .premium-card {
@@ -51,6 +52,7 @@
             filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
             background: var(--gold-gradient);
             -webkit-background-clip: text;
+            background-clip: text;
             -webkit-text-fill-color: transparent;
         }
     </style>
@@ -119,6 +121,25 @@
                 class="material-symbols-outlined text-neutral-700 text-lg group-hover:text-[var(--gold-primary)] transition-colors">arrow_forward_ios</span>
         </a>
 
+        <!-- Official Channel Button -->
+        <a id="channel-link" href="#" target="_blank"
+            class="premium-card p-6 flex items-center justify-between relative overflow-hidden active:scale-[0.98] transition-all group mt-4">
+            <div class="absolute top-0 right-0 w-32 h-32 bg-blue-500 opacity-[0.03] blur-3xl -mr-10 -mt-10"></div>
+            <div class="flex items-center gap-4 relative z-10">
+                <div
+                    class="w-12 h-12 rounded-2xl bg-gradient-to-br from-blue-500/20 to-transparent border border-blue-500/20 flex items-center justify-center">
+                    <span class="material-symbols-outlined text-blue-400 text-3xl icon-3d"
+                        style="background: none; -webkit-text-fill-color: inherit;">campaign</span>
+                </div>
+                <div>
+                    <h3 class="font-bold text-white text-base tracking-tight">Official Channel</h3>
+                    <p class="text-[11px] text-neutral-500 mt-0.5">Stay updated with latest news</p>
+                </div>
+            </div>
+            <span
+                class="material-symbols-outlined text-neutral-700 text-lg group-hover:text-blue-400 transition-colors">arrow_forward_ios</span>
+        </a>
+
         </main>
         <nav
             class="fixed bottom-0 left-0 right-0 bg-black/95 border-t border-white/5 px-8 py-5 backdrop-blur-2xl flex items-center justify-between z-50">
@@ -175,20 +196,34 @@
             }
             if (tgUser.photo_url) document.getElementById('user-avatar').src = tgUser.photo_url;
 
-            let currentTokenSymbol = 'BTTC';
-            db.ref('settings/tokenName').on('value', (snap) => {
-                if (snap.exists()) {
-                    currentTokenSymbol = snap.val();
+            // Helper function to format Telegram links
+            function formatTelegramLink(link) {
+                if (!link) return "#";
+                link = link.trim();
+                if (link.startsWith('@')) {
+                    return 'https://t.me/' + link.substring(1);
+                } else if (!link.startsWith('http://') && !link.startsWith('https://')) {
+                    if (link.startsWith('t.me/')) {
+                        return 'https://' + link;
+                    } else {
+                        return 'https://t.me/' + link;
+                    }
+                }
+                return link;
+            }
+
+            db.ref('settings').on('value', (snap) => {
+                const settings = snap.val() || {};
+                if (settings.tokenName) {
+                    currentTokenSymbol = settings.tokenName;
                     document.querySelectorAll('.token-symbol-display').forEach(el => el.innerText = currentTokenSymbol);
-                    // Refresh token display if user data already exists
-                    userRef.once('value', (s) => {
-                        const d = s.val();
-                        if (d && d.tokens !== undefined) {
-                            document.getElementById('tokens-display').innerText = d.tokens + ' ' + currentTokenSymbol;
-                        }
-                    });
+                }
+                if (settings.channelLink) {
+                    document.getElementById('channel-link').href = formatTelegramLink(settings.channelLink);
                 }
             });
+
+            let currentTokenSymbol = 'BTTC';
 
             // Sync data from Firebase to UI
             userRef.on('value', (snapshot) => {
