@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#f2b90d",
+                        "background-light": "#f8f8f5",
+                        "background-dark": "#0a0a08",
+                    },
+                    fontFamily: {
+                        "display": ["Space Grotesk", "sans-serif"]
+                    },
+                    borderRadius: { "DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px" },
+                },
+            },
+        }
+    </script>
+    <style>
+        .geometric-bg {
+            background-image: radial-gradient(circle at 2px 2px, rgba(242, 185, 13, 0.05) 1px, transparent 0);
+            background-size: 24px 24px;
+        }
+
+        body {
+            min-height: max(884px, 100dvh);
+        }
+    </style>
+</head>
+
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 min-h-screen">
+    <div
+        class="relative flex h-full min-h-screen w-full flex-col bg-background-light dark:bg-background-dark overflow-x-hidden geometric-bg">
+        <!-- Top App Bar -->
+        <div class="flex items-center p-4 pb-2 justify-between">
+            <div class="text-slate-900 dark:text-slate-100 flex size-12 shrink-0 items-center justify-start">
+                <a href="index.html" class="material-symbols-outlined cursor-pointer">arrow_back_ios</a>
+            </div>
+            <div class="flex flex-col items-center">
+                <h2 class="text-primary text-xs font-bold uppercase tracking-widest leading-tight">VIP Duel</h2>
+                <h1 class="text-slate-900 dark:text-slate-100 text-lg font-bold leading-tight tracking-tight">Math
+                    Challenge</h1>
+            </div>
+            <div class="flex w-12 items-center justify-end">
+                <button
+                    class="flex size-10 cursor-pointer items-center justify-center rounded-full bg-primary/10 border border-primary/20 text-primary">
+                    <span class="material-symbols-outlined text-[24px]">workspace_premium</span>
+                </button>
+            </div>
+        </div>
+        <!-- Status Cards -->
+        <div class="flex flex-wrap gap-4 p-4">
+            <div
+                class="flex min-w-[140px] flex-1 flex-col gap-1 rounded-xl p-4 bg-white dark:bg-primary/5 border border-slate-200 dark:border-primary/20 shadow-lg shadow-primary/5">
+                <div class="flex items-center gap-2">
+                    <span class="material-symbols-outlined text-primary text-sm">trending_up</span>
+                    <p class="text-slate-500 dark:text-primary/70 text-xs font-bold uppercase tracking-wider">Current
+                        Level</p>
+                </div>
+                <p id="level-display"
+                    class="text-slate-900 dark:text-white tracking-tight text-2xl font-bold leading-tight">Level 1</p>
+            </div>
+            <div
+                class="flex min-w-[140px] flex-1 flex-col gap-1 rounded-xl p-4 bg-white dark:bg-primary/5 border border-slate-200 dark:border-primary/20 shadow-lg shadow-primary/5 text-right items-end">
+                <div class="flex items-center gap-2">
+                    <p class="text-slate-500 dark:text-primary/70 text-xs font-bold uppercase tracking-wider">Score</p>
+                    <span class="material-symbols-outlined text-primary text-sm">stars</span>
+                </div>
+                <p id="score-display" class="text-primary tracking-tight text-2xl font-bold leading-tight">0</p>
+            </div>
+        </div>
+        <!-- Glowing Timer -->
+        <div class="flex gap-4 py-8 px-8 justify-center">
+            <div class="relative group">
+                <div
+                    class="absolute inset-0 bg-primary/20 blur-xl rounded-full opacity-50 group-hover:opacity-100 transition-opacity">
+                </div>
+                <div
+                    class="relative flex h-32 w-32 items-center justify-center rounded-full border-4 border-primary bg-background-dark shadow-[0_0_20px_rgba(242,185,13,0.3)]">
+                    <div class="flex flex-col items-center">
+                        <span id="timer-display" class="text-primary text-4xl font-bold tracking-tighter">00:45</span>
+                        <span
+                            class="text-primary/60 text-[10px] uppercase font-bold tracking-[0.2em] mt-1">Seconds</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Math Problem Display -->
+        <div class="px-6 py-10 flex flex-col items-center">
+            <div
+                class="bg-primary/5 border border-primary/10 rounded-2xl p-8 w-full max-w-md text-center backdrop-blur-sm">
+                <p class="text-primary/60 text-xs font-bold uppercase tracking-[0.3em] mb-4">Solve to Earn</p>
+                <h1 id="problem-display"
+                    class="text-slate-900 dark:text-white tracking-tight text-[48px] font-bold leading-tight">
+                    ...
+                </h1>
+            </div>
+        </div>
+        <!-- Answer Choices -->
+        <div class="flex flex-col items-center mt-auto pb-12">
+            <div id="choices-container" class="grid grid-cols-2 gap-4 w-full max-w-[480px] px-6">
+                <!-- Buttons will be generated here -->
+            </div>
+        </div>
+        <!-- Bottom VIP Bar -->
+        <div
+            class="mt-auto p-4 bg-white/5 backdrop-blur-md border-t border-primary/10 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div
+                    class="size-10 rounded-full bg-gradient-to-tr from-primary to-yellow-600 flex items-center justify-center shadow-lg shadow-primary/20">
+                    <span class="material-symbols-outlined text-background-dark font-bold">payments</span>
+                </div>
+                <div>
+                    <p class="text-slate-400 text-[10px] uppercase font-bold tracking-wider">Potential Payout</p>
+                    <p class="text-primary font-bold"><span id="potential-reward">0</span> <span class="token-name">VIP
+                            GOLD</span></p>
+                </div>
+            </div>
+            <div class="flex -space-x-2">
+                <div class="size-8 rounded-full border-2 border-background-dark overflow-hidden bg-slate-800">
+                    <img class="w-full h-full object-cover" data-alt="Avatar"
+                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuBHO65yukjkIJCbdSGWbhalmAzWfBs1tRfK-ak4PFUk2BM04Ahtc3GL6NgYvPFk0KAt2bsZRsoGsT-BeC80WDXyb_mrcYMVBMqd2IvBLVtlDvG3yN2xn2MMDhNyFtRMLX51Kqr6QjMQPmk-F4lhFLL6ca7r1WzlWpuEKcFY2IarsubTzHW3NHmQHV6Lke6GijIz9Ms-TM8J4B9obLru0yFOXKtcVbOQ0IewKca5Nv8G5iHhHGtTwhFS7CQClbYl514DTwq4umAU7nk" />
+                </div>
+                <div class="size-8 rounded-full border-2 border-background-dark overflow-hidden bg-slate-800">
+                    <img class="w-full h-full object-cover" data-alt="Avatar"
+                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuB6_9NTJCM9CnrJheNwa_lNue9H9GQ3ZF3tNumssp9y5Z-E9FFOiZvomQyOcpkzEvh5NxAQgttduqgQ5ad0A-Vq5Z97dGdathHuYbETW1QLEwi0pZGMfjscA6KTrLXDbIVdAJKxlHEE3tVM5a1gceT5o2JWAHrUqUJcTf69OzOlpMdZHPmECZJBMit5ac-6MqiL4CnD6pRwAS1jsKoGoG0ZGUNXEMCgeoeV6ZHAcObxa49qPin-EdPdanOcwZcGAL18Z8ApRGvf0No" />
+                </div>
+                <div
+                    class="size-8 rounded-full border-2 border-background-dark bg-primary flex items-center justify-center text-[10px] font-bold text-background-dark">
+                    +12
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-database-compat.js"></script>
+    <script src="firebase-config.js"></script>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+
+    <script>
+        const tg = window.Telegram.WebApp;
+        let score = 0;
+        let timeLeft = 45;
+        let currentAnswer = 0;
+        let tokenName = 'VIP GOLD';
+        let timerInterval;
+
+        // Load token name
+        db.ref('settings/tokenName').on('value', (snap) => {
+            if (snap.exists()) {
+                tokenName = snap.val();
+                document.querySelectorAll('.token-name').forEach(el => el.innerText = tokenName);
+            }
+        });
+
+        function generateProblem() {
+            const num1 = Math.floor(Math.random() * 50) + 10;
+            const num2 = Math.floor(Math.random() * 50) + 10;
+            const num3 = Math.floor(Math.random() * 20) + 1;
+
+            const ops = ['+', '-'];
+            const op1 = ops[Math.floor(Math.random() * ops.length)];
+            const op2 = ops[Math.floor(Math.random() * ops.length)];
+
+            let problemText = `${num1} ${op1} ${num2} ${op2} ${num3}`;
+            currentAnswer = eval(problemText);
+
+            document.getElementById('problem-display').innerText = problemText;
+            generateChoices(currentAnswer);
+        }
+
+        function generateChoices(correct) {
+            const choices = [correct];
+            while (choices.length < 4) {
+                const wrong = correct + (Math.floor(Math.random() * 20) - 10);
+                if (!choices.includes(wrong)) choices.push(wrong);
+            }
+            // Shuffle
+            choices.sort(() => Math.random() - 0.5);
+
+            const container = document.getElementById('choices-container');
+            container.innerHTML = '';
+            choices.forEach(choice => {
+                const btn = document.createElement('button');
+                btn.className = "group flex flex-col items-center justify-center overflow-hidden rounded-xl h-20 bg-white dark:bg-transparent border-2 border-slate-200 dark:border-primary/30 hover:border-primary hover:bg-primary/10 transition-all duration-200";
+                btn.innerHTML = `<span class="text-slate-900 dark:text-white text-2xl font-bold group-hover:text-primary">${choice}</span>`;
+                btn.onclick = () => checkAnswer(choice);
+                container.appendChild(btn);
+            });
+        }
+
+        function checkAnswer(selected) {
+            if (selected === currentAnswer) {
+                score++;
+                tg.HapticFeedback.notificationOccurred('success');
+                document.getElementById('score-display').innerText = score;
+                document.getElementById('potential-reward').innerText = score * 10;
+                generateProblem();
+            } else {
+                tg.HapticFeedback.notificationOccurred('error');
+                // Could penalize time or just generate next. Let's just generate next for now.
+                generateProblem();
+            }
+        }
+
+        function startTimer() {
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                const mins = Math.floor(timeLeft / 60);
+                const secs = timeLeft % 60;
+                document.getElementById('timer-display').innerText =
+                    `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    endGame();
+                }
+            }, 1000);
+        }
+
+        function endGame() {
+            // Save temporary score to session or pass via URL
+            localStorage.setItem('lastMathScore', score);
+            window.location.href = 'math_result.html';
+        }
+
+        // Initialize
+        generateProblem();
+        startTimer();
+    </script>
+</body>
+
+</html>

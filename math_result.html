@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Math Challenge Results</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#f2b90d",
+                        "background-light": "#f8f8f5",
+                        "background-dark": "#16140c",
+                    },
+                    fontFamily: {
+                        "display": ["Plus Jakarta Sans", "sans-serif"]
+                    },
+                    borderRadius: { "DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px" },
+                },
+            },
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        .gold-gradient {
+            background: linear-gradient(135deg, #f2b90d 0%, #ffdb70 50%, #d4a00a 100%);
+        }
+
+        .mesh-gradient {
+            background-color: #16140c;
+            background-image:
+                radial-gradient(at 0% 0%, rgba(242, 185, 13, 0.15) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(242, 185, 13, 0.1) 0px, transparent 50%);
+        }
+
+        body {
+            min-height: max(884px, 100dvh);
+        }
+    </style>
+</head>
+
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 font-display">
+    <div class="relative flex min-h-screen w-full flex-col mesh-gradient overflow-x-hidden">
+        <!-- Header -->
+        <div class="flex items-center p-6 pb-2 justify-between">
+            <a href="index.html"
+                class="text-slate-100 flex size-10 shrink-0 items-center justify-center rounded-full bg-primary/10 border border-primary/20">
+                <span class="material-symbols-outlined">close</span>
+            </a>
+            <h2
+                class="text-slate-100 text-lg font-bold leading-tight tracking-tight flex-1 text-center pr-10 uppercase">
+                Challenge Summary</h2>
+        </div>
+        <!-- Hero Section with Coin Explosion -->
+        <div class="px-4 py-4 @container">
+            <div
+                class="w-full relative flex flex-col items-center justify-center overflow-hidden rounded-xl min-h-[280px] bg-primary/5 border border-primary/10">
+                <!-- Abstract "Coin Explosion" Representation -->
+                <div class="absolute inset-0 opacity-40" data-alt="Explosion of 3D gold coins"
+                    style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCY2ppCglHdYcp__q5zt0kHwfzTOBYlowOFtvP1jvSA-zGufEjL7eoW-upr7__p91KNHU3Yl7s1IAAna4n_AEoxNo0jGvhk_WUQx0PwQ848UverKTp5SKD0QZkuUMP90m63GqYfIJmoSXdAhxg3Fk_W69LxxTVDzltCz7MxOCtZEXxhdDBPh1AyYuaAM-alLgQsIIm5y-bMCw0ugiDEWGBG-mRoJ_Dq6LmfcnyoJPBAwvTPiXtbHCsTDFoXzUg3uED-45Z1eSmS4EA'); background-size: cover; background-position: center;">
+                </div>
+                <div class="absolute inset-0 bg-gradient-to-t from-background-dark via-transparent to-transparent">
+                </div>
+                <div class="relative z-10 flex flex-col items-center">
+                    <div
+                        class="w-20 h-20 bg-primary rounded-full flex items-center justify-center shadow-[0_0_40px_rgba(242,185,13,0.4)] mb-4">
+                        <span id="trophy-icon"
+                            class="material-symbols-outlined text-background-dark text-5xl font-bold">military_tech</span>
+                    </div>
+                    <p class="text-primary text-sm font-extrabold tracking-[0.2em] uppercase mb-1">Total Earned</p>
+                    <h1 id="final-reward-display"
+                        class="text-white tracking-tight text-6xl font-black leading-tight drop-shadow-lg">---</h1>
+                    <p class="text-white/40 text-xs font-bold uppercase tracking-widest mt-1 token-name">VIP GOLD</p>
+                </div>
+            </div>
+        </div>
+        <!-- Stats Grid -->
+        <div class="flex flex-col gap-4 p-4 mt-2">
+            <div class="flex gap-4">
+                <div
+                    class="flex flex-1 flex-col gap-3 rounded-2xl p-6 bg-primary/10 border border-primary/20 backdrop-blur-sm">
+                    <div class="flex items-center gap-2">
+                        <span class="material-symbols-outlined text-primary text-xl">check_circle</span>
+                        <p class="text-slate-300 text-sm font-semibold leading-normal">Correct Answers</p>
+                    </div>
+                    <p id="correct-answers" class="text-white tracking-tight text-3xl font-bold leading-tight">0</p>
+                </div>
+                <div
+                    class="flex flex-1 flex-col gap-3 rounded-2xl p-6 bg-primary/10 border border-primary/20 backdrop-blur-sm">
+                    <div class="flex items-center gap-2">
+                        <span class="material-symbols-outlined text-primary text-xl">schedule</span>
+                        <p class="text-slate-300 text-sm font-semibold leading-normal">Time Spent</p>
+                    </div>
+                    <p class="text-primary tracking-tight text-3xl font-bold leading-tight">45 <span
+                            class="text-primary/50 text-sm font-medium">Secs</span></p>
+                </div>
+            </div>
+            <!-- Achievement Card -->
+            <div
+                class="flex items-center justify-between gap-4 rounded-2xl p-5 bg-slate-900/50 border border-slate-800">
+                <div class="flex items-center gap-4">
+                    <div class="size-12 rounded-xl bg-primary/20 flex items-center justify-center">
+                        <span id="badge-icon" class="material-symbols-outlined text-primary">auto_awesome</span>
+                    </div>
+                    <div>
+                        <p id="badge-title" class="text-white font-bold">Good Effort!</p>
+                        <p id="badge-desc" class="text-slate-400 text-xs">Keep practicing to earn more</p>
+                    </div>
+                </div>
+                <span class="material-symbols-outlined text-primary">chevron_right</span>
+            </div>
+        </div>
+        <!-- Spacer for push to bottom -->
+        <div class="flex-grow"></div>
+        <!-- Footer Buttons -->
+        <div class="flex flex-col gap-3 p-6 pb-10">
+            <a href="math.html"
+                class="gold-gradient w-full py-5 rounded-full text-center text-background-dark font-extrabold text-lg shadow-[0_4px_20px_rgba(242,185,13,0.3)] active:scale-[0.98] transition-transform">
+                PLAY AGAIN
+            </a>
+            <a href="index.html"
+                class="w-full py-5 rounded-full border-2 border-primary/50 text-center text-primary font-bold text-lg hover:bg-primary/5 active:scale-[0.98] transition-transform">
+                BACK TO HUB
+            </a>
+        </div>
+    </div>
+
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-database-compat.js"></script>
+    <script src="firebase-config.js"></script>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+
+    <script>
+        const tg = window.Telegram.WebApp;
+        const tgUser = tg.initDataUnsafe.user || { id: '5702521445' };
+        const userId = tgUser.id.toString();
+        const userRef = db.ref('users/' + userId);
+
+        let score = parseInt(localStorage.getItem('lastMathScore')) || 0;
+        let rewardPerPoint = 10;
+        let tokenName = 'VIP GOLD';
+        let rewardHandled = false;
+
+        // Load settings
+        db.ref('settings').on('value', (snap) => {
+            const settings = snap.val() || {};
+            if (settings.tokenName) {
+                tokenName = settings.tokenName;
+                document.querySelectorAll('.token-name').forEach(el => el.innerText = tokenName);
+            }
+        });
+
+        function initResult() {
+            document.getElementById('correct-answers').innerText = score;
+            const totalReward = score * rewardPerPoint;
+            document.getElementById('final-reward-display').innerText = `+${totalReward}`;
+
+            if (score >= 10) {
+                document.getElementById('badge-title').innerText = "Perfect Streak!";
+                document.getElementById('badge-desc').innerText = "You' unlocked the Math Wizard badge";
+                document.getElementById('trophy-icon').innerText = "emoji_events";
+            }
+
+            if (!rewardHandled && score > 0) {
+                rewardHandled = true;
+                processReward(totalReward);
+            }
+        }
+
+        function processReward(amount) {
+            userRef.transaction((currentData) => {
+                if (currentData) {
+                    currentData.tokens = (currentData.tokens || 0) + amount;
+                } else {
+                    return {
+                        id: userId,
+                        tokens: amount,
+                        balance: 0,
+                        createdAt: firebase.database.ServerValue.TIMESTAMP
+                    };
+                }
+                return currentData;
+            });
+            tg.HapticFeedback.notificationOccurred('success');
+        }
+
+        initResult();
+    </script>
+</body>
+
+</html>
