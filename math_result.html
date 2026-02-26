@@ -56,7 +56,16 @@
 </head>
 
 <body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 font-display">
-    <div class="relative flex min-h-screen w-full flex-col mesh-gradient overflow-x-hidden">
+    <!-- Ad Loading Overlay -->
+    <div id="ad-overlay"
+        class="fixed inset-0 z-[100] bg-background-dark flex flex-col items-center justify-center p-6 text-center">
+        <div class="w-16 h-16 border-4 border-primary/20 border-t-primary rounded-full animate-spin mb-4"></div>
+        <p class="text-primary font-bold animate-pulse uppercase tracking-widest text-sm">Preparing Reward...</p>
+        <p class="text-white/40 text-xs mt-2 italic">Please wait for the advertisement</p>
+    </div>
+
+    <div id="results-container"
+        class="relative flex min-h-screen w-full flex-col mesh-gradient overflow-x-hidden opacity-0 transition-opacity duration-700">
         <!-- Header -->
         <div class="flex items-center p-6 pb-2 justify-between">
             <a href="index.html"
@@ -248,6 +257,12 @@
 
             // Show ad before result
             await showAd();
+
+            // Reveal UI after ad
+            const overlay = document.getElementById('ad-overlay');
+            const container = document.getElementById('results-container');
+            if (overlay) overlay.style.display = 'none';
+            if (container) container.classList.remove('opacity-0');
 
             if (mathReward !== undefined) {
                 initResult(mathReward);
