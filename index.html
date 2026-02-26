@@ -53,120 +53,6 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
-
-        /* Lucky Spin Styles */
-        .wheel-container {
-            position: relative;
-            width: 280px;
-            height: 280px;
-            margin: 0 auto;
-            border-radius: 50%;
-            background: var(--obsidian);
-            box-shadow: 0 0 30px rgba(212, 175, 55, 0.2), inset 0 0 20px rgba(212, 175, 55, 0.1);
-            border: 4px solid var(--gold-dark);
-            overflow: hidden;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .wheel {
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            transition: transform 4s cubic-bezier(0.17, 0.67, 0.12, 0.99);
-            transform: rotate(0deg);
-            position: absolute;
-            background: conic-gradient(
-                #1a1a1a 0% 16.66%,
-                #D4AF37 16.66% 33.33%,
-                #1a1a1a 33.33% 50%,
-                #D4AF37 50% 66.66%,
-                #1a1a1a 66.66% 83.33%,
-                #D4AF37 83.33% 100%
-            );
-        }
-
-        .wheel-inner-line {
-            width: 96%;
-            height: 96%;
-            position: absolute;
-            border-radius: 50%;
-            border: 2px dashed rgba(255, 255, 255, 0.1);
-            z-index: 10;
-            pointer-events: none;
-        }
-
-        .wheel-segment {
-            position: absolute;
-            width: 50%;
-            height: 50%;
-            transform-origin: bottom right;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 5;
-            color: white;
-            font-weight: 900;
-            font-size: 14px;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.8);
-            padding-bottom: 40px;
-            padding-right: 40px;
-        }
-
-        .seg-1 { transform: rotate(0deg) skew(30deg); }
-        .seg-2 { transform: rotate(60deg) skew(30deg); color: #000; }
-        .seg-3 { transform: rotate(120deg) skew(30deg); }
-        .seg-4 { transform: rotate(180deg) skew(30deg); color: #000; }
-        .seg-5 { transform: rotate(240deg) skew(30deg); }
-        .seg-6 { transform: rotate(300deg) skew(30deg); color: #000; }
-
-        .wheel-segment span {
-            transform: skew(-30deg) rotate(-30deg);
-            display: inline-block;
-            text-align: center;
-            line-height: 1.2;
-        }
-
-        .spin-btn {
-            position: absolute;
-            z-index: 20;
-            width: 70px;
-            height: 70px;
-            background: radial-gradient(circle, #F9E29B 0%, #D4AF37 50%, #8A6D3B 100%);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 900;
-            color: black;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.5), inset 0 2px 5px rgba(255,255,255,0.5);
-            border: 4px solid var(--obsidian);
-            cursor: pointer;
-            transition: transform 0.1s;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            font-size: 14px;
-        }
-
-        .spin-btn:active {
-            transform: scale(0.95);
-        }
-
-        .pointer {
-            position: absolute;
-            top: -15px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 0;
-            height: 0;
-            border-left: 15px solid transparent;
-            border-right: 15px solid transparent;
-            border-top: 30px solid var(--gold-light);
-            z-index: 30;
-            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
-        }
-
     </style>
     <style>
         body {
@@ -215,42 +101,25 @@
                 </div>
             </div>
         </div>
-        <!-- Lucky Spin Component -->
-        <div class="premium-card p-6 flex flex-col items-center justify-center relative overflow-hidden">
-            <div class="absolute top-0 right-[-20%] w-48 h-48 bg-[var(--gold-primary)]/10 blur-[60px] rounded-full">
-            </div>
-            <div class="absolute bottom-[-10%] left-[-20%] w-48 h-48 bg-white/5 blur-[60px] rounded-full"></div>
-
-            <div class="text-center mb-6 relative z-10 w-full">
-                <h3 class="text-2xl font-black gold-gradient-text uppercase tracking-widest italic mb-1">Lucky Spin</h3>
-                <p class="text-[10px] text-slate-400 font-bold tracking-widest uppercase">Win Daily Diamond Rewards</p>
-                <div
-                    class="h-[1px] w-1/2 bg-gradient-to-r from-transparent via-[var(--gold-primary)]/50 to-transparent mx-auto mt-4">
-                </div>
-            </div>
-
-            <div class="wheel-container mb-4">
-                <div class="pointer"></div>
-                <div class="wheel-inner-line"></div>
-                <div class="wheel" id="spin-wheel">
-                    <div class="wheel-segment seg-1"><span>50<br><small class="text-[8px]">BTTC</small></span></div>
-                    <div class="wheel-segment seg-2"><span>10<br><small class="text-[8px] font-black">BDT</small></span>
-                    </div>
-                    <div class="wheel-segment seg-3"><span>NO<br><small class="text-[8px]">LUCK</small></span></div>
-                    <div class="wheel-segment seg-4"><span>100<br><small class="text-[8px]">BTTC</small></span></div>
-                    <div class="wheel-segment seg-5"><span>5<br><small class="text-[8px]">BDT</small></span></div>
-                    <div class="wheel-segment seg-6"><span>20<br><small class="text-[8px]">BTTC</small></span></div>
-                </div>
-                <div class="spin-btn" onclick="spinWheel()" id="spin-button">SPIN</div>
-            </div>
-
+        <!-- Lucky Spin Button -->
+        <a href="#"
+            class="premium-card p-6 flex items-center justify-between relative overflow-hidden active:scale-[0.98] transition-all group">
             <div
-                class="flex items-center gap-2 mt-2 bg-white/5 px-4 py-2 rounded-xl border border-white/10 relative z-10">
-                <span class="material-symbols-outlined text-[var(--gold-primary)] text-sm">confirmation_number</span>
-                <span class="text-xs font-bold text-white tracking-widest">Spins Left: <span
-                        class="text-[var(--gold-primary)]" id="spins-left">1</span></span>
+                class="absolute top-0 right-0 w-32 h-32 bg-[var(--gold-primary)] opacity-[0.03] blur-3xl -mr-10 -mt-10">
             </div>
-        </div>
+            <div class="flex items-center gap-4 relative z-10">
+                <div
+                    class="w-12 h-12 rounded-2xl bg-gradient-to-br from-[var(--gold-dark)]/20 to-transparent border border-[var(--gold-primary)]/20 flex items-center justify-center">
+                    <span class="material-symbols-outlined text-[var(--gold-primary)] text-3xl icon-3d">toys_fan</span>
+                </div>
+                <div>
+                    <h3 class="font-bold text-white text-base tracking-tight">Lucky Spin</h3>
+                    <p class="text-[11px] text-neutral-500 mt-0.5">Win Daily Diamond Rewards</p>
+                </div>
+            </div>
+            <span
+                class="material-symbols-outlined text-neutral-700 text-lg group-hover:text-[var(--gold-primary)] transition-colors">arrow_forward_ios</span>
+        </a>
 
         </main>
         <nav
@@ -349,129 +218,25 @@
                     }
                     if (data.photo_url) document.getElementById('user-avatar').src = data.photo_url;
 
-                    // Update Spins Left count
-                    if (data.spinsLeft !== undefined) {
-                        document.getElementById('spins-left').innerText = data.spinsLeft;
-                        localSpinsLeft = data.spinsLeft;
-                    }
-
-                } else {
-                    // Auto-create profile for new user
-                    const displayName = (tgUser.first_name + ' ' + (tgUser.last_name || '')).trim() || tgUser.username || 'VIP Member';
-                    userRef.set({
-                        id: userId,
-                        name: displayName,
-                        username: tgUser.username || '',
-                        photo_url: tgUser.photo_url || 'https://lh3.googleusercontent.com/aida-public/AB6AXuBGL2m-Avuc-7ToaD3wp2Q3nZECNJWiIpwQsMJ2z-UZXX8XYgc1vIj7Z0JIfHO2nS2OBNRoBxl-TZphnjWyg7tallPDR-JuectX-Z_h0VNmq8qSdMX-lopLHGtH-GcXtgIs2WtSfvk-EUle-5n1Xz4v0KIGw00LqmKPZ8kHTO_hkVIn7Z49s7Hv1OappINZs2H0-DgbFWs5yyfbkSQTGZENdTOYW3z4TBvdhYtQwnTOn-Ul30Ul4--fd3CBC6Rfshtj4VFO8_Hc6VQ',
-                        balance: 0.00,
-                        tokens: 0,
-                        referrals: 0,
-                        tasksCompleted: 0,
-                        spinsLeft: 1, // 1 free spin for new users
-                        joinedAt: firebase.database.ServerValue.TIMESTAMP
-                    });
-                }
-            });
-
-            // Spin Logic
-            let isSpinning = false;
-            let currentRotation = 0;
-            let localSpinsLeft = 0; // updated via firebase
-
-            // 6 Segments mapping: (0=top right (seg1), 60=seg6, 120=seg5, 180=seg4.. etc)
-            // It spins clockwise. By setting rotation to land on degrees, we pick a prize.
-            const segments = [
-                { prize: "50 BTTC", isTokens: true, amount: 50 },
-                { prize: "10 BDT", isTokens: false, amount: 10 },
-                { prize: "NO LUCK", isTokens: null, amount: 0 },
-                { prize: "100 BTTC", isTokens: true, amount: 100 },
-                { prize: "5 BDT", isTokens: false, amount: 5 },
-                { prize: "20 BTTC", isTokens: true, amount: 20 },
-            ];
-
-            function spinWheel() {
-                if (isSpinning) return;
-                if (localSpinsLeft <= 0) {
-                    tg.showAlert("No spins left! Come back tomorrow.");
-                    return;
-                }
-
-                isSpinning = true;
-                const btn = document.getElementById('spin-button');
-                btn.style.opacity = '0.5';
-
-                // Deduct spin upfront
-                userRef.child('spinsLeft').set(localSpinsLeft - 1);
-
-                const wheel = document.getElementById('spin-wheel');
-
-                // Random segment 0-5
-                const winningSegmentIndex = Math.floor(Math.random() * segments.length);
-                const winningPrize = segments[winningSegmentIndex];
-
-                // Calculate landing rotation (approximate center of segment)
-                // Each slice is 60deg. 
-                const baseRotation = 360 - (winningSegmentIndex * 60) - 30;
-
-                // Spin for at least 5 full rotations + the winning degree
-                const spinTo = currentRotation + (360 * 5) + (baseRotation - (currentRotation % 360));
-
-                currentRotation = spinTo;
-                wheel.style.transform = `rotate(${currentRotation}deg)`;
-
-                if (tg && tg.HapticFeedback) {
-                    tg.HapticFeedback.impactOccurred('medium');
-                    // slight vibration while spinning
-                    let spinInterval = setInterval(() => tg.HapticFeedback.selectionChanged(), 400);
-                    setTimeout(() => clearInterval(spinInterval), 3800);
-                }
-
-                setTimeout(() => {
-                    isSpinning = false;
-                    btn.style.opacity = '1';
-
-                    if (tg && tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
-
-                    if (winningPrize.amount > 0) {
-                        // Grant Prize
-                        userRef.transaction((data) => {
-                            if (data) {
-                                if (winningPrize.isTokens) {
-                                    data.tokens = (data.tokens || 0) + winningPrize.amount;
-                                    data.lifetimeBTTC = (data.lifetimeBTTC || 0) + winningPrize.amount;
-                                } else {
-                                    data.balance = (data.balance || 0) + winningPrize.amount;
-                                }
+                    // Reward logic
+                    function claimReward() {
+                        userRef.transaction((currentData) => {
+                            if (currentData) {
+                                currentData.balance = (currentData.balance || 0) + 100;
+                                currentData.tokens = (currentData.tokens || 0) + 10;
                             }
-                            return data;
+                            return currentData;
                         });
-
-                        tg.showAlert(`🎉 Congratulations! You won ${winningPrize.prize}!`);
-                    } else {
-                        tg.showAlert(`Better luck next time! Keep checking back.`);
+                        tg.HapticFeedback.notificationOccurred('success');
+                        alert('Reward Claimed! +100 BDT and +10 BTTC added to your account.');
                     }
-                }, 4000); // Waits for the 4s CSS transition
-            }
 
-            // Example interaction: Claim Reward
-            function claimReward() {
-
-                userRef.transaction((currentData) => {
-                    if (currentData) {
-                        currentData.balance = (currentData.balance || 0) + 100; // Gift 100 BDT
-                        currentData.tokens = (currentData.tokens || 0) + 10; // Gift 10 BTTC
-                    }
-                    return currentData;
-                });
-                tg.HapticFeedback.notificationOccurred('success');
-                alert('Reward Claimed! +100 BDT and +10 BTTC added to your account.');
-            }
-
-            // Attach event listener to the Claim Reward button
-            document.addEventListener('DOMContentLoaded', () => {
-                const claimBtn = document.querySelector('button.gold-coin');
-                if (claimBtn && claimBtn.innerText.includes('Claim Reward')) {
-                    claimBtn.onclick = claimReward;
+                    document.addEventListener('DOMContentLoaded', () => {
+                        const claimBtn = document.querySelector('button.gold-coin');
+                        if (claimBtn && claimBtn.innerText.includes('Claim Reward')) {
+                            claimBtn.onclick = claimReward;
+                        }
+                    });
                 }
             });
         </script>
