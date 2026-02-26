@@ -181,6 +181,73 @@
                 </div>
             </section>
 
+            <!-- Task Management Section -->
+            <section id="tasks" class="mb-10">
+                <div class="flex items-center gap-3 mb-6">
+                    <span
+                        class="material-symbols-outlined text-indigo-600 font-bold p-2 bg-indigo-100 rounded-xl">add_task</span>
+                    <h2 class="text-2xl font-black uppercase tracking-tight text-slate-900">Task Creator</h2>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-10">
+                    <div class="lg:col-span-1">
+                        <div class="premium-card p-8 border border-slate-200 shadow-xl">
+                            <div class="space-y-4">
+                                <div>
+                                    <label
+                                        class="text-[10px] text-slate-500 font-bold uppercase tracking-widest pl-2">Task
+                                        Title</label>
+                                    <input type="text" id="task-title" placeholder="e.g. Join Telegram"
+                                        class="w-full bg-slate-50 border-slate-200 rounded-xl px-4 py-3 focus:ring-indigo-500">
+                                </div>
+                                <div>
+                                    <label
+                                        class="text-[10px] text-slate-500 font-bold uppercase tracking-widest pl-2">Reward
+                                        (BDT)</label>
+                                    <input type="number" id="task-reward" placeholder="10.00"
+                                        class="w-full bg-slate-50 border-slate-200 rounded-xl px-4 py-3 focus:ring-indigo-500">
+                                </div>
+                                <div>
+                                    <label
+                                        class="text-[10px] text-slate-500 font-bold uppercase tracking-widest pl-2">Type</label>
+                                    <select id="task-type"
+                                        class="w-full bg-slate-50 border-slate-200 rounded-xl px-4 py-3 focus:ring-indigo-500">
+                                        <option value="telegram">Telegram</option>
+                                        <option value="youtube">YouTube</option>
+                                        <option value="twitter">X (Twitter)</option>
+                                        <option value="other">Other</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label
+                                        class="text-[10px] text-slate-500 font-bold uppercase tracking-widest pl-2">External
+                                        URL</label>
+                                    <input type="text" id="task-url" placeholder="https://..."
+                                        class="w-full bg-slate-50 border-slate-200 rounded-xl px-4 py-3 focus:ring-indigo-500">
+                                </div>
+                                <button onclick="createTask()"
+                                    class="w-full bg-indigo-600 text-white font-bold uppercase tracking-widest text-[11px] py-4 rounded-xl shadow-lg shadow-indigo-200 hover:scale-[1.02] transition-all mt-4">
+                                    Publish New Task
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="lg:col-span-2">
+                        <div class="premium-card overflow-hidden border border-slate-200 h-full">
+                            <div class="bg-slate-50 px-6 py-4 border-b border-slate-200">
+                                <h3 class="text-xs font-bold uppercase text-slate-500 tracking-widest">Active Task
+                                    Directory</h3>
+                            </div>
+                            <div id="tasks-list"
+                                class="divide-y divide-slate-100 max-h-[400px] overflow-y-auto no-scrollbar">
+                                <!-- Tasks dynamically filled -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
             <!-- Settings & Config -->
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
                 <!-- Global Config -->
@@ -382,11 +449,72 @@
                 document.getElementById('global-support-link').value = settings.supportLink || '';
             });
 
+            // Load tasks
+            db.ref('tasks').on('value', (snapshot) => {
+                const tasks = snapshot.val() || {};
+                renderTasks(tasks);
+            });
+
             // Load withdrawals
             db.ref('withdrawals').on('value', (snapshot) => {
                 const requests = snapshot.val() || {};
                 renderWithdrawals(requests);
             });
+        }
+
+        function renderTasks(tasks) {
+            const list = document.getElementById('tasks-list');
+            list.innerHTML = '';
+
+            Object.entries(tasks).forEach(([tid, t]) => {
+                const div = document.createElement('div');
+                div.className = 'px-6 py-4 flex items-center justify-between hover:bg-slate-50 transition-all';
+                div.innerHTML = `
+                    <div class="flex items-center gap-4">
+                        <div class="size-10 bg-slate-100 rounded-lg flex items-center justify-center">
+                            <span class="material-symbols-outlined text-slate-400 text-xl">
+                                ${t.type === 'telegram' ? 'send' : (t.type === 'youtube' ? 'play_circle' : (t.type === 'twitter' ? 'rebase' : 'link'))}
+                            </span>
+                        </div>
+                        <div>
+                            <p class="text-xs font-black text-slate-800">${t.title}</p>
+                            <p class="text-[10px] font-bold text-primary">${t.reward} BDT • <span class="uppercase">${t.type}</span></p>
+                        </div>
+                    </div>
+                    <button onclick="deleteTask('${tid}')" class="p-2 text-slate-300 hover:text-red-500 transition-all">
+                        <span class="material-symbols-outlined text-xl">delete</span>
+                    </button>
+                `;
+                list.appendChild(div);
+            });
+        }
+
+        function createTask() {
+            const title = document.getElementById('task-title').value.trim();
+            const reward = parseFloat(document.getElementById('task-reward').value);
+            const type = document.getElementById('task-type').value;
+            const url = document.getElementById('task-url').value.trim();
+
+            if (!title || isNaN(reward) || !url) return alert("Please fill all task fields correctly.");
+
+            const newTaskRef = db.ref('tasks').push();
+            newTaskRef.set({
+                title,
+                reward,
+                type,
+                url,
+                createdAt: firebase.database.ServerValue.TIMESTAMP
+            }).then(() => {
+                document.getElementById('task-title').value = '';
+                document.getElementById('task-reward').value = '';
+                document.getElementById('task-url').value = '';
+            });
+        }
+
+        function deleteTask(tid) {
+            if (confirm("Permanently delete this task?")) {
+                db.ref(`tasks/${tid}`).remove();
+            }
         }
 
         function updateStats() {

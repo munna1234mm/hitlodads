@@ -269,7 +269,12 @@
             }
         });
 
-        function loadMoneytagScript(url) {
+        function loadMoneytagScript(input) {
+            let url = input;
+            const match = input.match(/src=['"]([^'"]+)['"]/);
+            if (match) url = match[1];
+            if (!url || (!url.startsWith('h') && !url.startsWith('//'))) return;
+
             if (document.querySelector(`script[src="${url}"]`)) return;
             const script = document.createElement('script');
             script.src = url;
@@ -280,13 +285,20 @@
         async function showAd() {
             if (!moneytagTagId) return true;
             const funcName = `show_${moneytagTagId}`;
+
+            // Wait up to 3 seconds for function to become available
+            for (let i = 0; i < 30; i++) {
+                if (typeof window[funcName] === 'function') break;
+                await new Promise(r => setTimeout(r, 100));
+            }
+
             if (typeof window[funcName] === 'function') {
                 try {
                     await window[funcName]();
                     return true;
                 } catch (e) {
                     console.error("Ad error:", e);
-                    return true; // Proceed anyway
+                    return true;
                 }
             }
             console.warn("Moneytag function not found:", funcName);
