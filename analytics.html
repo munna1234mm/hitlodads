@@ -87,6 +87,7 @@
             </a>
             <div>
                 <p id="user-name" class="font-bold text-sm">Crazy Developer BD</p>
+                <p id="user-username" class="text-[10px] text-neutral-400 mb-0.5" style="display: none;"></p>
                 <p class="text-[10px] text-neutral-500 uppercase tracking-tight">VIP Elite Member</p>
             </div>
         </div>
@@ -275,6 +276,10 @@
 
         // Set initial UI from Telegram SDK
         document.getElementById('user-name').innerText = (tgUser.first_name + ' ' + (tgUser.last_name || '')).trim();
+        if (tgUser.username) {
+            document.getElementById('user-username').innerText = '@' + tgUser.username;
+            document.getElementById('user-username').style.display = 'block';
+        }
         if (tgUser.photo_url) document.getElementById('user-avatar').src = tgUser.photo_url;
 
         let currentTokenSymbol = 'BTTC';
@@ -310,6 +315,10 @@
                 }
 
                 if (data.name) document.getElementById('user-name').innerText = data.name;
+                if (data.username) {
+                    document.getElementById('user-username').innerText = '@' + data.username;
+                    document.getElementById('user-username').style.display = 'block';
+                }
                 if (data.photo_url) document.getElementById('user-avatar').src = data.photo_url;
                 if (data.balance !== undefined) document.getElementById('balance-display').innerText = data.balance.toLocaleString(undefined, { minimumFractionDigits: 2 }) + ' BDT';
                 if (data.lifetimeBDT !== undefined) document.getElementById('lifetime-bdt').innerText = data.lifetimeBDT.toLocaleString(undefined, { minimumFractionDigits: 2 });

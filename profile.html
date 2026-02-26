@@ -83,6 +83,8 @@
                         <span id="user-name" class="font-bold text-white text-lg">Crazy Developer BD</span>
                         <span class="material-symbols-outlined text-blue-400 text-base fill-1">verified</span>
                     </div>
+                    <p id="user-username" class="text-[11px] text-neutral-400 font-medium mb-0.5"
+                        style="display: none;"></p>
                     <span id="user-id-display" class="text-xs text-neutral-400 font-medium tracking-wide">ID:
                         5702521445</span>
                 </div>
@@ -248,6 +250,10 @@
 
         // Set initial UI from Telegram SDK
         document.getElementById('user-name').innerText = (tgUser.first_name + ' ' + (tgUser.last_name || '')).trim();
+        if (tgUser.username) {
+            document.getElementById('user-username').innerText = '@' + tgUser.username;
+            document.getElementById('user-username').style.display = 'block';
+        }
         document.getElementById('user-id-display').innerText = 'ID: ' + userId;
         if (tgUser.photo_url) document.getElementById('user-avatar').src = tgUser.photo_url;
 
@@ -269,6 +275,10 @@
                 }
 
                 if (data.name) document.getElementById('user-name').innerText = data.name;
+                if (data.username) {
+                    document.getElementById('user-username').innerText = '@' + data.username;
+                    document.getElementById('user-username').style.display = 'block';
+                }
                 if (data.photo_url) document.getElementById('user-avatar').src = data.photo_url;
                 if (data.id) document.getElementById('user-id-display').innerText = 'ID: ' + data.id;
                 if (data.balance !== undefined) document.getElementById('balance-display').innerText = data.balance.toLocaleString(undefined, { minimumFractionDigits: 2 });

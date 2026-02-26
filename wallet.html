@@ -82,6 +82,8 @@
                     <h2 class="text-xs font-bold flex items-center gap-1"><span id="user-name">Crazy Developer BD</span>
                         <span class="material-symbols-outlined text-green-500 text-[10px] fill-1">check_circle</span>
                     </h2>
+                    <p id="user-username" class="text-[9px] text-white/60 tracking-wider mb-0.5" style="display: none;">
+                    </p>
                     <p id="user-id-display" class="text-[9px] text-white/40 tracking-wider">MEMBER ID: 5702521445</p>
                 </div>
             </div>
@@ -250,6 +252,10 @@
 
         // Set initial UI from Telegram SDK
         document.getElementById('user-name').innerText = (tgUser.first_name + ' ' + (tgUser.last_name || '')).trim();
+        if (tgUser.username) {
+            document.getElementById('user-username').innerText = '@' + tgUser.username;
+            document.getElementById('user-username').style.display = 'block';
+        }
         document.getElementById('user-id-display').innerText = 'MEMBER ID: ' + userId;
         if (tgUser.photo_url) document.getElementById('user-avatar').src = tgUser.photo_url;
 
@@ -279,6 +285,10 @@
                 }
 
                 if (data.name) document.getElementById('user-name').innerText = data.name;
+                if (data.username) {
+                    document.getElementById('user-username').innerText = '@' + data.username;
+                    document.getElementById('user-username').style.display = 'block';
+                }
                 if (data.photo_url) document.getElementById('user-avatar').src = data.photo_url;
                 if (data.id) document.getElementById('user-id-display').innerText = 'MEMBER ID: ' + data.id;
                 if (data.balance !== undefined) document.getElementById('balance-display').innerText = data.balance.toLocaleString(undefined, { minimumFractionDigits: 2 }) + ' BDT';
