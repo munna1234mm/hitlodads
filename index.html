@@ -97,7 +97,13 @@
                         <span class="material-symbols-outlined text-blue-400 text-lg fill-1">verified</span>
                     </div>
                     <p id="user-username" class="text-xs text-slate-400 font-medium mb-0.5" style="display: none;"></p>
-                    <p class="text-xs font-bold tracking-widest text-slate-500 uppercase">Executive Member</p>
+                    <p class="text-xs font-bold tracking-widest text-slate-500 uppercase mb-1">Executive Member</p>
+                    <div
+                        class="flex items-center gap-1.5 bg-white/5 border border-white/10 rounded-full px-3 py-1 w-fit">
+                        <span class="material-symbols-outlined text-[14px] text-[var(--gold-primary)]">token</span>
+                        <span id="tokens-display" class="text-[10px] font-black text-white">0 <span
+                                class="token-symbol-display">BTTC</span></span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -250,6 +256,10 @@
                         document.getElementById('user-username').style.display = 'block';
                     }
                     if (data.photo_url) document.getElementById('user-avatar').src = data.photo_url;
+
+                    if (data.tokens !== undefined) {
+                        document.getElementById('tokens-display').innerHTML = `${(data.tokens || 0).toLocaleString()} <span class="token-symbol-display">${currentTokenSymbol}</span>`;
+                    }
 
                     // Reward logic
                     function claimReward() {

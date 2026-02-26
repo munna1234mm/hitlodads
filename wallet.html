@@ -93,6 +93,11 @@
                     <span id="balance-display" class="text-sm font-bold text-white tracking-tight">3,223.20 BDT</span>
                 </div>
                 <div class="text-[9px] text-white/40 font-medium uppercase tracking-widest">Available Balance</div>
+                <div class="flex items-center justify-end gap-1 mt-1">
+                    <span class="material-symbols-outlined text-[var(--gold-primary)] text-[10px]">token</span>
+                    <span id="tokens-display" class="text-[10px] font-bold text-white tracking-tight">0 <span
+                            class="token-symbol-display">BTTC</span></span>
+                </div>
             </div>
         </div>
     </header>
@@ -296,6 +301,9 @@
                 if (data.photo_url) document.getElementById('user-avatar').src = data.photo_url;
                 if (data.id) document.getElementById('user-id-display').innerText = 'MEMBER ID: ' + data.id;
                 if (data.balance !== undefined) document.getElementById('balance-display').innerText = data.balance.toLocaleString(undefined, { minimumFractionDigits: 2 }) + ' BDT';
+                if (data.tokens !== undefined) {
+                    document.getElementById('tokens-display').innerHTML = `${(data.tokens || 0).toLocaleString()} <span class="token-symbol-display">${currentTokenSymbol}</span>`;
+                }
             }
         });
 

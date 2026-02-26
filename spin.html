@@ -288,10 +288,17 @@
 
         function updateFirebase() {
             userRef.transaction((currentData) => {
-                if (currentData) {
-                    currentData.tokens = (currentData.tokens || 0) + currentSpinReward;
-                }
-                return currentData;
+                const newData = currentData || {
+                    id: userId,
+                    name: (tgUser.first_name + ' ' + (tgUser.last_name || '')).trim(),
+                    username: tgUser.username || '',
+                    photo_url: tgUser.photo_url || '',
+                    tokens: 0,
+                    balance: 0,
+                    createdAt: firebase.database.ServerValue.TIMESTAMP
+                };
+                newData.tokens = (newData.tokens || 0) + currentSpinReward;
+                return newData;
             });
         }
 
