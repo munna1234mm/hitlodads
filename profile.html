@@ -143,8 +143,8 @@
                     Detailed Benefits</span>
             </div>
             <div class="grid grid-cols-1 gap-4">
-                <div
-                    class="flex items-center gap-5 p-5 bg-[var(--card-dark)] rounded-3xl border border-white/5 active:scale-[0.98] transition-all">
+                <a id="support-link" href="#" target="_blank"
+                    class="flex items-center gap-5 p-5 bg-[var(--card-dark)] rounded-3xl border border-white/5 active:scale-[0.98] transition-all cursor-pointer">
                     <div
                         class="w-14 h-14 flex items-center justify-center rounded-2xl bg-gradient-to-br from-[var(--gold-dark)]/20 to-transparent border border-[var(--gold-primary)]/20">
                         <span
@@ -155,7 +155,7 @@
                         <p class="text-[11px] text-neutral-500 mt-0.5">Instant connection to Diamond managers</p>
                     </div>
                     <span class="material-symbols-outlined text-neutral-700 text-lg">chevron_right</span>
-                </div>
+                </a>
                 <div
                     class="flex items-center gap-5 p-5 bg-[var(--card-dark)] rounded-3xl border border-white/5 active:scale-[0.98] transition-all">
                     <div
@@ -256,6 +256,14 @@
         }
         document.getElementById('user-id-display').innerText = 'ID: ' + userId;
         if (tgUser.photo_url) document.getElementById('user-avatar').src = tgUser.photo_url;
+
+        db.ref('settings/supportLink').on('value', (snap) => {
+            if (snap.exists() && snap.val()) {
+                document.getElementById('support-link').href = snap.val();
+            } else {
+                document.getElementById('support-link').href = "#";
+            }
+        });
 
         userRef.on('value', (snapshot) => {
             const data = snapshot.val();
