@@ -244,6 +244,7 @@
         let moneytagScript = '';
         let moneytagTagId = '';
         let adFunctionName = '';
+        let adsEnabled = true;
 
         // Load Global Settings
         db.ref('settings').on('value', (snap) => {
@@ -281,6 +282,9 @@
             if (settings.moneytagTagId) {
                 moneytagTagId = settings.moneytagTagId;
             }
+            if (settings.adsEnabled !== undefined) {
+                adsEnabled = settings.adsEnabled;
+            }
         });
 
         function loadMoneytagScript(url, zone, sdk) {
@@ -299,6 +303,7 @@
         }
 
         async function showAd() {
+            if (!adsEnabled) return true;
             // Find the correct function to call
             const sdkNameInTag = moneytagScript.match(/data-sdk=['"]([^'"]+)['"]/)?.[1];
             const funcName = adFunctionName || sdkNameInTag || (moneytagTagId ? `show_${moneytagTagId}` : null);

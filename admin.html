@@ -248,129 +248,160 @@
                 </div>
             </section>
 
-            <!-- Settings & Config -->
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
-                <!-- Global Config -->
-                <section id="settings">
-                    <div class="flex items-center gap-3 mb-6">
-                        <span
-                            class="material-symbols-outlined text-emerald-600 font-bold p-2 bg-emerald-100 rounded-xl">tune</span>
-                        <h2 class="text-2xl font-black uppercase tracking-tight text-slate-900">System Parameters</h2>
-                    </div>
+            <!-- Categorized Settings & Config -->
+            <section id="settings" class="mb-20">
+                <div class="flex items-center gap-3 mb-8">
+                    <span
+                        class="material-symbols-outlined text-emerald-600 font-bold p-2 bg-emerald-100 rounded-xl">tune</span>
+                    <h2
+                        class="text-2xl font-black uppercase tracking-tight text-slate-900 text-center lg:text-left w-full lg:w-auto">
+                        System Central Control</h2>
+                </div>
 
-                    <div class="premium-card p-8 border border-slate-200 shadow-xl">
-                        <div class="space-y-6">
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <div>
-                                    <label
-                                        class="text-[10px] text-slate-500 font-bold uppercase tracking-widest pl-2">System
-                                        Commission (%)</label>
-                                    <input type="number" id="global-commission"
-                                        class="w-full bg-slate-50 border-slate-200 rounded-xl px-4 py-3 focus:ring-emerald-500">
-                                </div>
-                                <div>
-                                    <label
-                                        class="text-[10px] text-slate-500 font-bold uppercase tracking-widest pl-2">Token
-                                        Identity Name</label>
-                                    <input type="text" id="global-token-name"
-                                        class="w-full bg-slate-50 border-slate-200 rounded-xl px-4 py-3 focus:ring-emerald-500">
-                                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-10">
+                    <!-- 1. Economy & Rewards -->
+                    <div class="premium-card p-6 lg:p-8 border border-slate-200 shadow-xl flex flex-col">
+                        <div class="flex items-center gap-3 mb-6 border-b border-slate-100 pb-4">
+                            <span class="material-symbols-outlined text-emerald-500">payments</span>
+                            <h3 class="font-extrabold text-slate-900 uppercase tracking-wider text-sm">Economy & Yield
+                            </h3>
+                        </div>
+                        <div class="space-y-5 flex-grow">
+                            <div>
+                                <label class="text-[10px] text-slate-500 font-bold uppercase tracking-widest pl-2">Token
+                                    Identity Name</label>
+                                <input type="text" id="global-token-name"
+                                    class="w-full bg-slate-50 border-slate-200 rounded-xl px-4 py-3 focus:ring-emerald-500 text-sm font-bold">
                             </div>
-
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="grid grid-cols-2 gap-4">
                                 <div>
                                     <label
                                         class="text-[10px] text-slate-500 font-bold uppercase tracking-widest pl-2">Spin
-                                        Yield (Tokens)</label>
+                                        Reward</label>
                                     <input type="number" id="global-spin-reward"
-                                        class="w-full bg-slate-50 border-slate-200 rounded-xl px-4 py-3 focus:ring-emerald-500">
+                                        class="w-full bg-slate-50 border-slate-200 rounded-xl px-4 py-3 focus:ring-emerald-500 text-sm font-bold">
                                 </div>
                                 <div>
                                     <label
                                         class="text-[10px] text-slate-500 font-bold uppercase tracking-widest pl-2">Math
-                                        Duel Yield (Tokens)</label>
+                                        Reward</label>
                                     <input type="number" id="global-math-reward"
-                                        class="w-full bg-slate-50 border-slate-200 rounded-xl px-4 py-3 focus:ring-emerald-500">
+                                        class="w-full bg-slate-50 border-slate-200 rounded-xl px-4 py-3 focus:ring-emerald-500 text-sm font-bold">
                                 </div>
                             </div>
-
-                            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                                <div>
-                                    <label
-                                        class="text-[10px] text-slate-500 font-bold uppercase tracking-widest pl-2">Daily
-                                        Spin Quota</label>
-                                    <input type="number" id="global-spin-limit"
-                                        class="w-full bg-slate-50 border-slate-200 rounded-xl px-4 py-3 focus:ring-emerald-500">
-                                </div>
-                                <div>
-                                    <label
-                                        class="text-[10px] text-slate-500 font-bold uppercase tracking-widest pl-2">Daily
-                                        Math Quota</label>
-                                    <input type="number" id="global-math-limit"
-                                        class="w-full bg-slate-50 border-slate-200 rounded-xl px-4 py-3 focus:ring-emerald-500">
-                                </div>
-                                <div>
-                                    <label
-                                        class="text-[10px] text-slate-500 font-bold uppercase tracking-widest pl-2">Min
-                                        Withdrawal (BDT)</label>
-                                    <input type="number" id="global-min-withdraw"
-                                        class="w-full bg-slate-50 border-slate-200 rounded-xl px-4 py-3 focus:ring-emerald-500">
-                                </div>
-                            </div>
-
-                            <div class="pt-6 border-t border-slate-100 flex justify-end">
-                                <button onclick="saveGlobalSettings()"
-                                    class="emerald-gradient text-white font-bold uppercase tracking-[0.2em] text-[11px] px-8 py-4 rounded-xl shadow-lg hover:scale-[1.02] transition-all">
-                                    Commit Global Updates
-                                </button>
+                            <div>
+                                <label
+                                    class="text-[10px] text-slate-500 font-bold uppercase tracking-widest pl-2">System
+                                    commission (%)</label>
+                                <input type="number" id="global-commission"
+                                    class="w-full bg-slate-50 border-slate-200 rounded-xl px-4 py-3 focus:ring-emerald-500 text-sm font-bold">
                             </div>
                         </div>
-                    </div>
-                </section>
-
-                <!-- Ad Config -->
-                <section>
-                    <div class="flex items-center gap-3 mb-6">
-                        <span
-                            class="material-symbols-outlined text-indigo-600 font-bold p-2 bg-indigo-100 rounded-xl">campaign</span>
-                        <h2 class="text-2xl font-black uppercase tracking-tight text-slate-900">Revenue Stream</h2>
+                        <button onclick="saveGlobalSettings('economy')"
+                            class="mt-6 w-full emerald-gradient text-white font-bold uppercase tracking-[0.2em] text-[10px] py-4 rounded-xl shadow-lg active:scale-95 transition-all">Update
+                            Economy</button>
                     </div>
 
-                    <div class="premium-card p-8 border border-slate-200 shadow-xl bg-indigo-50/20">
-                        <div class="space-y-6">
+                    <!-- 2. Daily Quotas -->
+                    <div class="premium-card p-6 lg:p-8 border border-slate-200 shadow-xl flex flex-col">
+                        <div class="flex items-center gap-3 mb-6 border-b border-slate-100 pb-4">
+                            <span class="material-symbols-outlined text-amber-500">timer</span>
+                            <h3 class="font-extrabold text-slate-900 uppercase tracking-wider text-sm">Usage Quotas</h3>
+                        </div>
+                        <div class="space-y-5 flex-grow">
+                            <div>
+                                <label class="text-[10px] text-slate-500 font-bold uppercase tracking-widest pl-2">Daily
+                                    Spin Limit</label>
+                                <input type="number" id="global-spin-limit"
+                                    class="w-full bg-slate-50 border-slate-200 rounded-xl px-4 py-3 focus:ring-amber-500 text-sm font-bold">
+                            </div>
+                            <div>
+                                <label class="text-[10px] text-slate-500 font-bold uppercase tracking-widest pl-2">Daily
+                                    Math Challenge Limit</label>
+                                <input type="number" id="global-math-limit"
+                                    class="w-full bg-slate-50 border-slate-200 rounded-xl px-4 py-3 focus:ring-amber-500 text-sm font-bold">
+                            </div>
+                        </div>
+                        <button onclick="saveGlobalSettings('quotas')"
+                            class="mt-6 w-full bg-amber-500 text-white font-bold uppercase tracking-[0.2em] text-[10px] py-4 rounded-xl shadow-lg active:scale-95 transition-all">Update
+                            Quotas</button>
+                    </div>
+
+                    <!-- 3. Ad Engine Control -->
+                    <div
+                        class="premium-card p-6 lg:p-8 border border-slate-200 shadow-xl flex flex-col bg-indigo-50/10">
+                        <div class="flex items-center justify-between gap-3 mb-6 border-b border-slate-100 pb-4">
+                            <div class="flex items-center gap-3">
+                                <span class="material-symbols-outlined text-indigo-500">campaign</span>
+                                <h3 class="font-extrabold text-slate-900 uppercase tracking-wider text-sm">Revenue
+                                    Stream</h3>
+                            </div>
+                            <!-- Ad Logic Toggle -->
+                            <label class="relative inline-flex items-center cursor-pointer">
+                                <input type="checkbox" id="global-ads-enabled" class="sr-only peer" checked>
+                                <div
+                                    class="w-11 h-6 bg-slate-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-indigo-600">
+                                </div>
+                                <span
+                                    class="ml-2 text-[10px] font-black text-slate-600 uppercase tracking-tighter">Status</span>
+                            </label>
+                        </div>
+                        <div class="space-y-5 flex-grow">
                             <div>
                                 <label class="text-[10px] text-slate-500 font-bold uppercase tracking-widest pl-2">Ad
                                     SDK Script URL</label>
                                 <input type="text" id="moneytag-script" placeholder="https://libtl.com/sdk.js"
-                                    class="w-full bg-white border-slate-200 rounded-xl px-4 py-3 focus:ring-indigo-500">
-                                <p class="text-[9px] text-slate-400 mt-1 pl-2 italic">Example: script
-                                    src="//libtl.com/sdk.js"</p>
+                                    class="w-full bg-white border-slate-200 rounded-xl px-4 py-3 focus:ring-indigo-500 text-xs font-mono">
                             </div>
                             <div>
                                 <label
-                                    class="text-[10px] text-slate-500 font-bold uppercase tracking-widest pl-2">Moneytag
-                                    Target Tag ID</label>
+                                    class="text-[10px] text-slate-500 font-bold uppercase tracking-widest pl-2">Target
+                                    Zone ID</label>
                                 <input type="text" id="moneytag-tag-id"
-                                    class="w-full bg-white border-slate-200 rounded-xl px-4 py-3 focus:ring-indigo-500">
+                                    class="w-full bg-white border-slate-200 rounded-xl px-4 py-3 focus:ring-indigo-500 text-sm font-bold">
                             </div>
                             <div>
-                                <label class="text-[10px] text-slate-500 font-bold uppercase tracking-widest pl-2">Ad
-                                    Function Name (Optional)</label>
+                                <label
+                                    class="text-[10px] text-slate-500 font-bold uppercase tracking-widest pl-2">Explicit
+                                    Function Name</label>
                                 <input type="text" id="ad-function-name" placeholder="show_123456"
-                                    class="w-full bg-white border-slate-200 rounded-xl px-4 py-3 focus:ring-indigo-500">
-                                <p class="text-[9px] text-slate-400 mt-1 pl-2 italic">Leave blank to auto-detect from
-                                    Tag ID</p>
-                            </div>
-                            <div>
-                                <label class="text-[10px] text-slate-500 font-bold uppercase tracking-widest pl-2">VIP
-                                    Support Access Link</label>
-                                <input type="text" id="global-support-link"
-                                    class="w-full bg-white border-slate-200 rounded-xl px-4 py-3 focus:ring-indigo-500">
+                                    class="w-full bg-white border-slate-200 rounded-xl px-4 py-3 focus:ring-indigo-500 text-sm font-bold">
                             </div>
                         </div>
+                        <button onclick="saveGlobalSettings('ads')"
+                            class="mt-6 w-full bg-indigo-600 text-white font-bold uppercase tracking-[0.2em] text-[10px] py-4 rounded-xl shadow-lg active:scale-95 transition-all">Update
+                            Ads Engine</button>
                     </div>
-                </section>
-            </div>
+
+                    <!-- 4. Support & Security -->
+                    <div class="premium-card p-6 lg:p-8 border border-slate-200 shadow-xl flex flex-col">
+                        <div class="flex items-center gap-3 mb-6 border-b border-slate-100 pb-4">
+                            <span class="material-symbols-outlined text-red-500">lock_open</span>
+                            <h3 class="font-extrabold text-slate-900 uppercase tracking-wider text-sm">Security & Access
+                            </h3>
+                        </div>
+                        <div class="space-y-5 flex-grow">
+                            <div>
+                                <label
+                                    class="text-[10px] text-slate-500 font-bold uppercase tracking-widest pl-2">Support
+                                    Contact Link</label>
+                                <input type="text" id="global-support-link" placeholder="https://t.me/yourname"
+                                    class="w-full bg-slate-50 border-slate-200 rounded-xl px-4 py-3 focus:ring-red-500 text-sm">
+                            </div>
+                            <div>
+                                <label
+                                    class="text-[10px] text-slate-500 font-bold uppercase tracking-widest pl-2">Minimum
+                                    Withdrawal (BDT)</label>
+                                <input type="number" id="global-min-withdraw" placeholder="200"
+                                    class="w-full bg-slate-50 border-slate-200 rounded-xl px-4 py-3 focus:ring-red-500 text-sm font-bold">
+                            </div>
+                        </div>
+                        <button onclick="saveGlobalSettings('security')"
+                            class="mt-6 w-full bg-slate-900 text-white font-bold uppercase tracking-[0.2em] text-[10px] py-4 rounded-xl shadow-lg active:scale-95 transition-all">Update
+                            Security</button>
+                    </div>
+                </div>
+            </section>
 
             <!-- User Database Section -->
             <section id="users" class="mt-16 mb-20">
@@ -457,6 +488,7 @@
                 document.getElementById('moneytag-tag-id').value = settings.moneytagTagId || '';
                 document.getElementById('ad-function-name').value = settings.adFunctionName || '';
                 document.getElementById('global-support-link').value = settings.supportLink || '';
+                document.getElementById('global-ads-enabled').checked = settings.adsEnabled !== false; // Default to true
             });
 
             // Load tasks
@@ -637,24 +669,38 @@
             }
         }
 
-        function saveGlobalSettings() {
+        function saveGlobalSettings(category) {
             const settings = {
-                globalCommission: parseInt(document.getElementById('global-commission').value) || 0,
-                tokenName: document.getElementById('global-token-name').value.trim(),
-                spinReward: parseInt(document.getElementById('global-spin-reward').value) || 0,
-                mathReward: parseInt(document.getElementById('global-math-reward').value) || 0,
-                dailySpinLimit: parseInt(document.getElementById('global-spin-limit').value) || 0,
-                dailyMathLimit: parseInt(document.getElementById('global-math-limit').value) || 0,
-                minWithdraw: parseInt(document.getElementById('global-min-withdraw').value) || 200,
-                moneytagScript: document.getElementById('moneytag-script').value.trim(),
-                moneytagTagId: document.getElementById('moneytag-tag-id').value.trim(),
-                adFunctionName: document.getElementById('ad-function-name').value.trim(),
-                supportLink: document.getElementById('global-support-link').value.trim(),
                 updatedAt: firebase.database.ServerValue.TIMESTAMP
             };
 
+            if (!category || category === 'economy') {
+                settings.globalCommission = parseInt(document.getElementById('global-commission').value) || 0;
+                settings.tokenName = document.getElementById('global-token-name').value.trim();
+                settings.spinReward = parseInt(document.getElementById('global-spin-reward').value) || 0;
+                settings.mathReward = parseInt(document.getElementById('global-math-reward').value) || 0;
+            }
+
+            if (!category || category === 'quotas') {
+                settings.dailySpinLimit = parseInt(document.getElementById('global-spin-limit').value) || 0;
+                settings.dailyMathLimit = parseInt(document.getElementById('global-math-limit').value) || 0;
+            }
+
+            if (!category || category === 'ads') {
+                settings.moneytagScript = document.getElementById('moneytag-script').value.trim();
+                settings.moneytagTagId = document.getElementById('moneytag-tag-id').value.trim();
+                settings.adFunctionName = document.getElementById('ad-function-name').value.trim();
+                settings.adsEnabled = document.getElementById('global-ads-enabled').checked;
+            }
+
+            if (!category || category === 'security') {
+                settings.supportLink = document.getElementById('global-support-link').value.trim();
+                settings.minWithdraw = parseInt(document.getElementById('global-min-withdraw').value) || 200;
+            }
+
             db.ref('settings').update(settings).then(() => {
-                alert("Core System Updated Successfully!");
+                const title = category ? category.charAt(0).toUpperCase() + category.slice(1) : "System";
+                alert(`${title} settings updated successfully!`);
             });
         }
 
