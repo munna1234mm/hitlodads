@@ -46,12 +46,127 @@
             background-color: var(--obsidian);
             -webkit-tap-highlight-color: transparent;
         }
+        
         .icon-3d {
             filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
             background: var(--gold-gradient);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
+
+        /* Lucky Spin Styles */
+        .wheel-container {
+            position: relative;
+            width: 280px;
+            height: 280px;
+            margin: 0 auto;
+            border-radius: 50%;
+            background: var(--obsidian);
+            box-shadow: 0 0 30px rgba(212, 175, 55, 0.2), inset 0 0 20px rgba(212, 175, 55, 0.1);
+            border: 4px solid var(--gold-dark);
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .wheel {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            transition: transform 4s cubic-bezier(0.17, 0.67, 0.12, 0.99);
+            transform: rotate(0deg);
+            position: absolute;
+            background: conic-gradient(
+                #1a1a1a 0% 16.66%,
+                #D4AF37 16.66% 33.33%,
+                #1a1a1a 33.33% 50%,
+                #D4AF37 50% 66.66%,
+                #1a1a1a 66.66% 83.33%,
+                #D4AF37 83.33% 100%
+            );
+        }
+
+        .wheel-inner-line {
+            width: 96%;
+            height: 96%;
+            position: absolute;
+            border-radius: 50%;
+            border: 2px dashed rgba(255, 255, 255, 0.1);
+            z-index: 10;
+            pointer-events: none;
+        }
+
+        .wheel-segment {
+            position: absolute;
+            width: 50%;
+            height: 50%;
+            transform-origin: bottom right;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 5;
+            color: white;
+            font-weight: 900;
+            font-size: 14px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+            padding-bottom: 40px;
+            padding-right: 40px;
+        }
+
+        .seg-1 { transform: rotate(0deg) skew(30deg); }
+        .seg-2 { transform: rotate(60deg) skew(30deg); color: #000; }
+        .seg-3 { transform: rotate(120deg) skew(30deg); }
+        .seg-4 { transform: rotate(180deg) skew(30deg); color: #000; }
+        .seg-5 { transform: rotate(240deg) skew(30deg); }
+        .seg-6 { transform: rotate(300deg) skew(30deg); color: #000; }
+
+        .wheel-segment span {
+            transform: skew(-30deg) rotate(-30deg);
+            display: inline-block;
+            text-align: center;
+            line-height: 1.2;
+        }
+
+        .spin-btn {
+            position: absolute;
+            z-index: 20;
+            width: 70px;
+            height: 70px;
+            background: radial-gradient(circle, #F9E29B 0%, #D4AF37 50%, #8A6D3B 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+            color: black;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5), inset 0 2px 5px rgba(255,255,255,0.5);
+            border: 4px solid var(--obsidian);
+            cursor: pointer;
+            transition: transform 0.1s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 14px;
+        }
+
+        .spin-btn:active {
+            transform: scale(0.95);
+        }
+
+        .pointer {
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 15px solid transparent;
+            border-right: 15px solid transparent;
+            border-top: 30px solid var(--gold-light);
+            z-index: 30;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
+        }
+
     </style>
     <style>
         body {
@@ -100,77 +215,43 @@
                 </div>
             </div>
         </div>
-        <a href="analytics.html" class="space-y-1">
-            <h3 class="text-3xl font-black tracking-tight text-white">The Gold Standard</h3>
-            <p class="text-sm text-slate-500 font-medium">Your portfolio is performing <span
-                    class="text-green-500">+12.5%</span> today</p>
-        </a>
-    </header>
-    <main class="px-6 space-y-6">
-        <div class="grid grid-cols-2 gap-4">
-            <a href="analytics.html" class="premium-card p-5 relative overflow-hidden group">
-                <div class="absolute top-0 right-0 p-2 opacity-20">
-                    <span class="material-symbols-outlined text-4xl icon-3d">account_balance_wallet</span>
-                </div>
-                <div class="relative z-10">
-                    <div class="flex items-center gap-2 mb-4">
-                        <span class="material-symbols-outlined text-xl icon-3d">payments</span>
-                        <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Balance</span>
-                    </div>
-                    <div class="space-y-0.5">
-                        <p id="balance-display" class="text-xl font-black font-display text-white">3,223.20</p>
-                        <p class="text-[10px] font-bold text-green-500 flex items-center gap-0.5">
-                            <span class="material-symbols-outlined text-[12px]">trending_up</span> BDT TODAY
-                        </p>
-                    </div>
-                </div>
-            </a>
-            <div class="premium-card p-5 relative overflow-hidden">
-                <div class="absolute top-0 right-0 p-2 opacity-20">
-                    <span class="material-symbols-outlined text-4xl icon-3d">generating_tokens</span>
-                </div>
-                <div class="relative z-10">
-                    <div class="flex items-center gap-2 mb-4">
-                        <span class="material-symbols-outlined text-xl icon-3d">toll</span>
-                        <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Tokens</span>
-                    </div>
-                    <div class="space-y-0.5">
-                        <p id="tokens-display" class="text-xl font-black font-display text-white">253 BTTC</p>
-                        <p class="text-[10px] font-bold text-blue-400">+207 TODAY</p>
-                    </div>
+        <!-- Lucky Spin Component -->
+        <div class="premium-card p-6 flex flex-col items-center justify-center relative overflow-hidden">
+            <div class="absolute top-0 right-[-20%] w-48 h-48 bg-[var(--gold-primary)]/10 blur-[60px] rounded-full">
+            </div>
+            <div class="absolute bottom-[-10%] left-[-20%] w-48 h-48 bg-white/5 blur-[60px] rounded-full"></div>
+
+            <div class="text-center mb-6 relative z-10 w-full">
+                <h3 class="text-2xl font-black gold-gradient-text uppercase tracking-widest italic mb-1">Lucky Spin</h3>
+                <p class="text-[10px] text-slate-400 font-bold tracking-widest uppercase">Win Daily Diamond Rewards</p>
+                <div
+                    class="h-[1px] w-1/2 bg-gradient-to-r from-transparent via-[var(--gold-primary)]/50 to-transparent mx-auto mt-4">
                 </div>
             </div>
-            <div class="premium-card p-5 relative overflow-hidden">
-                <div class="absolute top-0 right-0 p-2 opacity-20">
-                    <span class="material-symbols-outlined text-4xl icon-3d">groups</span>
-                </div>
-                <div class="relative z-10">
-                    <div class="flex items-center gap-2 mb-4">
-                        <span class="material-symbols-outlined text-xl icon-3d">group_add</span>
-                        <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Referrals</span>
+
+            <div class="wheel-container mb-4">
+                <div class="pointer"></div>
+                <div class="wheel-inner-line"></div>
+                <div class="wheel" id="spin-wheel">
+                    <div class="wheel-segment seg-1"><span>50<br><small class="text-[8px]">BTTC</small></span></div>
+                    <div class="wheel-segment seg-2"><span>10<br><small class="text-[8px] font-black">BDT</small></span>
                     </div>
-                    <div class="space-y-0.5">
-                        <p id="referrals-count" class="text-xl font-black font-display text-white">144</p>
-                        <p class="text-[10px] font-bold text-indigo-400">ELITE TIER</p>
-                    </div>
+                    <div class="wheel-segment seg-3"><span>NO<br><small class="text-[8px]">LUCK</small></span></div>
+                    <div class="wheel-segment seg-4"><span>100<br><small class="text-[8px]">BTTC</small></span></div>
+                    <div class="wheel-segment seg-5"><span>5<br><small class="text-[8px]">BDT</small></span></div>
+                    <div class="wheel-segment seg-6"><span>20<br><small class="text-[8px]">BTTC</small></span></div>
                 </div>
+                <div class="spin-btn" onclick="spinWheel()" id="spin-button">SPIN</div>
             </div>
-            <a href="tasks.html" class="premium-card p-5 relative overflow-hidden">
-                <div class="absolute top-0 right-0 p-2 opacity-20">
-                    <span class="material-symbols-outlined text-4xl icon-3d">verified_user</span>
-                </div>
-                <div class="relative z-10">
-                    <div class="flex items-center gap-2 mb-4">
-                        <span class="material-symbols-outlined text-xl icon-3d">task_alt</span>
-                        <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Tasks</span>
-                    </div>
-                    <div class="space-y-0.5">
-                        <p id="tasks-progress" class="text-xl font-black font-display text-white">09/10</p>
-                        <p class="text-[10px] font-bold text-amber-500">90% COMPLETE</p>
-                    </div>
-                </div>
-            </a>
+
+            <div
+                class="flex items-center gap-2 mt-2 bg-white/5 px-4 py-2 rounded-xl border border-white/10 relative z-10">
+                <span class="material-symbols-outlined text-[var(--gold-primary)] text-sm">confirmation_number</span>
+                <span class="text-xs font-bold text-white tracking-widest">Spins Left: <span
+                        class="text-[var(--gold-primary)]" id="spins-left">1</span></span>
+            </div>
         </div>
+
         <div
             class="relative overflow-hidden p-8 rounded-[32px] border border-[#D4AF37]/40 bg-gradient-to-br from-[#121212] to-black shadow-[0_20px_50px_rgba(0,0,0,0.5)] group">
             <div class="absolute top-0 right-0 -mr-12 -mt-12 w-48 h-48 bg-[#D4AF37]/10 rounded-full blur-[80px]"></div>
@@ -232,84 +313,84 @@
                 </div>
             </div>
         </div>
-    </main>
-    <nav
-        class="fixed bottom-0 left-0 right-0 bg-black/95 border-t border-white/5 px-8 py-5 backdrop-blur-2xl flex items-center justify-between z-50">
-        <div class="flex flex-col items-center gap-1.5">
-            <span class="material-symbols-outlined text-[#D4AF37] fill-1">home</span>
-            <span class="text-[9px] font-black uppercase tracking-widest text-[#D4AF37]">Home</span>
-        </div>
-        <a href="tasks.html" class="flex flex-col items-center gap-1.5 text-slate-600">
-            <span class="material-symbols-outlined">account_balance</span>
-            <span class="text-[9px] font-black uppercase tracking-widest">Earn</span>
-        </a>
-        <a href="wallet.html" class="flex flex-col items-center gap-1.5">
-            <div
-                class="gold-coin w-12 h-12 rounded-2xl flex items-center justify-center -mt-10 shadow-2xl border-2 border-black">
-                <span class="material-symbols-outlined text-black font-black text-2xl">account_balance_wallet</span>
+        </main>
+        <nav
+            class="fixed bottom-0 left-0 right-0 bg-black/95 border-t border-white/5 px-8 py-5 backdrop-blur-2xl flex items-center justify-between z-50">
+            <div class="flex flex-col items-center gap-1.5">
+                <span class="material-symbols-outlined text-[#D4AF37] fill-1">home</span>
+                <span class="text-[9px] font-black uppercase tracking-widest text-[#D4AF37]">Home</span>
             </div>
-        </a>
-        <a href="referral.html" class="flex flex-col items-center gap-1.5 text-slate-600">
-            <span class="material-symbols-outlined">redeem</span>
-            <span class="text-[9px] font-black uppercase tracking-widest">Refer</span>
-        </a>
-        <a href="profile.html" class="flex flex-col items-center gap-1.5 text-slate-600">
-            <span class="material-symbols-outlined text-2xl">person</span>
-            <span class="text-[9px] font-black uppercase tracking-widest">Profile</span>
-        </a>
-    </nav>
+            <a href="tasks.html" class="flex flex-col items-center gap-1.5 text-slate-600">
+                <span class="material-symbols-outlined">account_balance</span>
+                <span class="text-[9px] font-black uppercase tracking-widest">Earn</span>
+            </a>
+            <a href="wallet.html" class="flex flex-col items-center gap-1.5">
+                <div
+                    class="gold-coin w-12 h-12 rounded-2xl flex items-center justify-center -mt-10 shadow-2xl border-2 border-black">
+                    <span class="material-symbols-outlined text-black font-black text-2xl">account_balance_wallet</span>
+                </div>
+            </a>
+            <a href="referral.html" class="flex flex-col items-center gap-1.5 text-slate-600">
+                <span class="material-symbols-outlined">redeem</span>
+                <span class="text-[9px] font-black uppercase tracking-widest">Refer</span>
+            </a>
+            <a href="profile.html" class="flex flex-col items-center gap-1.5 text-slate-600">
+                <span class="material-symbols-outlined text-2xl">person</span>
+                <span class="text-[9px] font-black uppercase tracking-widest">Profile</span>
+            </a>
+        </nav>
 
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-database-compat.js"></script>
-    <script src="firebase-config.js"></script>
-    <script>
-        // Initialize Telegram WebApp
-        const tg = window.Telegram.WebApp;
-        tg.expand();
+        <script src="https://telegram.org/js/telegram-web-app.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-database-compat.js"></script>
+        <script src="firebase-config.js"></script>
+        <script>
+            // Initialize Telegram WebApp
+            const tg = window.Telegram.WebApp;
+            tg.expand();
 
-        // Get User Data from Telegram
-        const tgUser = tg.initDataUnsafe.user || {
-            id: '5702521445',
-            first_name: 'Crazy Developer',
-            last_name: 'BD',
-            username: 'crazydevbd',
-            photo_url: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBGL2m-Avuc-7ToaD3wp2Q3nZECNJWiIpwQsMJ2z-UZXX8XYgc1vIj7Z0JIfHO2nS2OBNRoBxl-TZphnjWyg7tallPDR-JuectX-Z_h0VNmq8qSdMX-lopLHGtH-GcXtgIs2WtSfvk-EUle-5n1Xz4v0KIGw00LqmKPZ8kHTO_hkVIn7Z49s7Hv1OappINZs2H0-DgbFWs5yyfbkSQTGZENdTOYW3z4TBvdhYtQwnTOn-Ul30Ul4--fd3CBC6Rfshtj4VFO8_Hc6VQ'
-        };
+            // Get User Data from Telegram
+            const tgUser = tg.initDataUnsafe.user || {
+                id: '5702521445',
+                first_name: 'Crazy Developer',
+                last_name: 'BD',
+                username: 'crazydevbd',
+                photo_url: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBGL2m-Avuc-7ToaD3wp2Q3nZECNJWiIpwQsMJ2z-UZXX8XYgc1vIj7Z0JIfHO2nS2OBNRoBxl-TZphnjWyg7tallPDR-JuectX-Z_h0VNmq8qSdMX-lopLHGtH-GcXtgIs2WtSfvk-EUle-5n1Xz4v0KIGw00LqmKPZ8kHTO_hkVIn7Z49s7Hv1OappINZs2H0-DgbFWs5yyfbkSQTGZENdTOYW3z4TBvdhYtQwnTOn-Ul30Ul4--fd3CBC6Rfshtj4VFO8_Hc6VQ'
+            };
 
-        const userId = tgUser.id.toString();
-        const userRef = db.ref('users/' + userId);
+            const userId = tgUser.id.toString();
+            const userRef = db.ref('users/' + userId);
 
-        // Set initial UI from Telegram SDK
-        document.getElementById('user-name').innerText = (tgUser.first_name + ' ' + (tgUser.last_name || '')).trim();
-        if (tgUser.username) {
-            document.getElementById('user-username').innerText = '@' + tgUser.username;
-            document.getElementById('user-username').style.display = 'block';
-        }
-        if (tgUser.photo_url) document.getElementById('user-avatar').src = tgUser.photo_url;
-
-        let currentTokenSymbol = 'BTTC';
-        db.ref('settings/tokenName').on('value', (snap) => {
-            if (snap.exists()) {
-                currentTokenSymbol = snap.val();
-                document.querySelectorAll('.token-symbol-display').forEach(el => el.innerText = currentTokenSymbol);
-                // Refresh token display if user data already exists
-                userRef.once('value', (s) => {
-                    const d = s.val();
-                    if (d && d.tokens !== undefined) {
-                        document.getElementById('tokens-display').innerText = d.tokens + ' ' + currentTokenSymbol;
-                    }
-                });
+            // Set initial UI from Telegram SDK
+            document.getElementById('user-name').innerText = (tgUser.first_name + ' ' + (tgUser.last_name || '')).trim();
+            if (tgUser.username) {
+                document.getElementById('user-username').innerText = '@' + tgUser.username;
+                document.getElementById('user-username').style.display = 'block';
             }
-        });
+            if (tgUser.photo_url) document.getElementById('user-avatar').src = tgUser.photo_url;
 
-        // Sync data from Firebase to UI
-        userRef.on('value', (snapshot) => {
-            const data = snapshot.val();
-            if (data) {
-                // Check if user is banned
-                if (data.isBanned) {
-                    document.body.innerHTML = `
+            let currentTokenSymbol = 'BTTC';
+            db.ref('settings/tokenName').on('value', (snap) => {
+                if (snap.exists()) {
+                    currentTokenSymbol = snap.val();
+                    document.querySelectorAll('.token-symbol-display').forEach(el => el.innerText = currentTokenSymbol);
+                    // Refresh token display if user data already exists
+                    userRef.once('value', (s) => {
+                        const d = s.val();
+                        if (d && d.tokens !== undefined) {
+                            document.getElementById('tokens-display').innerText = d.tokens + ' ' + currentTokenSymbol;
+                        }
+                    });
+                }
+            });
+
+            // Sync data from Firebase to UI
+            userRef.on('value', (snapshot) => {
+                const data = snapshot.val();
+                if (data) {
+                    // Check if user is banned
+                    if (data.isBanned) {
+                        document.body.innerHTML = `
                         <div class="min-h-screen bg-black flex items-center justify-center p-6 text-center">
                             <div class="premium-card p-10 border-red-500/30">
                                 <span class="material-symbols-outlined text-red-500 text-6xl mb-4">block</span>
@@ -318,58 +399,143 @@
                                 <p class="text-neutral-500 text-[10px] mt-6 uppercase tracking-widest font-black">Secure Member Network</p>
                             </div>
                         </div>`;
+                        return;
+                    }
+
+                    // Update UI with Firebase data
+                    if (data.name) document.getElementById('user-name').innerText = data.name;
+                    if (data.username) {
+                        document.getElementById('user-username').innerText = '@' + data.username;
+                        document.getElementById('user-username').style.display = 'block';
+                    }
+                    if (data.photo_url) document.getElementById('user-avatar').src = data.photo_url;
+
+                    // Update Spins Left count
+                    if (data.spinsLeft !== undefined) {
+                        document.getElementById('spins-left').innerText = data.spinsLeft;
+                        localSpinsLeft = data.spinsLeft;
+                    }
+
+                } else {
+                    // Auto-create profile for new user
+                    const displayName = (tgUser.first_name + ' ' + (tgUser.last_name || '')).trim() || tgUser.username || 'VIP Member';
+                    userRef.set({
+                        id: userId,
+                        name: displayName,
+                        username: tgUser.username || '',
+                        photo_url: tgUser.photo_url || 'https://lh3.googleusercontent.com/aida-public/AB6AXuBGL2m-Avuc-7ToaD3wp2Q3nZECNJWiIpwQsMJ2z-UZXX8XYgc1vIj7Z0JIfHO2nS2OBNRoBxl-TZphnjWyg7tallPDR-JuectX-Z_h0VNmq8qSdMX-lopLHGtH-GcXtgIs2WtSfvk-EUle-5n1Xz4v0KIGw00LqmKPZ8kHTO_hkVIn7Z49s7Hv1OappINZs2H0-DgbFWs5yyfbkSQTGZENdTOYW3z4TBvdhYtQwnTOn-Ul30Ul4--fd3CBC6Rfshtj4VFO8_Hc6VQ',
+                        balance: 0.00,
+                        tokens: 0,
+                        referrals: 0,
+                        tasksCompleted: 0,
+                        spinsLeft: 1, // 1 free spin for new users
+                        joinedAt: firebase.database.ServerValue.TIMESTAMP
+                    });
+                }
+            });
+
+            // Spin Logic
+            let isSpinning = false;
+            let currentRotation = 0;
+            let localSpinsLeft = 0; // updated via firebase
+
+            // 6 Segments mapping: (0=top right (seg1), 60=seg6, 120=seg5, 180=seg4.. etc)
+            // It spins clockwise. By setting rotation to land on degrees, we pick a prize.
+            const segments = [
+                { prize: "50 BTTC", isTokens: true, amount: 50 },
+                { prize: "10 BDT", isTokens: false, amount: 10 },
+                { prize: "NO LUCK", isTokens: null, amount: 0 },
+                { prize: "100 BTTC", isTokens: true, amount: 100 },
+                { prize: "5 BDT", isTokens: false, amount: 5 },
+                { prize: "20 BTTC", isTokens: true, amount: 20 },
+            ];
+
+            function spinWheel() {
+                if (isSpinning) return;
+                if (localSpinsLeft <= 0) {
+                    tg.showAlert("No spins left! Come back tomorrow.");
                     return;
                 }
 
-                // Update UI with Firebase data
-                if (data.name) document.getElementById('user-name').innerText = data.name;
-                if (data.username) {
-                    document.getElementById('user-username').innerText = '@' + data.username;
-                    document.getElementById('user-username').style.display = 'block';
+                isSpinning = true;
+                const btn = document.getElementById('spin-button');
+                btn.style.opacity = '0.5';
+
+                // Deduct spin upfront
+                userRef.child('spinsLeft').set(localSpinsLeft - 1);
+
+                const wheel = document.getElementById('spin-wheel');
+
+                // Random segment 0-5
+                const winningSegmentIndex = Math.floor(Math.random() * segments.length);
+                const winningPrize = segments[winningSegmentIndex];
+
+                // Calculate landing rotation (approximate center of segment)
+                // Each slice is 60deg. 
+                const baseRotation = 360 - (winningSegmentIndex * 60) - 30;
+
+                // Spin for at least 5 full rotations + the winning degree
+                const spinTo = currentRotation + (360 * 5) + (baseRotation - (currentRotation % 360));
+
+                currentRotation = spinTo;
+                wheel.style.transform = `rotate(${currentRotation}deg)`;
+
+                if (tg && tg.HapticFeedback) {
+                    tg.HapticFeedback.impactOccurred('medium');
+                    // slight vibration while spinning
+                    let spinInterval = setInterval(() => tg.HapticFeedback.selectionChanged(), 400);
+                    setTimeout(() => clearInterval(spinInterval), 3800);
                 }
-                if (data.photo_url) document.getElementById('user-avatar').src = data.photo_url;
-                if (data.balance !== undefined) document.getElementById('balance-display').innerText = data.balance.toLocaleString(undefined, { minimumFractionDigits: 2 });
-                if (data.tokens !== undefined) document.getElementById('tokens-display').innerText = data.tokens + ' ' + currentTokenSymbol;
-                if (data.referrals !== undefined) document.getElementById('referrals-count').innerText = data.referrals;
-                if (data.tasksCompleted !== undefined) document.getElementById('tasks-progress').innerText = `${data.tasksCompleted}/10`;
-            } else {
-                // Auto-create profile for new user
-                const displayName = (tgUser.first_name + ' ' + (tgUser.last_name || '')).trim() || tgUser.username || 'VIP Member';
-                userRef.set({
-                    id: userId,
-                    name: displayName,
-                    username: tgUser.username || '',
-                    photo_url: tgUser.photo_url || 'https://lh3.googleusercontent.com/aida-public/AB6AXuBGL2m-Avuc-7ToaD3wp2Q3nZECNJWiIpwQsMJ2z-UZXX8XYgc1vIj7Z0JIfHO2nS2OBNRoBxl-TZphnjWyg7tallPDR-JuectX-Z_h0VNmq8qSdMX-lopLHGtH-GcXtgIs2WtSfvk-EUle-5n1Xz4v0KIGw00LqmKPZ8kHTO_hkVIn7Z49s7Hv1OappINZs2H0-DgbFWs5yyfbkSQTGZENdTOYW3z4TBvdhYtQwnTOn-Ul30Ul4--fd3CBC6Rfshtj4VFO8_Hc6VQ',
-                    balance: 0.00,
-                    tokens: 0,
-                    referrals: 0,
-                    tasksCompleted: 0,
-                    joinedAt: firebase.database.ServerValue.TIMESTAMP
+
+                setTimeout(() => {
+                    isSpinning = false;
+                    btn.style.opacity = '1';
+
+                    if (tg && tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
+
+                    if (winningPrize.amount > 0) {
+                        // Grant Prize
+                        userRef.transaction((data) => {
+                            if (data) {
+                                if (winningPrize.isTokens) {
+                                    data.tokens = (data.tokens || 0) + winningPrize.amount;
+                                    data.lifetimeBTTC = (data.lifetimeBTTC || 0) + winningPrize.amount;
+                                } else {
+                                    data.balance = (data.balance || 0) + winningPrize.amount;
+                                }
+                            }
+                            return data;
+                        });
+
+                        tg.showAlert(`🎉 Congratulations! You won ${winningPrize.prize}!`);
+                    } else {
+                        tg.showAlert(`Better luck next time! Keep checking back.`);
+                    }
+                }, 4000); // Waits for the 4s CSS transition
+            }
+
+            // Example interaction: Claim Reward
+            function claimReward() {
+
+                userRef.transaction((currentData) => {
+                    if (currentData) {
+                        currentData.balance = (currentData.balance || 0) + 100; // Gift 100 BDT
+                        currentData.tokens = (currentData.tokens || 0) + 10; // Gift 10 BTTC
+                    }
+                    return currentData;
                 });
+                tg.HapticFeedback.notificationOccurred('success');
+                alert('Reward Claimed! +100 BDT and +10 BTTC added to your account.');
             }
-        });
 
-        // Example interaction: Claim Reward
-        function claimReward() {
-            userRef.transaction((currentData) => {
-                if (currentData) {
-                    currentData.balance = (currentData.balance || 0) + 100; // Gift 100 BDT
-                    currentData.tokens = (currentData.tokens || 0) + 10; // Gift 10 BTTC
+            // Attach event listener to the Claim Reward button
+            document.addEventListener('DOMContentLoaded', () => {
+                const claimBtn = document.querySelector('button.gold-coin');
+                if (claimBtn && claimBtn.innerText.includes('Claim Reward')) {
+                    claimBtn.onclick = claimReward;
                 }
-                return currentData;
             });
-            tg.HapticFeedback.notificationOccurred('success');
-            alert('Reward Claimed! +100 BDT and +10 BTTC added to your account.');
-        }
-
-        // Attach event listener to the Claim Reward button
-        document.addEventListener('DOMContentLoaded', () => {
-            const claimBtn = document.querySelector('button.gold-coin');
-            if (claimBtn && claimBtn.innerText.includes('Claim Reward')) {
-                claimBtn.onclick = claimReward;
-            }
-        });
-    </script>
+        </script>
 </body>
 
 </html>
