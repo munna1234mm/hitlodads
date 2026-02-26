@@ -180,18 +180,25 @@
         }
 
         function processReward(amount) {
+            const today = new Date().toISOString().split('T')[0];
+
             userRef.transaction((currentData) => {
-                if (currentData) {
-                    currentData.tokens = (currentData.tokens || 0) + amount;
-                } else {
-                    return {
-                        id: userId,
-                        tokens: amount,
-                        balance: 0,
-                        createdAt: firebase.database.ServerValue.TIMESTAMP
-                    };
-                }
-                return currentData;
+                const newData = currentData || {
+                    id: userId,
+                    tokens: 0,
+                    balance: 0,
+                    createdAt: firebase.database.ServerValue.TIMESTAMP
+                };
+
+                // Add tokens
+                newData.tokens = (newData.tokens || 0) + amount;
+
+                // Increment daily limit count
+                if (!newData.dailyStats) newData.dailyStats = {};
+                if (!newData.dailyStats[today]) newData.dailyStats[today] = {};
+                newData.dailyStats[today].mathCount = (newData.dailyStats[today].mathCount || 0) + 1;
+
+                return newData;
             });
             tg.HapticFeedback.notificationOccurred('success');
         }

@@ -141,6 +141,18 @@
                     <input type="number" id="global-math-reward" placeholder="e.g. 100"
                         class="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 mt-1 focus:outline-none focus:border-emerald-500">
                 </div>
+                <div>
+                    <label class="text-[10px] text-slate-500 font-bold uppercase tracking-widest pl-2">Daily Spin
+                        Limit</label>
+                    <input type="number" id="global-spin-limit" placeholder="e.g. 10"
+                        class="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 mt-1 focus:outline-none focus:border-emerald-500">
+                </div>
+                <div>
+                    <label class="text-[10px] text-slate-500 font-bold uppercase tracking-widest pl-2">Daily Math
+                        Limit</label>
+                    <input type="number" id="global-math-limit" placeholder="e.g. 10"
+                        class="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 mt-1 focus:outline-none focus:border-emerald-500">
+                </div>
                 <button onclick="saveGlobalSettings()"
                     class="emerald-bg py-3.5 px-8 rounded-xl text-white font-black uppercase tracking-widest text-xs shadow-lg shadow-emerald-500/20 hover:translate-y-[-1px] transition-all">
                     Apply Global Settings
@@ -367,6 +379,12 @@
                 if (settings.mathReward !== undefined) {
                     document.getElementById('global-math-reward').value = settings.mathReward;
                 }
+                if (settings.dailySpinLimit !== undefined) {
+                    document.getElementById('global-spin-limit').value = settings.dailySpinLimit;
+                }
+                if (settings.dailyMathLimit !== undefined) {
+                    document.getElementById('global-math-limit').value = settings.dailyMathLimit;
+                }
             });
         }
 
@@ -377,9 +395,13 @@
             const channelLink = document.getElementById('global-channel-link').value.trim();
             const spinReward = parseInt(document.getElementById('global-spin-reward').value);
             const mathReward = parseInt(document.getElementById('global-math-reward').value);
+            const spinLimit = parseInt(document.getElementById('global-spin-limit').value);
+            const mathLimit = parseInt(document.getElementById('global-math-limit').value);
             if (isNaN(commission)) return alert("Please enter a valid number for commission");
             if (isNaN(spinReward)) return alert("Please enter a valid number for spin reward");
             if (isNaN(mathReward)) return alert("Please enter a valid number for math reward");
+            if (isNaN(spinLimit)) return alert("Please enter a valid number for spin limit");
+            if (isNaN(mathLimit)) return alert("Please enter a valid number for math limit");
             if (!tokenName) return alert("Please enter a token name");
 
             const saveBtn = event.target;
@@ -394,6 +416,8 @@
                 channelLink: channelLink,
                 spinReward: spinReward,
                 mathReward: mathReward,
+                dailySpinLimit: spinLimit,
+                dailyMathLimit: mathLimit,
                 updatedAt: firebase.database.ServerValue.TIMESTAMP
             }).then(() => {
                 setTimeout(() => {

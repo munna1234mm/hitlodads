@@ -139,10 +139,14 @@
 
     <script>
         const tg = window.Telegram.WebApp;
-        let score = 0;
+        const tgUser = tg.initDataUnsafe.user || { id: '5702521445' };
+        const userId = tgUser.id.toString();
+        const userRef = db.ref('users/' + userId);
+
         let currentAnswer = 0;
         let tokenName = 'VIP GOLD';
         let mathReward = 0;
+        let dailyMathLimit = 0;
 
         // Load settings
         db.ref('settings').on('value', (snap) => {
@@ -155,19 +159,35 @@
                 mathReward = settings.mathReward;
                 document.getElementById('potential-reward').innerText = mathReward;
             }
+            if (settings.dailyMathLimit !== undefined) {
+                dailyMathLimit = settings.dailyMathLimit;
+                checkDailyLimit();
+            }
         });
 
+        function checkDailyLimit() {
+            const today = new Date().toISOString().split('T')[0];
+            db.ref(`users/${userId}/dailyStats/${today}/mathCount`).once('value', (snap) => {
+                const count = snap.val() || 0;
+                if (count >= dailyMathLimit) {
+                    document.getElementById('choices-container').innerHTML = `
+                        <div class="col-span-2 text-center p-6 bg-red-500/10 border border-red-500/20 rounded-2xl">
+                            <p class="text-red-500 font-bold">Daily Limit Reached!</p>
+                            <p class="text-xs text-red-500/70 mt-1">Please come back tomorrow.</p>
+                        </div>`;
+                    document.getElementById('problem-display').innerText = "LIMIT REACED";
+                } else {
+                    generateProblem();
+                }
+            });
+        }
+
         function generateProblem() {
-            const num1 = Math.floor(Math.random() * 50) + 10;
-            const num2 = Math.floor(Math.random() * 50) + 10;
-            const num3 = Math.floor(Math.random() * 20) + 1;
+            const num1 = Math.floor(Math.random() * 20) + 1;
+            const num2 = Math.floor(Math.random() * 20) + 1;
 
-            const ops = ['+', '-'];
-            const op1 = ops[Math.floor(Math.random() * ops.length)];
-            const op2 = ops[Math.floor(Math.random() * ops.length)];
-
-            let problemText = `${num1} ${op1} ${num2} ${op2} ${num3}`;
-            currentAnswer = eval(problemText);
+            let problemText = `${num1} + ${num2}`;
+            currentAnswer = num1 + num2;
 
             document.getElementById('problem-display').innerText = problemText;
             generateChoices(currentAnswer);
@@ -176,8 +196,8 @@
         function generateChoices(correct) {
             const choices = [correct];
             while (choices.length < 4) {
-                const wrong = correct + (Math.floor(Math.random() * 20) - 10);
-                if (!choices.includes(wrong)) choices.push(wrong);
+                const wrong = correct + (Math.floor(Math.random() * 10) - 5);
+                if (!choices.includes(wrong) && wrong >= 0) choices.push(wrong);
             }
             // Shuffle
             choices.sort(() => Math.random() - 0.5);
@@ -196,22 +216,17 @@
         function checkAnswer(selected) {
             if (selected === currentAnswer) {
                 tg.HapticFeedback.notificationOccurred('success');
-                // Immediately end game after 1 correct answer
                 endGame();
             } else {
                 tg.HapticFeedback.notificationOccurred('error');
-                generateProblem(); // Next problem on error
+                generateProblem();
             }
         }
 
         function endGame() {
-            // Setting score to 1 effectively signals a win
             localStorage.setItem('lastMathScore', 1);
             window.location.href = 'math_result.html';
         }
-
-        // Initialize
-        generateProblem();
     </script>
 </body>
 

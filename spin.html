@@ -140,16 +140,21 @@
                 </div>
             </div>
         </div>
-        <div class="w-full max-w-xs space-y-6 flex flex-col items-center">
+        <div class="w-full max-w-xs space-y-4 flex flex-col items-center">
             <button id="spin-btn" onclick="startSpin()"
                 class="w-full py-5 rounded-xl gold-gradient text-background-dark font-extrabold text-xl shadow-[0_0_25px_rgba(242,185,13,0.3)] active:scale-95 transition-all duration-75 uppercase tracking-[0.1em]">
                 Spin Now
             </button>
-            <div class="w-full max-w-[160px]">
-                <div class="bg-primary/5 border border-primary/20 rounded-xl p-4 obsidian-glow text-center">
-                    <p class="text-[10px] text-primary/60 uppercase font-bold tracking-widest mb-1">Available Coins</p>
-                    <p id="tokens-display" class="text-base font-extrabold text-primary">0 <span
+            <div class="flex gap-4 w-full">
+                <div class="flex-1 bg-primary/5 border border-primary/20 rounded-xl p-3 obsidian-glow text-center">
+                    <p class="text-[9px] text-primary/60 uppercase font-bold tracking-widest mb-0.5">Coins</p>
+                    <p id="tokens-display" class="text-sm font-extrabold text-primary">0 <span
                             class="token-symbol-display">BTTC</span></p>
+                </div>
+                <div
+                    class="flex-1 bg-[var(--gold-primary)]/10 border border-[var(--gold-primary)]/20 rounded-xl p-3 obsidian-glow text-center">
+                    <p class="text-[9px] text-primary/60 uppercase font-bold tracking-widest mb-0.5">Spins Left</p>
+                    <p id="spins-left-display" class="text-sm font-extrabold text-primary">-/-</p>
                 </div>
             </div>
         </div>
@@ -230,11 +235,14 @@
 
         const userId = tgUser.id.toString();
         const userRef = db.ref('users/' + userId);
+        const today = new Date().toISOString().split('T')[0];
 
         let currentTokenSymbol = 'BTTC';
         let currentSpinReward = 10;
         let isSpinning = false;
         let rotation = 0;
+        let dailySpinLimit = 0;
+        let todaySpinsUsed = 0;
 
         // Load Global Settings
         db.ref('settings').on('value', (snap) => {
@@ -246,18 +254,33 @@
             if (settings.spinReward !== undefined) {
                 currentSpinReward = settings.spinReward;
             }
+            if (settings.dailySpinLimit !== undefined) {
+                dailySpinLimit = settings.dailySpinLimit;
+                updateSpinsDisplay();
+            }
         });
+
+        function updateSpinsDisplay() {
+            document.getElementById('spins-left-display').innerText = `${Math.max(0, dailySpinLimit - todaySpinsUsed)}/${dailySpinLimit}`;
+        }
 
         // Load User Data
         userRef.on('value', (snap) => {
             const data = snap.val();
             if (data) {
                 document.getElementById('tokens-display').innerHTML = `${(data.tokens || 0).toLocaleString()} <span class="token-symbol-display">${currentTokenSymbol}</span>`;
+                todaySpinsUsed = (data.dailyStats && data.dailyStats[today] && data.dailyStats[today].spinCount) || 0;
+                updateSpinsDisplay();
             }
         });
 
         function startSpin() {
             if (isSpinning) return;
+
+            if (todaySpinsUsed >= dailySpinLimit) {
+                tg.showAlert("Daily limit reached! Please come back tomorrow.");
+                return;
+            }
 
             tg.HapticFeedback.impactOccurred('medium');
             isSpinning = true;
@@ -297,7 +320,15 @@
                     balance: 0,
                     createdAt: firebase.database.ServerValue.TIMESTAMP
                 };
+
+                // Add tokens
                 newData.tokens = (newData.tokens || 0) + currentSpinReward;
+
+                // Increment daily stats
+                if (!newData.dailyStats) newData.dailyStats = {};
+                if (!newData.dailyStats[today]) newData.dailyStats[today] = {};
+                newData.dailyStats[today].spinCount = (newData.dailyStats[today].spinCount || 0) + 1;
+
                 return newData;
             });
         }
