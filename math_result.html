@@ -52,16 +52,30 @@
         }
     </style>
     <!-- Ad SDK Integration -->
-    <script src='//libtl.com/sdk.js' data-zone='10658939' data-sdk='show_10658939'></script>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
 </head>
 
 <body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 font-display">
     <!-- Ad Loading Overlay -->
     <div id="ad-overlay"
         class="fixed inset-0 z-[100] bg-background-dark flex flex-col items-center justify-center p-6 text-center">
-        <div class="w-16 h-16 border-4 border-primary/20 border-t-primary rounded-full animate-spin mb-4"></div>
-        <p class="text-primary font-bold animate-pulse uppercase tracking-widest text-sm">Preparing Reward...</p>
-        <p class="text-white/40 text-xs mt-2 italic">Please wait for the advertisement</p>
+        <div class="mb-8">
+            <div class="w-24 h-24 gold-gradient mx-auto rounded-full flex items-center justify-center mb-6 shadow-2xl">
+                <span class="material-symbols-outlined text-background-dark text-5xl font-black">emoji_events</span>
+            </div>
+            <h3 class="text-2xl font-black text-white mb-2 uppercase tracking-tight">Challenge Solved!</h3>
+            <p class="text-primary/70 text-sm mb-8 font-medium">Click below to see your reward</p>
+        </div>
+
+        <button id="claim-reward-btn" onclick="handleClaimReward()"
+            class="w-full max-w-xs py-5 rounded-xl gold-gradient text-background-dark font-extrabold text-xl shadow-[0_0_25px_rgba(242,185,13,0.3)] active:scale-95 transition-all duration-75 uppercase tracking-[0.1em]">
+            Claim Reward
+        </button>
+
+        <div id="ad-loading-spinner" class="hidden mt-8 flex flex-col items-center">
+            <div class="w-12 h-12 border-4 border-primary/20 border-t-primary rounded-full animate-spin mb-4"></div>
+            <p class="text-primary font-bold animate-pulse uppercase tracking-widest text-xs">Loading Reward Ad...</p>
+        </div>
     </div>
 
     <div id="results-container"
@@ -155,7 +169,6 @@
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-database-compat.js"></script>
     <script src="firebase-config.js"></script>
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
     <script>
         const tg = window.Telegram.WebApp;
@@ -220,7 +233,7 @@
             }
 
             // After settings load, show ad then init
-            handleAdAndInit();
+            // handleAdAndInit(); // Removed automatic call
         });
 
         function loadGigaPubScript(id) {
@@ -301,10 +314,12 @@
         async function handleAdAndInit() {
             if (rewardHandled) return;
 
-            // Show ad before result (unless disabled)
-            if (adsEnabled) {
-                await showAd();
-            }
+            // Show ad indicator
+            document.getElementById('claim-reward-btn').classList.add('hidden');
+            document.getElementById('ad-loading-spinner').classList.remove('hidden');
+
+            // Show ad
+            await showAd();
 
             // Reveal UI after ad
             const overlay = document.getElementById('ad-overlay');
@@ -315,6 +330,11 @@
             if (mathReward !== undefined) {
                 initResult(mathReward);
             }
+        }
+
+        async function handleClaimReward() {
+            tg.HapticFeedback.impactOccurred('medium');
+            handleAdAndInit();
         }
 
         function initResult(fixedReward) {
