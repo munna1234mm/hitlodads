@@ -354,8 +354,17 @@
                                 <select id="ad-provider"
                                     class="w-full bg-white border-slate-200 rounded-xl px-4 py-3 focus:ring-indigo-500 text-sm font-bold">
                                     <option value="universal">Universal (MoneyTag/Custom)</option>
-                                    <option value="gigapub">GigaPub (ID: 5769)</option>
+                                    <option value="gigapub">GigaPub (ID-based)</option>
                                 </select>
+                            </div>
+                            <div id="gigapub-settings" style="display: none;">
+                                <div class="mb-4">
+                                    <label
+                                        class="text-[10px] text-slate-500 font-bold uppercase tracking-widest pl-2">GigaPub
+                                        Project ID</label>
+                                    <input type="text" id="gigapub-id" placeholder="e.g. 5769"
+                                        class="w-full bg-white border-slate-200 rounded-xl px-4 py-3 focus:ring-indigo-500 text-sm font-bold">
+                                </div>
                             </div>
                             <div id="universal-ad-settings">
                                 <div class="mb-4">
@@ -501,13 +510,15 @@
                 document.getElementById('moneytag-tag-id').value = settings.moneytagTagId || '';
                 document.getElementById('ad-function-name').value = settings.adFunctionName || '';
                 document.getElementById('ad-provider').value = settings.adProvider || 'universal';
+                document.getElementById('gigapub-id').value = settings.gigapubId || '';
                 document.getElementById('global-support-link').value = settings.supportLink || '';
                 document.getElementById('global-ads-enabled').checked = settings.adsEnabled !== false; // Default to true
 
-                // Toggle visibility of universal settings
+                // Toggle visibility of ad settings
                 const toggleAdSettings = () => {
                     const provider = document.getElementById('ad-provider').value;
                     document.getElementById('universal-ad-settings').style.display = provider === 'universal' ? 'block' : 'none';
+                    document.getElementById('gigapub-settings').style.display = provider === 'gigapub' ? 'block' : 'none';
                 };
                 document.getElementById('ad-provider').onchange = toggleAdSettings;
                 toggleAdSettings();
@@ -713,6 +724,7 @@
                 settings.moneytagTagId = document.getElementById('moneytag-tag-id').value.trim();
                 settings.adFunctionName = document.getElementById('ad-function-name').value.trim();
                 settings.adProvider = document.getElementById('ad-provider').value;
+                settings.gigapubId = document.getElementById('gigapub-id').value.trim();
                 settings.adsEnabled = document.getElementById('global-ads-enabled').checked;
             }
 

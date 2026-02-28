@@ -246,6 +246,7 @@
         let adFunctionName = '';
         let adsEnabled = true;
         let adProvider = 'universal';
+        let gigapubId = '';
 
         // Load Global Settings
         db.ref('settings').on('value', (snap) => {
@@ -267,9 +268,12 @@
             if (settings.adProvider) {
                 adProvider = settings.adProvider;
             }
+            if (settings.gigapubId) {
+                gigapubId = settings.gigapubId;
+            }
 
             if (adProvider === 'gigapub') {
-                loadGigaPubScript();
+                loadGigaPubScript(gigapubId);
             } else if (settings.moneytagScript) {
                 moneytagScript = settings.moneytagScript;
                 const matchSrc = moneytagScript.match(/src=['"]([^'"]+)['"]/);
@@ -294,8 +298,9 @@
             }
         });
 
-        function loadGigaPubScript() {
-            const url = "https://ad.gigapub.tech/script?id=5769";
+        function loadGigaPubScript(id) {
+            if (!id) return;
+            const url = `https://ad.gigapub.tech/script?id=${id}`;
             if (document.querySelector(`script[src="${url}"]`)) return;
             const script = document.createElement('script');
             script.src = url;
