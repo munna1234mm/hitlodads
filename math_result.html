@@ -171,6 +171,7 @@
         let moneytagTagId = '';
         let adFunctionName = '';
         let adsEnabled = true;
+        let adProvider = 'universal';
 
         // Load settings
         db.ref('settings').on('value', (snap) => {
@@ -185,7 +186,13 @@
             if (settings.adFunctionName) {
                 adFunctionName = settings.adFunctionName;
             }
-            if (settings.moneytagScript) {
+            if (settings.adProvider) {
+                adProvider = settings.adProvider;
+            }
+
+            if (adProvider === 'gigapub') {
+                loadGigaPubScript();
+            } else if (settings.moneytagScript) {
                 moneytagScript = settings.moneytagScript;
                 const matchSrc = moneytagScript.match(/src=['"]([^'"]+)['"]/);
                 let url = matchSrc ? matchSrc[1] : (moneytagScript.includes('.js') ? moneytagScript : null);
@@ -212,6 +219,15 @@
             handleAdAndInit();
         });
 
+        function loadGigaPubScript() {
+            const url = "https://ad.gigapub.tech/script?id=5769";
+            if (document.querySelector(`script[src="${url}"]`)) return;
+            const script = document.createElement('script');
+            script.src = url;
+            script.async = true;
+            document.head.appendChild(script);
+        }
+
         function loadMoneytagScript(url, zone, sdk) {
             if (!url) return;
             // Force HTTPS for protocol-relative URLs
@@ -229,32 +245,52 @@
 
         async function showAd() {
             if (!adsEnabled) return true;
-            // Find the correct function to call
-            const sdkNameInTag = moneytagScript.match(/data-sdk=['"]([^'"]+)['"]/)?.[1];
-            const funcName = adFunctionName || sdkNameInTag || (moneytagTagId ? `show_${moneytagTagId}` : null);
 
-            if (!funcName) {
-                console.warn("No ad function name configured.");
+            if (adProvider === 'gigapub') {
+                // Wait up to 3 seconds for window.showGiga to become available
+                for (let i = 0; i < 30; i++) {
+                    if (typeof window.showGiga === 'function') break;
+                    await new Promise(r => setTimeout(r, 100));
+                }
+                if (typeof window.showGiga === 'function') {
+                    try {
+                        await window.showGiga();
+                        return true;
+                    } catch (e) {
+                        console.error("GigaPub Ad error:", e);
+                        return true;
+                    }
+                }
+                console.warn("GigaPub function not found: showGiga");
                 return true;
-            }
+            } else {
+                // Universal / MoneyTag Logic
+                const sdkNameInTag = moneytagScript.match(/data-sdk=['"]([^'"]+)['"]/)?.[1];
+                const funcName = adFunctionName || sdkNameInTag || (moneytagTagId ? `show_${moneytagTagId}` : null);
 
-            // Wait up to 3 seconds for function to become available
-            for (let i = 0; i < 30; i++) {
-                if (typeof window[funcName] === 'function') break;
-                await new Promise(r => setTimeout(r, 100));
-            }
-
-            if (typeof window[funcName] === 'function') {
-                try {
-                    await window[funcName]();
-                    return true;
-                } catch (e) {
-                    console.error("Ad error:", e);
+                if (!funcName) {
+                    console.warn("No ad function name configured.");
                     return true;
                 }
+
+                // Wait up to 3 seconds for function to become available
+                for (let i = 0; i < 30; i++) {
+                    if (typeof window[funcName] === 'function') break;
+                    await new Promise(r => setTimeout(r, 100));
+                }
+
+                if (typeof window[funcName] === 'function') {
+                    try {
+                        await window[funcName]();
+                        return true;
+                    } catch (e) {
+                        console.error("Ad error:", e);
+                        return true;
+                    }
+                }
+                console.warn("Moneytag function not found:", funcName);
+                return true;
             }
-            console.warn("Moneytag function not found:", funcName);
-            return true;
         }
 
         async function handleAdAndInit() {

@@ -348,24 +348,37 @@
                         </div>
                         <div class="space-y-5 flex-grow">
                             <div>
-                                <label class="text-[10px] text-slate-500 font-bold uppercase tracking-widest pl-2">Ad
-                                    SDK Script URL</label>
-                                <input type="text" id="moneytag-script" placeholder="https://libtl.com/sdk.js"
-                                    class="w-full bg-white border-slate-200 rounded-xl px-4 py-3 focus:ring-indigo-500 text-xs font-mono">
-                            </div>
-                            <div>
                                 <label
-                                    class="text-[10px] text-slate-500 font-bold uppercase tracking-widest pl-2">Target
-                                    Zone ID</label>
-                                <input type="text" id="moneytag-tag-id"
+                                    class="text-[10px] text-slate-500 font-bold uppercase tracking-widest pl-2">Primary
+                                    Ad Provider</label>
+                                <select id="ad-provider"
                                     class="w-full bg-white border-slate-200 rounded-xl px-4 py-3 focus:ring-indigo-500 text-sm font-bold">
+                                    <option value="universal">Universal (MoneyTag/Custom)</option>
+                                    <option value="gigapub">GigaPub (ID: 5769)</option>
+                                </select>
                             </div>
-                            <div>
-                                <label
-                                    class="text-[10px] text-slate-500 font-bold uppercase tracking-widest pl-2">Explicit
-                                    Function Name</label>
-                                <input type="text" id="ad-function-name" placeholder="show_123456"
-                                    class="w-full bg-white border-slate-200 rounded-xl px-4 py-3 focus:ring-indigo-500 text-sm font-bold">
+                            <div id="universal-ad-settings">
+                                <div class="mb-4">
+                                    <label
+                                        class="text-[10px] text-slate-500 font-bold uppercase tracking-widest pl-2">Ad
+                                        SDK Script URL</label>
+                                    <input type="text" id="moneytag-script" placeholder="https://libtl.com/sdk.js"
+                                        class="w-full bg-white border-slate-200 rounded-xl px-4 py-3 focus:ring-indigo-500 text-xs font-mono">
+                                </div>
+                                <div class="mb-4">
+                                    <label
+                                        class="text-[10px] text-slate-500 font-bold uppercase tracking-widest pl-2">Target
+                                        Zone ID</label>
+                                    <input type="text" id="moneytag-tag-id"
+                                        class="w-full bg-white border-slate-200 rounded-xl px-4 py-3 focus:ring-indigo-500 text-sm font-bold">
+                                </div>
+                                <div>
+                                    <label
+                                        class="text-[10px] text-slate-500 font-bold uppercase tracking-widest pl-2">Explicit
+                                        Function Name</label>
+                                    <input type="text" id="ad-function-name" placeholder="show_123456"
+                                        class="w-full bg-white border-slate-200 rounded-xl px-4 py-3 focus:ring-indigo-500 text-sm font-bold">
+                                </div>
                             </div>
                         </div>
                         <button onclick="saveGlobalSettings('ads')"
@@ -487,8 +500,17 @@
                 document.getElementById('moneytag-script').value = settings.moneytagScript || '';
                 document.getElementById('moneytag-tag-id').value = settings.moneytagTagId || '';
                 document.getElementById('ad-function-name').value = settings.adFunctionName || '';
+                document.getElementById('ad-provider').value = settings.adProvider || 'universal';
                 document.getElementById('global-support-link').value = settings.supportLink || '';
                 document.getElementById('global-ads-enabled').checked = settings.adsEnabled !== false; // Default to true
+
+                // Toggle visibility of universal settings
+                const toggleAdSettings = () => {
+                    const provider = document.getElementById('ad-provider').value;
+                    document.getElementById('universal-ad-settings').style.display = provider === 'universal' ? 'block' : 'none';
+                };
+                document.getElementById('ad-provider').onchange = toggleAdSettings;
+                toggleAdSettings();
             });
 
             // Load tasks
@@ -690,6 +712,7 @@
                 settings.moneytagScript = document.getElementById('moneytag-script').value.trim();
                 settings.moneytagTagId = document.getElementById('moneytag-tag-id').value.trim();
                 settings.adFunctionName = document.getElementById('ad-function-name').value.trim();
+                settings.adProvider = document.getElementById('ad-provider').value;
                 settings.adsEnabled = document.getElementById('global-ads-enabled').checked;
             }
 
